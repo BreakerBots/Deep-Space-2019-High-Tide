@@ -1,0 +1,39 @@
+plugins {
+    id "java"
+    id "c"
+    id "edu.wpi.first.GradleRIO" version "2019.4.1"
+    //id 'edu.wpi.first.GradleJni' version '0.3.0'
+}
+
+def ROBOT_CLASS = "frc.team5104.main.Main"
+
+deploy {
+    targets {
+        roboRIO("roborio") {
+            team = frc.getTeamOrDefault(5104)
+        }
+    }
+    artifacts {
+        frcJavaArtifact('frcJava') {
+            targets << "roborio"
+            debug = frc.getDebugOrDefault(false)
+        }
+        fileTreeArtifact('frcStaticFileDeploy') {
+            files = fileTree(dir: 'src/webapp')
+            targets << "roborio"
+            directory = '/home/lvuser/webapp'
+        }
+    }
+}
+
+dependencies {
+	compile wpi.deps.wpilib()
+    compile wpi.deps.vendor.java()
+    //nativeZip wpi.deps.vendor.jni(wpi.platforms.roborio)
+    //nativeDesktopZip wpi.deps.vendor.jni(wpi.platforms.desktop)
+}
+
+jar {
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    manifest edu.wpi.first.gradlerio.GradleRIOPlugin.javaManifest(ROBOT_CLASS)
+}
