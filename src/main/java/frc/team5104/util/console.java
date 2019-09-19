@@ -30,7 +30,8 @@ public class console {
 		DRIVE,
 		ELEVATOR,
 		INTAKE,
-		WRIST
+		WRIST,
+		IWE
 	};
 	
 	/**
