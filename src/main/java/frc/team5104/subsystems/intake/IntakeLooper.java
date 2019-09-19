@@ -2,7 +2,7 @@ package frc.team5104.subsystems.intake;
 
 import frc.team5104.subsystems.Subsystem;
 
-public class IntakeLooper extends Subsystem.Looper {
+class IntakeLooper extends Subsystem.Looper {
 
 	
 	

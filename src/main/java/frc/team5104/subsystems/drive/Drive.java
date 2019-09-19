@@ -6,7 +6,7 @@ import frc.team5104.subsystems.Subsystem.Looper;
 
 public class Drive extends Subsystem.Actions {
 	//Meta
-	protected String getName() { return "Intake"; }
+	protected String getName() { return "Drive"; }
 	private DriveInterface _interface = new DriveInterface();
 	protected Interface getInterface() { return _interface; }
 	private DriveLooper _looper = new DriveLooper();

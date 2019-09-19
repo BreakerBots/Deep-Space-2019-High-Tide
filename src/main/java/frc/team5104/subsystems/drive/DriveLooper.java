@@ -2,7 +2,7 @@ package frc.team5104.subsystems.drive;
 
 import frc.team5104.subsystems.Subsystem;
 
-public class DriveLooper extends Subsystem.Looper {
+class DriveLooper extends Subsystem.Looper {
 
 	
 	

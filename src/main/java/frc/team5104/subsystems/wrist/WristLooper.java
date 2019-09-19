@@ -2,7 +2,7 @@ package frc.team5104.subsystems.wrist;
 
 import frc.team5104.subsystems.Subsystem;
 
-public class WristLooper extends Subsystem.Looper {
+class WristLooper extends Subsystem.Looper {
 
 	
 	

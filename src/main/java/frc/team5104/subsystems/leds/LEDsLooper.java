@@ -2,7 +2,7 @@ package frc.team5104.subsystems.leds;
 
 import frc.team5104.subsystems.Subsystem;
 
-public class LEDsLooper extends Subsystem.Looper {
+class LEDsLooper extends Subsystem.Looper {
 
 	
 	

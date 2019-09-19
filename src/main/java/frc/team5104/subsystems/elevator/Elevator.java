@@ -6,7 +6,7 @@ import frc.team5104.subsystems.Subsystem.Looper;
 
 public class Elevator extends Subsystem.Actions {
 	//Meta
-	protected String getName() { return "Intake"; }
+	protected String getName() { return "Elevator"; }
 	private ElevatorInterface _interface = new ElevatorInterface();
 	protected Interface getInterface() { return _interface; }
 	private ElevatorLooper _looper = new ElevatorLooper();
