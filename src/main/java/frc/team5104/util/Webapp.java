@@ -1,5 +1,5 @@
 /* Breakerbots Robotics Team 2019 */
-package frc.team5104.webapp;
+package frc.team5104.util;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
@@ -15,7 +15,6 @@ import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
 
-import frc.team5104.util.console;
 import frc.team5104.util.console.c;
 
 @SuppressWarnings("restriction")
@@ -132,7 +131,7 @@ public class Webapp {
 			//Init
 			if (requestType.equals("init")) {
 				//Send headers
-				String response = Tuner.getInit();
+				String response = WebappTuner.getInit();
 				
 				t.sendResponseHeaders(200, response.length());
 	            OutputStream os = t.getResponseBody();
@@ -143,7 +142,7 @@ public class Webapp {
 			//Get
 			else if (requestType.equals("get")) {
 				//Send outputs
-				String response = Tuner.getOutputs();
+				String response = WebappTuner.getOutputs();
 				
 				t.sendResponseHeaders(200, response.length());
 	            OutputStream os = t.getResponseBody();
@@ -163,7 +162,7 @@ public class Webapp {
             	String name = data.substring(data.indexOf("\"name\":\"")+8, data.indexOf(',')-1);
             	String value = data.substring(data.indexOf("\"value\":\"")+9, data.length()-1);
             	
-            	Tuner.handleInput(name, value);
+            	WebappTuner.handleInput(name, value);
 			}
 		}
 	}

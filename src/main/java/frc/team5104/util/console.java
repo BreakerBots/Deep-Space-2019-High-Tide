@@ -21,14 +21,16 @@ public class console {
 	 * Categories for Logging
 	 */
 	public static enum c { 
-		TELEOP, 
-		MAIN, 
-		DRIVE, 
+		TELEOP,
+		MAIN,
 		OTHER,
+		AUTO,
+		WEBAPP,
 		
-		TSHIRT,
-		
-		WEBAPP
+		DRIVE,
+		ELEVATOR,
+		INTAKE,
+		WRIST
 	};
 	
 	/**

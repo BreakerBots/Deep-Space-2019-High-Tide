@@ -1,4 +1,4 @@
-package frc.team5104.webapp;
+package frc.team5104.util;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -6,10 +6,9 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 
-import frc.team5104.util.CrashLogger;
 import frc.team5104.util.CrashLogger.Crash;
 
-public class Tuner {
+public class WebappTuner {
 	private static ArrayList<TunerRunnable> runnables = new ArrayList<TunerRunnable>();
 	
 	//Initialize the class

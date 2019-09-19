@@ -1,4 +1,4 @@
-package frc.team5104.main;
+package frc.team5104.main.setup;
 
 /*----------------------------------------------------------------------------*/
 /* Copyright (c) 2018 FIRST. All Rights Reserved.                             */
@@ -10,14 +10,6 @@ package frc.team5104.main;
 import edu.wpi.first.wpilibj.RobotBase;
 
 public final class Main {
-  private Main() { }
-
-  /**
-   * Main initialization function. Do not perform any initialization here.
-   *
-   * <p>If you change your main robot class, change the parameter type.
-   */
-  public static void main(String... args) {
-    RobotBase.startRobot(RobotController::new);
-  }
+	private Main() { }
+	public static void main(String... args) { RobotBase.startRobot(RobotController::new); }
 }

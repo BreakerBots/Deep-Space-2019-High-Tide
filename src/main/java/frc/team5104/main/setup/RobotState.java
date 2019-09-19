@@ -1,4 +1,4 @@
-package frc.team5104.main;
+package frc.team5104.main.setup;
 
 public class RobotState {
 	
@@ -8,12 +8,9 @@ public class RobotState {
 	}; 
 	protected RobotMode currentMode = RobotMode.Disabled;
 	protected RobotMode lastMode = RobotMode.Disabled;
-	
-	//Time Between Each Loop
 	protected double deltaTime = 0;
-	
-	//Did Get Driver Station Response (only works in teleop mode)
 	protected boolean gotDriverStationResponse = false;
+	protected boolean isSandstorm = false;
 	
 	//Access
 	protected static RobotState instance;
@@ -24,6 +21,7 @@ public class RobotState {
 	}
 	
 	//External Functions
+	public static boolean isSandstorm() { return getInstance().isSandstorm; }
 	public static boolean isEnabled() { return getInstance().currentMode != RobotMode.Disabled; }
 	public static RobotMode getMode() { return getInstance().currentMode; }
 	public static void setMode(RobotMode mode) { getInstance().currentMode = mode; }

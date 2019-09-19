@@ -1,5 +1,5 @@
 /*BreakerBots Robotics Team 2019*/
-package frc.team5104.main;
+package frc.team5104.main.setup;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.RobotBase;
@@ -8,26 +8,27 @@ import edu.wpi.first.hal.FRCNetComm.tInstances;
 import edu.wpi.first.hal.FRCNetComm.tResourceType;
 import edu.wpi.first.hal.HAL;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
-import frc.team5104.main.RobotState.RobotMode;
+import frc.team5104.main.Robot;
+import frc.team5104.main.RobotConstants;
+import frc.team5104.main.setup.RobotState.RobotMode;
 import frc.team5104.util.CrashLogger;
 import frc.team5104.util.CrashLogger.Crash;
 import frc.team5104.util.console;
 import frc.team5104.util.console.c;
 import frc.team5104.util.console.t;
 
-class RobotController extends RobotBase {
+public class RobotController extends RobotBase {
 	//Modes
 	private RobotMode lastMode = RobotMode.Disabled;
-	
 	private BreakerRobot robot;
 	private RobotState state = RobotState.getInstance();
 	private final double loopPeriod = 20;
 	
-	//Initialization
+	//Init Robot
 	public void startCompetition() {
 		HAL.report(tResourceType.kResourceType_Framework, tInstances.kFramework_Iterative);
 		console.sets.create("RobotInit");
-		console.log(c.MAIN, t.INFO, "Initializing Code");
+		console.log(c.MAIN, t.INFO, "Initializing " + RobotConstants.ROBOT_NAME + " Code...");
 		
 		robot = new Robot();
 		
@@ -56,8 +57,10 @@ class RobotController extends RobotBase {
 
 	//Main Loop
 	private void loop() {
+		//Default to Disabled
 		if (isDisabled()) state.currentMode = RobotMode.Disabled;
 		
+		//Enabled - Teleop/Test
 		else if (isEnabled()) {
 			//Forced Through Driver Station
 			if (isTest()) state.currentMode = RobotMode.Test;
@@ -65,6 +68,9 @@ class RobotController extends RobotBase {
 			//Default to Teleop
 			else state.currentMode = RobotMode.Teleop;
 		}
+		
+		//Sandstorm
+		state.isSandstorm = isAutonomous();
 		
 		//Handle Modes
 		switch(state.currentMode) {
@@ -148,10 +154,6 @@ class RobotController extends RobotBase {
 		LiveWindow.updateValues();
 	}
 	
-	public static void main(String[] args) {
-		RobotController.startRobot(RobotController::new);
-	}
-	
 	//Child Class
 	/**
 	 * The Main Robot Interface. Called by this, Breaker Robot Controller
@@ -160,7 +162,7 @@ class RobotController extends RobotBase {
 	 * <br> - All Enable/Disable Functions are called before the corresponding loop function
 	 * <br> - Main Functions are called last (teleop, test, auto are before)
 	 */
-	static abstract class BreakerRobot {
+	public static abstract class BreakerRobot {
 		public void mainLoop() { }
 		public void mainEnabled() { }
 		public void mainDisabled() { }
