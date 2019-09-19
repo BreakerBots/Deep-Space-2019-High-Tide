@@ -19,4 +19,5 @@ public class Intake extends Subsystem.Actions {
 		//isClosed()
 		//setWheelSpeed(enum incake wheel speed)
 		//getWheelSpeed(ret enum incake wheel speed)
+		//hasGamePiece(enum IWEGamePiece)
 }

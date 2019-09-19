@@ -4,7 +4,7 @@ import frc.team5104.main.Controls;
 import frc.team5104.util.BreakerCompressor;
 
 public class CompressorController extends TeleopController {
-	protected String getName() { return "IWE Controller"; }
+	protected String getName() { return "Compressor Controller"; }
 
 	protected void update() {
 		if (Controls.COMPRESSOR_TOGGLE.getPressed()) {

@@ -15,4 +15,7 @@ public class Wrist extends Subsystem.Actions {
 	//Actions
 		//set position(enum wristpos)
 		//get position(ret enum wristpos)
+		//setManualMode(boolean)
+		//getManualMode(ret boolean)
+		//set Speed (if manual mode, double speed)
 }
