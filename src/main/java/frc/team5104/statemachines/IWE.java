@@ -13,6 +13,17 @@ public class IWE extends StateMachine {
 	private static IWEGamePiece targetGamePiece = IWEGamePiece.HATCH;
 	private static IWEHeight targetHeight = IWEHeight.L1;
 	
+	//External Functions
+	public static void setState() {
+		
+	}
+	public static void setGamePiece() {
+		
+	}
+	public static void setHeight() {
+		
+	}
+	
 	//Tell Subsystems what to do
 	protected void update() {
 		

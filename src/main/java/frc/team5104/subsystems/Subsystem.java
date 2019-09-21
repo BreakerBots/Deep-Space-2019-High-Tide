@@ -9,10 +9,10 @@ package frc.team5104.subsystems;
  *   2) Subsystem has Actions, Looper, and Interface
  */
 public class Subsystem {
-	/** (Optional) [PROTECTED] Stores all extra constants for the subsystem */
+	/** (Optional) [PROTECTED-STATIC] Stores all extra constants for the subsystem */
 	public static abstract class Constants { }
 	
-	/** (Optional) [PROTECTED] Handle state machines or other autonomous features */
+	/** (Optional) [PROTECTED-NOT_STATIC] Handle state machines or other autonomous features */
 	public static abstract class Looper {
 		/** Called whenever the robot becomes enabled */
 		protected abstract void enabled();
@@ -22,13 +22,13 @@ public class Subsystem {
 		protected abstract void disabled();
 	}
 	
-	/** (Required) [PROTECTED] Interfaces with a subsystem's devices */
+	/** (Required) [PROTECTED-NOT_STATIC] Interfaces with a subsystem's devices */
 	public static abstract class Interface {
 		/** Called when robots boots up; initialize devices here */
 		protected abstract void init();
 	}
 	
-	/** (Optional) [PUBLIC]  */
+	/** (Optional) [PUBLIC-STATIC]  */
 	public static abstract class Actions {
 		/** Return the name of this subsystem (for prints) */
 		protected abstract String getName();

@@ -8,21 +8,26 @@ import frc.team5104.subsystems.Subsystem;
 class WristInterface extends Subsystem.Interface {
 
 	//Devices
-	private static TalonSRX wristTalon = new TalonSRX(12);
-	protected static void setMotionMagic(double pos) {
+	private TalonSRX wristTalon = new TalonSRX(12);
+	
+	//Functions
+	protected void setMotionMagic(double pos) {
 		wristTalon.set(ControlMode.MotionMagic, pos);
 	}
-	protected static void setPercentOutput(double percent) {
+	protected void setPercentOutput(double percent) {
 		wristTalon.set(ControlMode.PercentOutput, percent);
 	}
-	protected static double getRotation() {
+	protected double getRotation() {
 		return getRawRotation() / 4096.0 * 360.0;
 	}
-	protected static double getRawRotation() {
+	protected double getRawRotation() {
 		return wristTalon.getSelectedSensorPosition();
 	}
-	protected static void resetEncoder() {
+	protected void resetEncoder() {
 		wristTalon.setSelectedSensorPosition(0);
+	}
+	protected boolean lowerLimitSwitchHit() {
+		return wristTalon.getSensorCollection().isFwdLimitSwitchClosed();
 	}
 	
 	//Config

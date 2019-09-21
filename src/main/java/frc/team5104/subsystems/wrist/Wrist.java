@@ -5,20 +5,44 @@ import frc.team5104.subsystems.Subsystem.Interface;
 import frc.team5104.subsystems.Subsystem.Looper;
 
 public class Wrist extends Subsystem.Actions {
-	//Meta
+	//Metadata
 	protected String getName() { return "Wrist"; }
-	private WristInterface _interface = new WristInterface();
+	protected static WristInterface _interface = new WristInterface();
 	protected Interface getInterface() { return _interface; }
-	private WristLooper _looper = new WristLooper();
+	private static WristLooper _looper = new WristLooper();
 	protected Looper getLooper() { return _looper; }
 
 	//Actions
-	public static void setPercentOutput(double percentOutput) {
-		WristInterface.setPercentOutput(percentOutput);
+		//Autonomous
+	public static boolean setPosition(WristPosition position) {
+		if (_looper.wristState == WristState.AUTONOMOUS) {
+			_looper.wristPosition = position;
+			return true;
+		}
+		return false;
 	}
-		//set position(enum wristpos)
-		//get position(ret enum wristpos)
-		//setManualMode(boolean)
-		//getManualMode(ret boolean)
-		//set Speed (if manual mode, double speed)
+	public static WristPosition getPosition() { return _looper.wristPosition; }
+	
+		//States
+	public static boolean setState(WristState desiredState) { 
+		if (_looper.wristState != WristState.CALIBRATING && desiredState != WristState.CALIBRATING) {
+			_looper.wristState = desiredState;
+			return true;
+		}
+		return false;
+	}
+	public static WristState getState() { return _looper.wristState; }
+	
+		//Manual
+	public static boolean setPercentOutput(double percentOutput) {
+		if (_looper.wristState == WristState.MANUAL) {
+			_interface.setPercentOutput(percentOutput);
+			return true;
+		}
+		return false;
+	}
+	
+	//Enums
+	static enum WristState { CALIBRATING, MANUAL, AUTONOMOUS };
+	static enum WristPosition { BACK, UP, CARGO_INTAKE_WALL, CARGO_INTAKE_GROUND, HATCH_PLACE_ANGLED, CARGO_PLACE_ANGLED }
 }
