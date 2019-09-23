@@ -1,8 +1,8 @@
 package frc.team5104.subsystems.leds;
 
-import frc.team5104.subsystems.Subsystem;
-import frc.team5104.subsystems.Subsystem.Interface;
-import frc.team5104.subsystems.Subsystem.Looper;
+import frc.team5104.util.managers.Subsystem;
+import frc.team5104.util.managers.Subsystem.Interface;
+import frc.team5104.util.managers.Subsystem.Looper;
 
 public class LEDs extends Subsystem.Actions {
 	//Meta

@@ -1,5 +1,5 @@
 /*BreakerBots Robotics Team 2019*/
-package frc.team5104.subsystems;
+package frc.team5104.util.managers;
 
 /** 
  * A snickers rapper of all the requirements of a subsystem. 
@@ -9,9 +9,6 @@ package frc.team5104.subsystems;
  *   2) Subsystem has Actions, Looper, and Interface
  */
 public class Subsystem {
-	/** (Optional) [PROTECTED-STATIC] Stores all extra constants for the subsystem */
-	public static abstract class Constants { }
-	
 	/** (Optional) [PROTECTED-NOT_STATIC] Handle state machines or other autonomous features */
 	public static abstract class Looper {
 		/** Called whenever the robot becomes enabled */

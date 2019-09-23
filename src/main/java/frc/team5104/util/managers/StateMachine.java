@@ -1,4 +1,4 @@
-package frc.team5104.statemachines;
+package frc.team5104.util.managers;
 
 /** A twix rapper for all the requirements in a state machine */ 
 public abstract class StateMachine {

@@ -10,7 +10,7 @@ import java.io.ObjectOutputStream;
 import frc.team5104.auto.util.Trajectory;
 import frc.team5104.auto.util.TrajectoryGenerator;
 import frc.team5104.auto.util.TrajectoryWaypoint;
-import frc.team5104.main.RobotConstants;
+import frc.team5104.main.Constants;
 import frc.team5104.util.console;
 import frc.team5104.util.console.c;
 
@@ -47,7 +47,7 @@ public class BreakerTrajectoryGenerator {
 	    				_AutoConstants._maxVelocity,
 	    				_AutoConstants._maxAcceleration,
 	    				_AutoConstants._maxJerk,
-	    				1.0 / RobotConstants.MAIN_LOOP_SPEED
+	    				1.0 / Constants.MAIN_LOOP_SPEED
 	    			);
 	    		writeFile(s, t);
 	    		console.log(c.AUTO, "Trajectory Generation Took " + console.sets.getTime("MPGEN") + "s");

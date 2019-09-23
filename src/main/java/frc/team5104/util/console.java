@@ -8,7 +8,7 @@ import java.time.format.DateTimeFormatter;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
-import frc.team5104.main.RobotConstants;
+import frc.team5104.main.Constants;
 
 /**
  * <h1>Console</h1>
@@ -225,7 +225,7 @@ public class console {
 					String fileName;
 					
 					//File Name
-					if (hasFMS ? RobotConstants.OVERWRITE_MATCH_LOGS : RobotConstants.OVERWRITE_NON_MATCH_LOGS)
+					if (hasFMS ? Constants.OVERWRITE_MATCH_LOGS : Constants.OVERWRITE_NON_MATCH_LOGS)
 						fileName = "log.txt";
 					else
 						fileName = DateTimeFormatter.ofPattern("MM-dd-yyyy_HH-mm").format(LocalDateTime.now()) + ".txt";

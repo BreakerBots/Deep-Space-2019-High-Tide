@@ -4,17 +4,17 @@ package frc.team5104.main;
 import frc.team5104.main.setup.RobotController;
 import frc.team5104.main.setup.RobotState;
 import frc.team5104.statemachines.IWE;
-import frc.team5104.statemachines.StateMachineManager;
-import frc.team5104.subsystems.SubsystemManager;
 import frc.team5104.subsystems.elevator.Elevator;
 import frc.team5104.subsystems.intake.Intake;
 import frc.team5104.subsystems.wrist.Wrist;
 import frc.team5104.teleop.CompressorController;
 import frc.team5104.teleop.IWEController;
-import frc.team5104.teleop.TeleopControllerManager;
 import frc.team5104.util.BreakerCompressor;
 import frc.team5104.util.Controller;
 import frc.team5104.util.WebappTuner;
+import frc.team5104.util.managers.StateMachineManager;
+import frc.team5104.util.managers.SubsystemManager;
+import frc.team5104.util.managers.TeleopControllerManager;
 import frc.team5104.util.Webapp;
 
 public class Robot extends RobotController.BreakerRobot {
@@ -25,9 +25,7 @@ public class Robot extends RobotController.BreakerRobot {
 			new Elevator(),
 			new Intake()
 		);
-		StateMachineManager.useStateMachines(
-			new IWE()
-		);
+		StateMachineManager.useStateMachines( new IWE() );
 		TeleopControllerManager.useTeleopControllers(
 			//new DriveController(),
 			new IWEController(),
@@ -42,19 +40,19 @@ public class Robot extends RobotController.BreakerRobot {
 	public void teleopStart() {
 		if (RobotState.isSandstorm()) { /*auto init stuffs*/ }
 		
-		SubsystemManager.enabled();
 		StateMachineManager.enabled();
+		SubsystemManager.enabled();
 	}
 	public void teleopStop() {
+		StateMachineManager.enabled();
 		SubsystemManager.disabled();
-		StateMachineManager.disabled();
 	}
 	public void teleopLoop() {
 		if (RobotState.isSandstorm()) { /*auto loop stuffs*/ BreakerCompressor.stop(); }
 		else { TeleopControllerManager.update(); }
 		
-		SubsystemManager.update();
 		StateMachineManager.update();
+		SubsystemManager.update();
 		Controller.handle();
 	}
 	

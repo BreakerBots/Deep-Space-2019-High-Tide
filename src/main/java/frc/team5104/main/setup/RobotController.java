@@ -9,7 +9,7 @@ import edu.wpi.first.hal.FRCNetComm.tResourceType;
 import edu.wpi.first.hal.HAL;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import frc.team5104.main.Robot;
-import frc.team5104.main.RobotConstants;
+import frc.team5104.main.Constants;
 import frc.team5104.main.setup.RobotState.RobotMode;
 import frc.team5104.util.CrashLogger;
 import frc.team5104.util.CrashLogger.Crash;
@@ -28,7 +28,7 @@ public class RobotController extends RobotBase {
 	public void startCompetition() {
 		HAL.report(tResourceType.kResourceType_Framework, tInstances.kFramework_Iterative);
 		console.sets.create("RobotInit");
-		console.log(c.MAIN, t.INFO, "Initializing " + RobotConstants.ROBOT_NAME + " Code...");
+		console.log(c.MAIN, t.INFO, "Initializing " + Constants.ROBOT_NAME + " Code...");
 		
 		robot = new Robot();
 		

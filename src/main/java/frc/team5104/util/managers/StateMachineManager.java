@@ -1,16 +1,13 @@
-/*BreakerBots Robotics Team 2019*/
-package frc.team5104.statemachines;
+package frc.team5104.util.managers;
 
 import frc.team5104.util.CrashLogger;
-import frc.team5104.util.console;
 import frc.team5104.util.CrashLogger.Crash;
+import frc.team5104.util.console;
 import frc.team5104.util.console.c;
 import frc.team5104.util.console.t;
 
-/** Manages all the calls for all State Machines given */
 public class StateMachineManager {
-	private static StateMachine[] targetStateMachines;
-	
+private static StateMachine[] targetStateMachines;
 	/** Tell the State Machine Manager what State Machines to use */
 	public static void useStateMachines(StateMachine... availableStateMachines) {
 		//Save target state machines
