@@ -3,7 +3,12 @@ package frc.team5104.statemachines;
 
 import frc.team5104.main.Constants;
 import frc.team5104.main.Controls;
+import frc.team5104.subsystems.elevator.Elevator;
 import frc.team5104.subsystems.intake.Intake;
+import frc.team5104.subsystems.wrist.Wrist;
+import frc.team5104.util.console;
+import frc.team5104.util.console.c;
+import frc.team5104.util.console.t;
 import frc.team5104.util.managers.StateMachine;
 
 /** Father State Machine for the Intake, Wrist, and Elevator */
@@ -38,6 +43,12 @@ public class IWE extends StateMachine {
 	
 	//Manage States
 	protected void update() {
+		//Automatically Enter Manual
+		if (getControl() == IWEControl.AUTONOMOUS && (Wrist.encoderDisconnected() || Elevator.encoderDisconnected())) {
+			console.log(c.IWE, t.ERROR, "ENCODER DISCONNECTED IN IWE SUBSYSTEM!!!");
+			setControl(IWEControl.MANUAL);
+		}
+		
 		//Exit Eject (if in eject and has been ejecting for long enough)
 		if (getState() == IWEState.EJECT && (System.currentTimeMillis() + Constants.IWE_EJECT_TIME > ejectStart))
 			setState(IWEState.IDLE);

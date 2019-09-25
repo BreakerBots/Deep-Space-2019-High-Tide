@@ -11,6 +11,7 @@ public class Wrist extends Subsystem.Actions {
 	protected Interface getInterface() { return _interface; }
 	private static WristLooper _looper = new WristLooper();
 	protected Looper getLooper() { return _looper; }
-
-	//Actions in IWE
+	
+	//Actions (mostly in IWE)
+	public static boolean encoderDisconnected() { return _interface.encoderDisconnected(); }
 }

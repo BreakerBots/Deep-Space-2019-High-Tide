@@ -12,5 +12,6 @@ public class Elevator extends Subsystem.Actions {
 	private static ElevatorLooper _looper = new ElevatorLooper();
 	protected Looper getLooper() { return _looper; }
 	
-	//Actions in IWE
+	//Actions (mostly in IWE)
+	public static boolean encoderDisconnected() { return _interface.encoderDisconnected(); }
 }

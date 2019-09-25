@@ -24,7 +24,7 @@ class ElevatorInterface extends Subsystem.Interface {
 		talon1.set(ControlMode.Disabled, 0);
 	}
 	
-	protected double getHeight() {
+	protected double getEncoderHeight() {
 		return getRawEncoderPosition() / 4096.0 * Constants.ELEVATOR_SPOOL_CIRC;
 	}
 	protected double getRawEncoderVelocity() {
@@ -36,6 +36,10 @@ class ElevatorInterface extends Subsystem.Interface {
 	protected void resetEncoder() {
 		talon1.setSelectedSensorPosition(0);
 	}
+	public boolean encoderDisconnected() {
+		return talon1.getSensorCollection().getPulseWidthRiseToRiseUs() == 0;
+	}
+	
 	protected boolean lowerLimitSwitchHit() {
 		return false;//talon1.getSensorCollection().isRevLimitSwitchClosed();
 	}

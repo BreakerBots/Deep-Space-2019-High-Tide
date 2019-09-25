@@ -35,6 +35,10 @@ class WristInterface extends Subsystem.Interface {
 	protected void resetEncoder() {
 		wristTalon.setSelectedSensorPosition(0);
 	}
+	public boolean encoderDisconnected() {
+		return wristTalon.getSensorCollection().getPulseWidthRiseToRiseUs() == 0;
+	}
+	
 	protected boolean backLimitSwitchHit() {
 		return false;//wristTalon.getSensorCollection().isFwdLimitSwitchClosed();
 	}
