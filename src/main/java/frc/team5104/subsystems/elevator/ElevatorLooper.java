@@ -43,9 +43,11 @@ class ElevatorLooper extends Subsystem.Looper {
 		
 		//Control Elevator
 		if (elevatorState == ElevatorState.AUTONOMOUS) {
+			//Auto
 			Elevator._interface.setMotionMagic(elevatorPosition.height);
 		}
 		else if (elevatorState == ElevatorState.CALIBRATING) {
+			//Calibrating
 			if (!Elevator._interface.lowerLimitSwitchHit())
 				Elevator._interface.setPercentOutput(-Constants.ELEVATOR_CALIBRATE_SPEED);
 			else {
@@ -54,6 +56,8 @@ class ElevatorLooper extends Subsystem.Looper {
 			}
 		}
 		else {
+			//Manual
+			//console.log(Elevator._interface.getRawEncoderVelocity());
 			Elevator._interface.setPercentOutput(IWE.desiredElevatorManaul);
 		}
 	}

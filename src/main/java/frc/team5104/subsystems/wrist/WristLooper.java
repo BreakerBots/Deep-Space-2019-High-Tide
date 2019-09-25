@@ -11,7 +11,7 @@ class WristLooper extends Subsystem.Looper {
 	
 	//Enums
 	static enum WristState { CALIBRATING, MANUAL, AUTONOMOUS };
-	static enum WristPosition { 
+	static enum WristPosition {
 		BACK(0), UP(90), CARGO_INTAKE_WALL(45); /*CARGO_INTAKE_GROUND(160), HATCH_PLACE_ANGLED(60), CARGO_PLACE_ANGLED(135)*/
 		public double degrees; private WristPosition(double degrees) { this.degrees = degrees; }
 	}
@@ -35,9 +35,11 @@ class WristLooper extends Subsystem.Looper {
 		
 		//Control Wrist
 		if (wristState == WristState.AUTONOMOUS) {
+			//Autonomous
 			Wrist._interface.setMotionMagic(wristPosition.degrees);
 		}
 		else if (wristState == WristState.CALIBRATING) {
+			//Calibrating
 			if (!Wrist._interface.backLimitSwitchHit())
 				Wrist._interface.setPercentOutput(-Constants.WRIST_CALIBRATE_SPEED);
 			else {
@@ -46,6 +48,8 @@ class WristLooper extends Subsystem.Looper {
 			}
 		}
 		else {
+			//Manual
+			//console.log(Wrist._interface.getRawEncoderVelocity(), IWE.desiredWristManaul);
 			Wrist._interface.setPercentOutput(IWE.desiredWristManaul);
 		}
 	}

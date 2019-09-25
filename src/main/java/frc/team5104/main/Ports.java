@@ -10,6 +10,8 @@ public class Ports {
 	public static final int DRIVE_TALON_L2 = 12;
 	public static final int DRIVE_TALON_R1 = 13;
 	public static final int DRIVE_TALON_R2 = 14;
+	public static final int DRIVE_SHIFTER_FORWARD = 1;
+	public static final int DRIVE_SHIFTER_REVERSE = 2;
 	
 	//Elevator
 	public static final int ELEVATOR_TALON_1 = 21;

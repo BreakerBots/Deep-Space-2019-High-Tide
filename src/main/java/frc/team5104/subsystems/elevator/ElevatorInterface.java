@@ -25,9 +25,12 @@ class ElevatorInterface extends Subsystem.Interface {
 	}
 	
 	protected double getHeight() {
-		return getRawEncoder() / 4096.0 * Constants.ELEVATOR_SPOOL_CIRC;
+		return getRawEncoderPosition() / 4096.0 * Constants.ELEVATOR_SPOOL_CIRC;
 	}
-	protected double getRawEncoder() {
+	protected double getRawEncoderVelocity() {
+		return talon1.getSelectedSensorVelocity();
+	}
+	protected double getRawEncoderPosition() {
 		return talon1.getSelectedSensorPosition();
 	}
 	protected void resetEncoder() {
@@ -44,6 +47,20 @@ class ElevatorInterface extends Subsystem.Interface {
 	//Config
 	protected void init() {
 		talon1.configFactoryDefault();
+		talon1.configContinuousCurrentLimit(Constants.ELEVATOR_CURRENT_LIMIT, 10);
+		talon1.enableCurrentLimit(true);
+		talon1.setNeutralMode(Constants.ELEVATOR_NEUTRAL_MODE);
+		talon1.config_kP(0, Constants.ELEVATOR_KP);
+		talon1.config_kI(0, Constants.ELEVATOR_KI);
+		talon1.config_kD(0, Constants.ELEVATOR_KD);
+		talon1.config_kF(0, Constants.ELEVATOR_KF);
+		talon1.configMotionAcceleration(Constants.ELEVATOR_MA);
+		talon1.configMotionCruiseVelocity(Constants.ELEVATOR_MCV);
+		
 		talon2.configFactoryDefault();
+		talon2.configContinuousCurrentLimit(Constants.ELEVATOR_CURRENT_LIMIT, 10);
+		talon2.enableCurrentLimit(true);
+		talon2.setNeutralMode(Constants.ELEVATOR_NEUTRAL_MODE);
+		talon2.set(ControlMode.Follower, talon1.getDeviceID());
 	}
 }

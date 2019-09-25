@@ -21,4 +21,14 @@ public class TeleopControllerManager {
 			} catch (Exception e) { CrashLogger.logCrash(new Crash("main", e)); }
 		}
 	}
+
+	/** Call once the robot becomes enabled */
+	public static void enabled() {
+		for (TeleopController teleopController : targetTeleopControllers) {
+			try {
+				//Call teleop controller function
+				teleopController.enabled();
+			} catch (Exception e) { CrashLogger.logCrash(new Crash("main", e)); }
+		}
+	}
 }

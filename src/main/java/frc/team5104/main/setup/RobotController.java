@@ -27,6 +27,7 @@ public class RobotController extends RobotBase {
 	//Init Robot
 	public void startCompetition() {
 		HAL.report(tResourceType.kResourceType_Framework, tInstances.kFramework_Iterative);
+		console.logFile.start();
 		console.sets.create("RobotInit");
 		console.log(c.MAIN, t.INFO, "Initializing " + Constants.ROBOT_NAME + " Code...");
 		
@@ -133,6 +134,7 @@ public class RobotController extends RobotBase {
 					robot.mainDisabled();
 				}
 				else if (lastMode == RobotMode.Disabled) {
+					console.logFile.end();
 					console.logFile.start();
 					robot.mainEnabled();
 				}

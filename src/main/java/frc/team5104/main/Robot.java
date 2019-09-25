@@ -4,6 +4,7 @@ package frc.team5104.main;
 import frc.team5104.main.setup.RobotController;
 import frc.team5104.main.setup.RobotState;
 import frc.team5104.statemachines.IWE;
+import frc.team5104.subsystems.drive.Odometry;
 import frc.team5104.subsystems.elevator.Elevator;
 import frc.team5104.subsystems.intake.Intake;
 import frc.team5104.subsystems.wrist.Wrist;
@@ -28,17 +29,21 @@ public class Robot extends RobotController.BreakerRobot {
 		StateMachineManager.useStateMachines( new IWE() );
 		TeleopControllerManager.useTeleopControllers(
 			//new DriveController(),
+			//new DriveAutoTune(),
 			new IWEController(),
 			new CompressorController()
 		);
 		
+		//Camera
 		Webapp.init();
 		WebappTuner.init();
+		Odometry.run();
 	}
 	
 	//Teleop (includes sandstorm)
 	public void teleopStart() {
-		if (RobotState.isSandstorm()) { /*auto init stuffs*/ }
+		if (RobotState.isSandstorm()) { Odometry.reset(); /*auto init stuffs*/ }
+		else { TeleopControllerManager.enabled(); }
 		
 		StateMachineManager.enabled();
 		SubsystemManager.enabled();
@@ -57,7 +62,5 @@ public class Robot extends RobotController.BreakerRobot {
 	}
 	
 	//Test
-	public void testLoop() {
-		BreakerCompressor.run();
-	}
+	public void testLoop() { BreakerCompressor.run(); }
 }
