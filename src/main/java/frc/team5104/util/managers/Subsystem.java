@@ -1,6 +1,8 @@
 /*BreakerBots Robotics Team 2019*/
 package frc.team5104.util.managers;
 
+import frc.team5104.util.managers.SubsystemManager.DebugMessage;
+
 /** 
  * A snickers rapper of all the requirements of a subsystem. 
  * 
@@ -17,6 +19,8 @@ public class Subsystem {
 		protected abstract void update();
 		/** Called whenever the robot becomes disabled; stop all devices here */
 		protected abstract void disabled();
+		/** Called periodically from the robot loop if the subsystem is in debug mode. Return a String that will be spammed into the console */
+		protected abstract DebugMessage debug();
 	}
 	
 	/** (Required) [PROTECTED-NOT_STATIC] Interfaces with a subsystem's devices */
@@ -33,5 +37,7 @@ public class Subsystem {
 		protected abstract Subsystem.Interface getInterface();
 		/** Return the looper for this subsystem (for calls) */
 		protected abstract Subsystem.Looper getLooper();
+		/** If the subsystem should be debugging (spamming out values to console) */
+		public boolean isDebugging = false;
 	}
 }

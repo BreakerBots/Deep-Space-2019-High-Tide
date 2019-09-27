@@ -6,6 +6,7 @@ import frc.team5104.statemachines.IWE.IWEControl;
 import frc.team5104.statemachines.IWE.IWEGamePiece;
 import frc.team5104.statemachines.IWE.IWEState;
 import frc.team5104.util.managers.Subsystem;
+import frc.team5104.util.managers.SubsystemManager.DebugMessage;
 
 class WristLooper extends Subsystem.Looper {
 	
@@ -49,9 +50,17 @@ class WristLooper extends Subsystem.Looper {
 		}
 		else {
 			//Manual
-			//console.log(Wrist._interface.getRawEncoderVelocity(), IWE.desiredWristManaul);
 			Wrist._interface.setPercentOutput(IWE.desiredWristManaul);
 		}
+	}
+	
+	//Debug
+	protected DebugMessage debug() {
+		return new DebugMessage(
+				"rot: ", Wrist._interface.getRawEncoderRotation(),
+				"vel: ", Wrist._interface.getRawEncoderVelocity(),
+				"po: ", IWE.desiredWristManaul
+			);
 	}
 
 	//Enabled/Disabled

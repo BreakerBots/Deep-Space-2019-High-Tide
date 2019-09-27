@@ -18,20 +18,20 @@ public class IntakeInterface extends Subsystem.Interface {
 	private DoubleSolenoid solenoid = new DoubleSolenoid(Ports.INTAKE_PISTON_FORWARD, Ports.INTAKE_PISTON_REVERSE);
 	
 	//Functions
-	public void setWheelSpeed(double percentSpeed) {
+	void setWheelSpeed(double percentSpeed) {
 		leftTalon.set(ControlMode.PercentOutput, percentSpeed);
 	}
-	public void stopWheels() {
+	void stopWheels() {
 		leftTalon.set(ControlMode.Disabled, 0);
 	}
-	public void setMode(IWEGamePiece targetGameObject) {
+	void setMode(IWEGamePiece targetGameObject) {
 		if (targetGameObject == IWEGamePiece.HATCH) solenoid.set(Value.kForward);
 		else solenoid.set(Value.kReverse);
 	}
-	public boolean hasHatch() {
+	boolean hasHatch() {
 		return leftTalon.getSensorCollection().isFwdLimitSwitchClosed();
 	}
-	public boolean hasCargo() {
+	boolean hasCargo() {
 		return rightTalon.getSensorCollection().isFwdLimitSwitchClosed();
 	}
 	

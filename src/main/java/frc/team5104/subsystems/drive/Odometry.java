@@ -16,7 +16,7 @@ import edu.wpi.first.wpilibj.Notifier;
  * <h1>Odometry (Robot Position Estimator/Kinematics)</h1>
  * Calculates the Robots x, y position according to encoder values.
  */
-public class Odometry /*implements CSVLoggable*/ {
+public class Odometry {
 	private static Notifier _thread = null;
 		
 	private volatile static double lastPos, currentPos, dPos, theta;
@@ -55,14 +55,9 @@ public class Odometry /*implements CSVLoggable*/ {
 	
 	public static void reset() {
 		console.log("Resetting Odometry");
-		
 		stop();
-		
 		Drive.resetEncoders();
 		Drive.resetGyro();
-		
-		try { Thread.sleep(10); } catch (Exception e) {}
-		
 		lastPos = 0; 
 		currentPos = 0; 
 		dPos = 0; 
@@ -70,9 +65,7 @@ public class Odometry /*implements CSVLoggable*/ {
 		position = new RobotPosition(0, 0, 0);
 		lastPos = 0;
 		init();
-		
 		run();
-		
 		console.log(c.AUTO, "Finished Resetting Odometry at " + getPosition().toString());
 	}
 }

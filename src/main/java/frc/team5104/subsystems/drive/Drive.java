@@ -12,7 +12,7 @@ import frc.team5104.util.managers.Subsystem.Looper;
 public class Drive extends Subsystem.Actions {
 	//Meta
 	protected String getName() { return "Drive"; }
-	private DriveInterface _interface = new DriveInterface();
+	protected static DriveInterface _interface = new DriveInterface();
 	protected Interface getInterface() { return _interface; }
 	private DriveLooper _looper = new DriveLooper();
 	protected Looper getLooper() { return _looper; }
@@ -21,7 +21,7 @@ public class Drive extends Subsystem.Actions {
 	public static void set(DriveSignal signal) {
 		switch (signal.unit) {
 			case percentOutput: {
-				DriveInterface.set(
+				_interface.set(
 						signal.leftSpeed, 
 						signal.rightSpeed, 
 						ControlMode.PercentOutput
@@ -29,7 +29,7 @@ public class Drive extends Subsystem.Actions {
 				break;
 			}
 			case feetPerSecond: {
-				DriveInterface.set(
+				_interface.set(
 						DriveUnits.feetPerSecondToTalonVel(signal.leftSpeed), 
 						DriveUnits.feetPerSecondToTalonVel(signal.rightSpeed), 
 						ControlMode.Velocity
@@ -37,19 +37,19 @@ public class Drive extends Subsystem.Actions {
 				break;
 			}
 			case voltage: {
-				DriveInterface.set(
-						signal.leftSpeed / DriveInterface.getLeftGearboxVoltage(),
-						signal.rightSpeed / DriveInterface.getRightGearboxVoltage(),
+				_interface.set(
+						signal.leftSpeed / _interface.getLeftGearboxVoltage(),
+						signal.rightSpeed / _interface.getRightGearboxVoltage(),
 						ControlMode.PercentOutput
 					);
 			}
 		}
 	}
-	public static void stop() { DriveInterface.stop(); }
-	public static DriveEncoders getEncoders() { return DriveInterface.getEncoders(); }
-	public static void resetEncoders() { DriveInterface.resetEncoders(); }
-	public static double getGyro() { return DriveInterface.getGyro(); }
-	public static void resetGyro() { DriveInterface.resetGyro(); }
-	public static boolean getShift() { return DriveInterface.getShift(); }
-	public static void shift(boolean toHigh) { DriveInterface.shift(toHigh); }
+	public static void stop() { _interface.stop(); }
+	public static DriveEncoders getEncoders() { return _interface.getEncoders(); }
+	public static void resetEncoders() { _interface.resetEncoders(); }
+	public static double getGyro() { return _interface.getGyro(); }
+	public static void resetGyro() { _interface.resetGyro(); }
+	public static boolean getShift() { return _interface.getShift(); }
+	public static void shift(boolean toHigh) { _interface.shift(toHigh); }
 }

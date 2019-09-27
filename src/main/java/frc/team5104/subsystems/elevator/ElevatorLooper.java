@@ -7,6 +7,7 @@ import frc.team5104.statemachines.IWE.IWEGamePiece;
 import frc.team5104.statemachines.IWE.IWEHeight;
 import frc.team5104.statemachines.IWE.IWEState;
 import frc.team5104.util.managers.Subsystem;
+import frc.team5104.util.managers.SubsystemManager.DebugMessage;
 
 class ElevatorLooper extends Subsystem.Looper {
 	//Enums
@@ -62,6 +63,15 @@ class ElevatorLooper extends Subsystem.Looper {
 		}
 	}
 
+	//Debug
+	protected DebugMessage debug() {
+		return new DebugMessage(
+				"heit: ", Elevator._interface.getRawEncoderPosition(),
+				"vel: ", Elevator._interface.getRawEncoderVelocity(),
+				"po: ", IWE.desiredElevatorManaul
+			);
+	}
+	
 	//Enabled/Disabled
 	protected void disabled() {
 		if (IWE.getControl() == IWEControl.AUTONOMOUS)

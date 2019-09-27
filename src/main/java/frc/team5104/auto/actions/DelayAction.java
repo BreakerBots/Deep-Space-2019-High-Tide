@@ -1,7 +1,7 @@
 /*BreakerBots Robotics Team 2019*/
 package frc.team5104.auto.actions;
 
-import frc.team5104.auto.BreakerPathAction;
+import frc.team5104.auto.util.BreakerPathAction;
 import frc.team5104.util.console;
 import frc.team5104.util.console.c;
 

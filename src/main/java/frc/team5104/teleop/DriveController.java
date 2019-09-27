@@ -16,7 +16,7 @@ public class DriveController extends TeleopController {
 		Drive.set(DriveHelper.get(turn, forward, Drive.getShift()));
 		
 		//Shifting
-		if (Controls.DRIVE_SHIFT.getPressed())
-			Drive.shift(!Drive.getShift());
+//		if (Controls.DRIVE_SHIFT.getPressed())
+//			Drive.shift(!Drive.getShift());
 	}
 }

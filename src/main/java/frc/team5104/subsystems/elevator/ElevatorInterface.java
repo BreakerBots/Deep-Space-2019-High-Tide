@@ -14,36 +14,36 @@ class ElevatorInterface extends Subsystem.Interface {
 	private TalonSRX talon2 = new TalonSRX(Ports.ELEVATOR_TALON_2);
 	
 	//Functions
-	protected void setMotionMagic(double height) {
+	void setMotionMagic(double height) {
 		talon1.set(ControlMode.MotionMagic, height / Constants.ELEVATOR_SPOOL_CIRC * 4096.0);
 	}
-	protected void setPercentOutput(double percent) {
+	void setPercentOutput(double percent) {
 		talon1.set(ControlMode.PercentOutput, percent);
 	}
-	public void stop() {
+	void stop() {
 		talon1.set(ControlMode.Disabled, 0);
 	}
 	
-	protected double getEncoderHeight() {
+	double getEncoderHeight() {
 		return getRawEncoderPosition() / 4096.0 * Constants.ELEVATOR_SPOOL_CIRC;
 	}
-	protected double getRawEncoderVelocity() {
+	double getRawEncoderVelocity() {
 		return talon1.getSelectedSensorVelocity();
 	}
-	protected double getRawEncoderPosition() {
+	double getRawEncoderPosition() {
 		return talon1.getSelectedSensorPosition();
 	}
-	protected void resetEncoder() {
+	void resetEncoder() {
 		talon1.setSelectedSensorPosition(0);
 	}
-	public boolean encoderDisconnected() {
+	boolean encoderDisconnected() {
 		return talon1.getSensorCollection().getPulseWidthRiseToRiseUs() == 0;
 	}
 	
-	protected boolean lowerLimitSwitchHit() {
+	boolean lowerLimitSwitchHit() {
 		return false;//talon1.getSensorCollection().isRevLimitSwitchClosed();
 	}
-	protected boolean upperLimitSwitchHit() {
+	boolean upperLimitSwitchHit() {
 		return false;//talon1.getSensorCollection().isFwdLimitSwitchClosed();
 	}
 	
@@ -54,12 +54,12 @@ class ElevatorInterface extends Subsystem.Interface {
 		talon1.configContinuousCurrentLimit(Constants.ELEVATOR_CURRENT_LIMIT, 10);
 		talon1.enableCurrentLimit(true);
 		talon1.setNeutralMode(Constants.ELEVATOR_NEUTRAL_MODE);
-		talon1.config_kP(0, Constants.ELEVATOR_KP);
-		talon1.config_kI(0, Constants.ELEVATOR_KI);
-		talon1.config_kD(0, Constants.ELEVATOR_KD);
-		talon1.config_kF(0, Constants.ELEVATOR_KF);
-		talon1.configMotionAcceleration(Constants.ELEVATOR_MA);
-		talon1.configMotionCruiseVelocity(Constants.ELEVATOR_MCV);
+		talon1.config_kP(0, Constants.ELEVATOR_MOTION_KP);
+		talon1.config_kI(0, Constants.ELEVATOR_MOTION_KI);
+		talon1.config_kD(0, Constants.ELEVATOR_MOTION_KD);
+		talon1.config_kF(0, Constants.ELEVATOR_MOTION_KF);
+		talon1.configMotionAcceleration(Constants.ELEVATOR_MOTION_ACCEL);
+		talon1.configMotionCruiseVelocity(Constants.ELEVATOR_MOTION_CRUISE_VELOCITY);
 		
 		talon2.configFactoryDefault();
 		talon2.configContinuousCurrentLimit(Constants.ELEVATOR_CURRENT_LIMIT, 10);

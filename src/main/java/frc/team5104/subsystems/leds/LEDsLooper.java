@@ -1,6 +1,7 @@
 package frc.team5104.subsystems.leds;
 
 import frc.team5104.util.managers.Subsystem;
+import frc.team5104.util.managers.SubsystemManager.DebugMessage;
 
 class LEDsLooper extends Subsystem.Looper {
 
@@ -11,6 +12,13 @@ class LEDsLooper extends Subsystem.Looper {
 		
 	}
 
+	//Debug
+	protected DebugMessage debug() {
+		return new DebugMessage(
+				
+			);
+	}
+	
 	//Stop Everything
 	protected void disabled() { 
 		

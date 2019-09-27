@@ -54,9 +54,28 @@ public class SubsystemManager {
 		for (Subsystem.Actions subsystem : targetSubsystems) {
 			try {
 				//Call subsystem looper function (if available)
-				if (subsystem.getLooper() != null)
+				if (subsystem.getLooper() != null) {
 					subsystem.getLooper().update();
+					if (subsystem.isDebugging)
+						console.log(c.DEBUG, t.INFO, subsystem.getLooper().debug());
+				}
 			} catch (Exception e) { CrashLogger.logCrash(new Crash("main", e)); }
 		}
+	}
+	
+	/** Tell a subsystem to debug (spam values to the console). "subsystemNames" should be the name as the .getName() under the subsystem. Calls the debug function in the looper. */
+	@SafeVarargs
+	public static void debug(Class<? extends Subsystem.Actions>... subsystems) {
+		for (Class<? extends Subsystem.Actions> subsystemToDebug : subsystems) {
+			for (Subsystem.Actions targetSubsystem : targetSubsystems) {
+					if (targetSubsystem.getClass().equals(subsystemToDebug))
+						targetSubsystem.isDebugging = true;
+			}
+		}
+	}
+	public static class DebugMessage {
+		String message;
+		/** Will be formatted as colon-comma patter (v1: v2, v3: v4...) */
+		public DebugMessage(Object... data) { this.message = console.parseCCPattern(data); }
 	}
 }

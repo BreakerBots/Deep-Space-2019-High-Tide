@@ -14,7 +14,7 @@ public class IWEController extends TeleopController {
 	protected void update() {
 		//IWE State
 		if (Controls.IWE_IDLE.getPressed()) {
-			IWE.setControl(IWEControl.MANUAL);
+			IWE.setState(IWEState.IDLE);
 		}
 		if (Controls.IWE_INTAKE.getPressed()) {
 			IWE.setState(IWEState.INTAKE);

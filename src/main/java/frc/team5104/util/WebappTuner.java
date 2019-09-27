@@ -139,17 +139,13 @@ public class WebappTuner {
 	
 	//Annotations
 	@Retention(RetentionPolicy.RUNTIME)
-	/**
-	 * An input into the control system (values being set from the tuner)
-	 */
+	/** An input into the control system (values being set from the tuner) */
 	public @interface tunerInput {
 		String name() default "";
 	}
 	
 	@Retention(RetentionPolicy.RUNTIME)
-	/**
-	 * An output from the control system (values being graphed in the tuner)
-	 */
+	/** An output from the control system (values being graphed in the tuner) */
 	public @interface tunerOutput {
 		String name() default "";
 	}

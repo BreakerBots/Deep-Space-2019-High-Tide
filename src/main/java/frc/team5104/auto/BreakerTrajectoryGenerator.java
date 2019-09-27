@@ -44,9 +44,9 @@ public class BreakerTrajectoryGenerator {
 	    		console.log(c.AUTO, "No Similar Cached Trajectory Found => Generating Path");
 	    		console.sets.create("MPGEN");
 	    		t = TrajectoryGenerator.generate(points, 
-	    				_AutoConstants._maxVelocity,
-	    				_AutoConstants._maxAcceleration,
-	    				_AutoConstants._maxJerk,
+	    				Constants.AUTO_MAX_VELOCITY,
+	    				Constants.AUTO_MAX_ACCEL,
+	    				Constants.AUTO_MAX_JERK,
 	    				1.0 / Constants.MAIN_LOOP_SPEED
 	    			);
 	    		writeFile(s, t);
