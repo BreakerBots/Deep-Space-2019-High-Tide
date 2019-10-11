@@ -21,7 +21,7 @@ import frc.team5104.util.console.c;
 public class Webapp {
 	private static HttpServer server;
 
-	public static boolean init() {
+	public static boolean run() {
 		try {
 			
 			File dir = new File(getBaseUrl());

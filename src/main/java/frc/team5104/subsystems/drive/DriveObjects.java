@@ -9,27 +9,22 @@ public class DriveObjects {
 		// Robot Drive Signal Variables
 		public double leftSpeed;
 		public double rightSpeed;
+		public boolean isHighGear;
 		public DriveUnit unit;
 		
-		/**
-		 * Creates a Robot Drive Signal with the specified speeds in percentOutput
-		 * @param leftSpeed  Percent output (-1 to 1) for the left  motors of the drive train to run
-		 * @param rightSpeed Percent output (-1 to 1) for the right motors of the drive train to run
-		 */
-		public DriveSignal(double leftSpeed, double rightSpeed) {
-			this(leftSpeed, rightSpeed, DriveUnit.percentOutput);
+		public DriveSignal(double leftSpeed, double rightSpeed, boolean isHighGear) {
+			this(leftSpeed, rightSpeed, isHighGear, DriveUnit.percentOutput);
 		}
 		
-		/**
-		 * Creates a Robot Drive Signal with the specified speed in specified unit
-		 * @param leftSpeed  Speed for the left  motors of the drive train to run
-		 * @param rightSpeed Speed for the right motors of the drive train to run
-		 * @param unit The unit for the left & right motor speeds to be in (percentOutput or feetPerSecond)
-		 */
 		public DriveSignal(double leftSpeed, double rightSpeed, DriveUnit unit) {
+			this(leftSpeed, rightSpeed, true, DriveUnit.percentOutput);
+		}
+		
+		public DriveSignal(double leftSpeed, double rightSpeed, boolean isHighGear, DriveUnit unit) {
 			this.leftSpeed = leftSpeed;
 			this.rightSpeed = rightSpeed;
 			this.unit = unit;
+			this.isHighGear = isHighGear;
 		}
 		
 		public String toString() {

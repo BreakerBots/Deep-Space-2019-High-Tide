@@ -4,7 +4,7 @@ package frc.team5104.auto.util;
 /**
  * A Single BreakerCommand (ind. peices of a path)
  */
-public abstract class BreakerPathAction {
+public abstract class AutoPathAction {
 	/** Called when action is started to be run */
 	public abstract void init();
 	

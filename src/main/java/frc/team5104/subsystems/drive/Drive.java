@@ -19,6 +19,10 @@ public class Drive extends Subsystem.Actions {
 
 	//Actions
 	public static void set(DriveSignal signal) {
+		//shifting
+		_interface.shift(signal.isHighGear);
+		
+		//motor speed
 		switch (signal.unit) {
 			case percentOutput: {
 				_interface.set(
@@ -50,6 +54,4 @@ public class Drive extends Subsystem.Actions {
 	public static void resetEncoders() { _interface.resetEncoders(); }
 	public static double getGyro() { return _interface.getGyro(); }
 	public static void resetGyro() { _interface.resetGyro(); }
-	public static boolean getShift() { return _interface.getShift(); }
-	public static void shift(boolean toHigh) { _interface.shift(toHigh); }
 }

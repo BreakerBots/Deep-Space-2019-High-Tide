@@ -2,6 +2,7 @@
 package frc.team5104.main;
 
 import edu.wpi.first.cameraserver.CameraServer;
+import frc.team5104.auto.AutoManager;
 import frc.team5104.main.setup.RobotController;
 import frc.team5104.main.setup.RobotState;
 import frc.team5104.statemachines.IWE;
@@ -40,7 +41,7 @@ public class Robot extends RobotController.BreakerRobot {
 		
 		//Other Initialization
 		CameraServer.getInstance().startAutomaticCapture();
-		Webapp.init();
+		Webapp.run();
 		Odometry.run();
 		
 		//Debug Subsystems
@@ -50,7 +51,7 @@ public class Robot extends RobotController.BreakerRobot {
 	
 	//Teleop (includes sandstorm)
 	public void teleopStart() {
-		if (RobotState.isSandstorm()) { Odometry.reset(); /*auto init stuffs*/ }
+		if (RobotState.isSandstorm()) { Odometry.reset(); AutoManager.run(); }
 		else { TeleopControllerManager.enabled(); }
 		
 		StateMachineManager.enabled();

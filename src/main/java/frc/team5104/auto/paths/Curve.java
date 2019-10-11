@@ -3,10 +3,10 @@ package frc.team5104.auto.paths;
 
 import frc.team5104.auto.actions.DriveStopAction;
 import frc.team5104.auto.actions.DriveTrajectoryAction;
-import frc.team5104.auto.util.BreakerPath;
+import frc.team5104.auto.util.AutoPath;
 import frc.team5104.auto.util.TrajectoryWaypoint;
 
-public class Curve extends BreakerPath {
+public class Curve extends AutoPath {
 	public Curve() {
 		add(new DriveTrajectoryAction(new TrajectoryWaypoint[] {
 				new TrajectoryWaypoint(0, 0, 0),

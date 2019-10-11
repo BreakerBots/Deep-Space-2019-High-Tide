@@ -3,7 +3,7 @@ package frc.team5104.auto.actions;
 
 import frc.team5104.auto.BreakerTrajectoryFollower;
 import frc.team5104.auto.BreakerTrajectoryGenerator;
-import frc.team5104.auto.util.BreakerPathAction;
+import frc.team5104.auto.util.AutoPathAction;
 import frc.team5104.auto.util.TrajectoryWaypoint;
 import frc.team5104.subsystems.drive.Drive;
 import frc.team5104.subsystems.drive.DriveObjects.DriveSignal;
@@ -14,7 +14,7 @@ import frc.team5104.util.console.c;
 /**
  * Follow a trajectory using the Breaker Trajectory Follower (Ramses Follower)
  */
-public class DriveTrajectoryAction extends BreakerPathAction {
+public class DriveTrajectoryAction extends AutoPathAction {
 	private BreakerTrajectoryFollower follower;
 	private TrajectoryWaypoint[] waypoints;
 		

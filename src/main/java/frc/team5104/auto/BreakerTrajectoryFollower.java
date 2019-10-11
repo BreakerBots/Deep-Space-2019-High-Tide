@@ -66,8 +66,7 @@ public class BreakerTrajectoryFollower {
 		trajectoryIndex += 1;
 	   
 		return new DriveSignal(
-				left, right
-				//(Constants.DRIVE_KS + (Constants.DRIVE_KV * current.velocity) + (Constants.DRIVE_KA * current.acceleration))
+				left, right, true
 			);
 	}
 
