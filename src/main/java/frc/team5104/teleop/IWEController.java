@@ -31,7 +31,10 @@ public class IWEController extends TeleopController {
 		//IWE Game Piece
 		if (Controls.IWE_SWITCH_GAME_PIECE.getPressed()) {
 			IWE.setGamePiece(IWE.getGamePiece() == IWEGamePiece.HATCH ? IWEGamePiece.CARGO : IWEGamePiece.HATCH);
-			Controls.IWE_SWITCH_GAME_PIECE_RUMBLE.start();
+			if (IWE.getGamePiece() == IWEGamePiece.HATCH)
+				Controls.IWE_SWITCH_HATCH_RUMBLE.start();
+			else
+				Controls.IWE_SWITCH_CARGO_RUMBLE.start();
 		}
 		
 		//IWE Height

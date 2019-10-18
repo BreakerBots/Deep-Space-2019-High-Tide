@@ -13,16 +13,17 @@ public class Ports {
 	//public static final int DRIVE_SHIFTER_FORWARD = 1;
 	//public static final int DRIVE_SHIFTER_REVERSE = 2;
 	
-	//Elevator
+	//IWE
 	public static final int ELEVATOR_TALON_1 = 21;
 	public static final int ELEVATOR_TALON_2 = 22;
-	
-	//Wrist
 	public static final int WRIST_TALON = 31;
-	
-	//Intake
 	public static final int INTAKE_TALON_LEFT = 41;
 	public static final int INTAKE_TALON_RIGHT = 42;
 	public static final int INTAKE_PISTON_FORWARD = 3;
 	public static final int INTAKE_PISTON_REVERSE = 4;
+	public static final int INTAKE_BANNER_HATCH = 1;
+	public static final int INTAKE_BANNER_CARGO = 2;
+	
+	//Leds
+	public static final int LEDS_CANIFIER = 51;
 }

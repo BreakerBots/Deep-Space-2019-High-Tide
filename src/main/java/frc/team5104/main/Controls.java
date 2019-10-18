@@ -27,7 +27,8 @@ public class Controls {
 	public static final Control IWE_WRIST_MANUAL = new Control(ControlList.RightJoystickX);
 	public static final Rumble IWE_INTAKE_RUMBLE = new Rumble(1, false, true, 500); //called in IWE directly
 	public static final Rumble IWE_EJECT_RUMBLE = new Rumble(1, false, false, 500);
-	public static final Rumble IWE_SWITCH_GAME_PIECE_RUMBLE = new Rumble(1, true, false, 500);
+	public static final Rumble IWE_SWITCH_HATCH_RUMBLE = new Rumble(1, false, false, 500);
+	public static final Rumble IWE_SWITCH_CARGO_RUMBLE = new Rumble(1, true, false, 500);
 	public static final Rumble IWE_SWITCH_HEIGHT_RUMBLE = new Rumble(1, true, false, 500);
 	
 	//Compressor (in CompressorController)

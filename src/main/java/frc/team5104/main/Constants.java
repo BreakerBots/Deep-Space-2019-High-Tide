@@ -4,7 +4,6 @@ package frc.team5104.main;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 
 import frc.team5104.statemachines.IWE.IWEControl;
-import frc.team5104.util.Units;
 
 public class Constants {
 	//Console
@@ -16,8 +15,6 @@ public class Constants {
 	public static final int ODOMETRY_LOOP_SPEED = 100;
 	
 	//Robot Meta
-	public static final double ROBOT_LENGTH = Units.inchesToFeet(32.0 + 4.0);
-	public static final double ROBOT_WIDTH = Units.inchesToFeet(28.0 + 4.0);
 	public static final String ROBOT_NAME = "High-Tide";
 	
 	//Drive (teleop tuning variables in DriveHelper)

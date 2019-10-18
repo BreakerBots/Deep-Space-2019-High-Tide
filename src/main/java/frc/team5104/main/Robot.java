@@ -3,6 +3,7 @@ package frc.team5104.main;
 
 import edu.wpi.first.cameraserver.CameraServer;
 import frc.team5104.auto.AutoManager;
+import frc.team5104.auto.paths.RocketDoubleMiddleHatch;
 import frc.team5104.main.setup.RobotController;
 import frc.team5104.main.setup.RobotState;
 import frc.team5104.statemachines.IWE;
@@ -31,7 +32,9 @@ public class Robot extends RobotController.BreakerRobot {
 			new Elevator(),
 			new Intake()
 		);
-		StateMachineManager.useStateMachines( new IWE() );
+		StateMachineManager.useStateMachines(
+			new IWE()
+		);
 		TeleopControllerManager.useTeleopControllers(
 			new DriveController(),
 			/*new DriveAutoTune()*/
@@ -43,6 +46,7 @@ public class Robot extends RobotController.BreakerRobot {
 		CameraServer.getInstance().startAutomaticCapture();
 		Webapp.run();
 		Odometry.run();
+		AutoManager.setTargetPath(new RocketDoubleMiddleHatch());
 		
 		//Debug Subsystems
 		WebappTuner.init(Constants.class/*WristInterface.class*/);

@@ -14,12 +14,8 @@ public abstract class AutoPath {
 	public int pathActionsLength = 0;
 	
 	/** Add an action to the Path */
-	public void add(AutoPathAction action) { add(action, false); }
-	/** Add an action to the Path.
-	 * @param runWithLastAction If this command should run with the action before it (if available)  */
-	public void add(AutoPathAction action, boolean runWithLastAction) {
+	public void add(AutoPathAction action) {
 		pathActions[pathActionsLength] = action;
-		pathActions[pathActionsLength].runWithLastAction = runWithLastAction;
 		pathActionsLength++;
 	}
 }

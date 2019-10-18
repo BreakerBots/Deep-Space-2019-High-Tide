@@ -7,11 +7,20 @@ import frc.team5104.util.managers.Subsystem.Looper;
 public class LEDs extends Subsystem.Actions {
 	//Meta
 	protected String getName() { return "LEDs"; }
-	private LEDsInterface _interface = new LEDsInterface();
+	static LEDsInterface _interface = new LEDsInterface();
 	protected Interface getInterface() { return _interface; }
-	private LEDsLooper _looper = new LEDsLooper();
+	private static LEDsLooper _looper = new LEDsLooper();
 	protected Looper getLooper() { return _looper; }
 
 	//Actions
-		//display(enum led_display)
+	public static void display(LEDsMode ledmode) {
+		_looper.ledmode = ledmode;
+	}
+	
+	//Enum
+	public enum LEDsMode {
+		NONE,
+		AUTO, VISION,
+		INTAKE_SUCCESS, EJECT
+	}
 }

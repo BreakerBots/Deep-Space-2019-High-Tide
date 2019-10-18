@@ -14,7 +14,4 @@ public abstract class AutoPathAction {
 	
 	/** Called when the action is finished being run */
 	public abstract void end();
-	
-	/** If this command should run with the action before it (if available) */
-	public boolean runWithLastAction = false;
 }
