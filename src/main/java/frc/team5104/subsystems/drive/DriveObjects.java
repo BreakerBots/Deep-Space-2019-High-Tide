@@ -12,6 +12,10 @@ public class DriveObjects {
 		public boolean isHighGear;
 		public DriveUnit unit;
 		
+		public DriveSignal() {
+			this(0, 0, true, DriveUnit.stop);
+		}
+		
 		public DriveSignal(double leftSpeed, double rightSpeed, boolean isHighGear) {
 			this(leftSpeed, rightSpeed, isHighGear, DriveUnit.percentOutput);
 		}
@@ -42,7 +46,8 @@ public class DriveObjects {
 	public static enum DriveUnit {
 		feetPerSecond,
 		percentOutput,
-		voltage
+		voltage,
+		stop
 	}
 	
 	/** A simple class for sending/saving encoder values */

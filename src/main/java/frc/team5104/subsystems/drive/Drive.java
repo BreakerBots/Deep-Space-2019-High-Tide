@@ -47,6 +47,9 @@ public class Drive extends Subsystem.Actions {
 						ControlMode.PercentOutput
 					);
 			}
+			case stop:
+				_interface.stop();
+				break;
 		}
 	}
 	public static void stop() { _interface.stop(); }

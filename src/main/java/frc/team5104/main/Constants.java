@@ -17,7 +17,7 @@ public class Constants {
 	//Robot Meta
 	public static final String ROBOT_NAME = "High-Tide";
 	
-	//Drive (teleop tuning variables in DriveHelper)
+	//Drive (teleop tuning variables in DriveHelper, vision tuning variables in VisionManager)
 	public static final double DRIVE_WHEEL_DIAMETER = 6.0/12.0; //ft
 	public static final double DRIVE_TICKS_PER_REVOLUTION = 4096.0 * 3.0 * (54.0/30.0);
 	public static final double DRIVE_WHEEL_BASE_WIDTH = 24.25 / 12.0; //ft
@@ -26,6 +26,7 @@ public class Constants {
 	public static final double DRIVE_KI = 0;
 	public static final double DRIVE_KD = 12.0;
 	public static final double DRIVE_KF = 0;
+	public static final double DRIVE_AGGR_EXIT_VISION_THRESHOLD = 0.5;
 	
 	//IWE General
 	public static final short IWE_EJECT_TIME = 1000;

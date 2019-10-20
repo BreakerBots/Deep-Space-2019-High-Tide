@@ -28,7 +28,8 @@ public class console {
 		ELEVATOR,
 		INTAKE,
 		WRIST,
-		IWE
+		IWE,
+		VISION
 	};
 	/** Types of Logging */
 	public static enum t {

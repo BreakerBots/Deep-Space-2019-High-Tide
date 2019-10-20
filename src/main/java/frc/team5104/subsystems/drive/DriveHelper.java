@@ -14,22 +14,32 @@ public class DriveHelper {
 	//Constants
 	private static final double DRIVE_CURVE_CHANGE = 1.0;
 	private static final double TURN_CURVE_SPEED_ADJUST = 0.2;
+	
 	private static final double TURN_DEADBAND = 0.08;
 	private static final double FORWARD_DEADBAND = 0.01;
+	
 	private static final double RIGHT_ACCOUNT_FORWARD = 1.000;
 	private static final double RIGHT_ACCOUNT_REVERSE = 1.000;
 	private static final double LEFT_ACCOUNT_FORWARD  = 1.000;
 	private static final double LEFT_ACCOUNT_REVERSE  = 1.000;
+	
 	private static final double MIN_SPEED_HIGH_GEAR_FORWARD = 0;
 	private static final double MIN_SPEED_HIGH_GEAR_TURN = 0;
 	private static final double MIN_SPEED_LOW_GEAR_FORWARD = 0;
 	private static final double MIN_SPEED_LOW_GEAR_TURN = 0;
+	
+	private static final double KICKSTAND_SCALAR_FORWARD = 0.25;
+	private static final double KICKSTAND_SCALAR_TURN = 0.25;
 	
 	//Objects
 	private static final BezierCurve driveCurve = new BezierCurve(.2, 0, .2, 1);
 	private static final BezierCurve turnCurve = new BezierCurve(0.15, 0.7, 0.8, 0.225);
 	private static final BezierCurveInterpolator leftSpeedCurve  = new BezierCurveInterpolator(DRIVE_CURVE_CHANGE, driveCurve);
 	private static final BezierCurveInterpolator rightSpeedCurve = new BezierCurveInterpolator(DRIVE_CURVE_CHANGE, driveCurve);
+	
+	//Methods
+	public static double applyKickstandForward(double forward) { return forward * KICKSTAND_SCALAR_FORWARD; }
+	public static double applyKickstandTurn(double turn) { return turn * KICKSTAND_SCALAR_TURN; }
 	
 	/** Calculates and left and right speed (in volts) for the robot depending on input variables */
 	public static DriveSignal get(double turn, double forward, boolean inHighGear) {

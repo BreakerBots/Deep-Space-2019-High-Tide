@@ -1,7 +1,6 @@
 /*BreakerBots Robotics Team 2019*/
 package frc.team5104.main;
 
-import edu.wpi.first.cameraserver.CameraServer;
 import frc.team5104.auto.AutoManager;
 import frc.team5104.auto.paths.RocketDoubleMiddleHatch;
 import frc.team5104.main.setup.RobotController;
@@ -43,7 +42,7 @@ public class Robot extends RobotController.BreakerRobot {
 		);
 		
 		//Other Initialization
-		CameraServer.getInstance().startAutomaticCapture();
+//		CameraServer.getInstance().startAutomaticCapture();
 		Webapp.run();
 		Odometry.run();
 		AutoManager.setTargetPath(new RocketDoubleMiddleHatch());

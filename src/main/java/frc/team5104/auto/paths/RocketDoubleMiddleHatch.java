@@ -5,6 +5,7 @@ import frc.team5104.auto.actions.DriveTrajectoryAction;
 import frc.team5104.auto.util.AutoPath;
 import frc.team5104.auto.util.TrajectoryWaypoint;
 
+//!! NEEDS ACTUAL PATH MEASUREMENTS !!
 public class RocketDoubleMiddleHatch extends AutoPath {
 	public RocketDoubleMiddleHatch() {
 		//Drive Backwards then Place Hatch

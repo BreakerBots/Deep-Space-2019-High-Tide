@@ -13,7 +13,7 @@ public class Controls {
 	public static final Control DRIVE_TURN = new Control(ControlList.LeftJoystickX);
 	public static final Control DRIVE_FORWARD = new Control(ControlList.RightTrigger);
 	public static final Control DRIVE_REVERSE = new Control(ControlList.LeftTrigger);
-	public static final Control DRIVE_SHIFT = new Control(ControlList.LeftJoystickPress);
+	public static final Control TOGGLE_VISION = new Control(ControlList.A);
 	
 	//IWE (in IWEController)
 	public static final Control IWE_INTAKE = new Control(ControlList.X);
