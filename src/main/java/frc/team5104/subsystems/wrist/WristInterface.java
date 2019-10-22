@@ -1,6 +1,7 @@
 package frc.team5104.subsystems.wrist;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import frc.team5104.main.Constants;
@@ -15,7 +16,13 @@ class WristInterface extends Subsystem.Interface {
 	
 	//Functions
 	void setMotionMagic(double degrees) {
-		wristTalon.set(ControlMode.MotionMagic, degrees / 360.0 * 4096.0);
+		wristTalon.set(ControlMode.MotionMagic, degrees / 360.0 * 4096.0, DemandType.ArbitraryFeedForward, getFTerm());
+	}
+	private double getFTerm() {
+		//0 -> 0.1
+		//90 -> 0
+		//180 -> -0.1
+		return (-getEncoderRotation() / 900.0) + 0.1;
 	}
 	void setPercentOutput(double percent) {
 		wristTalon.set(ControlMode.PercentOutput, percent);
@@ -56,8 +63,14 @@ class WristInterface extends Subsystem.Interface {
 		wristTalon.config_kP(0, Constants.WRIST_MOTION_KP);
 		wristTalon.config_kI(0, Constants.WRIST_MOTION_KI);
 		wristTalon.config_kD(0, Constants.WRIST_MOTION_KD);
-		wristTalon.config_kF(0, Constants.WRIST_MOTION_KF);
+		wristTalon.config_kF(0, 0);
 		wristTalon.configMotionAcceleration(Constants.WRIST_MOTION_ACCEL);
 		wristTalon.configMotionCruiseVelocity(Constants.WRIST_MOTION_CRUISE_VELOCITY);
+		wristTalon.configNominalOutputForward(0);
+		wristTalon.configNominalOutputReverse(0);
+		wristTalon.configPeakOutputForward(1);
+		wristTalon.configPeakOutputReverse(-1);
+		wristTalon.selectProfileSlot(0, 0);
+		wristTalon.setSensorPhase(true);
 	}
 }

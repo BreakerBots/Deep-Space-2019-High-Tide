@@ -65,6 +65,8 @@ class DriveInterface extends Subsystem.Interface {
 		talonL1.config_kD(0, Constants.DRIVE_KD, 10);
 		talonL1.config_kF(0, Constants.DRIVE_KF, 10);
 		talonL2.set(ControlMode.Follower, talonL1.getDeviceID());
+		talonL1.setInverted(true);
+		talonL2.setInverted(true);
 		
 		talonR1.configFactoryDefault();
 		talonR2.configFactoryDefault();

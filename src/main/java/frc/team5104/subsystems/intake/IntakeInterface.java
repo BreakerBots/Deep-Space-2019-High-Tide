@@ -2,11 +2,14 @@ package frc.team5104.subsystems.intake;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
+
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import frc.team5104.main.Constants;
 import frc.team5104.main.Ports;
 import frc.team5104.statemachines.IWE.IWEGamePiece;
+import frc.team5104.util.AnalogToDigital;
 import frc.team5104.util.managers.Subsystem;
 
 public class IntakeInterface extends Subsystem.Interface {
@@ -15,8 +18,8 @@ public class IntakeInterface extends Subsystem.Interface {
 	private VictorSPX leftVictor = new VictorSPX(Ports.INTAKE_TALON_LEFT);
 	private VictorSPX rightVictor = new VictorSPX(Ports.INTAKE_TALON_RIGHT);
 	private DoubleSolenoid solenoid = new DoubleSolenoid(Ports.INTAKE_PISTON_FORWARD, Ports.INTAKE_PISTON_REVERSE);
-	//private DigitalInput bannerHatch = new DigitalInput(Ports.INTAKE_BANNER_HATCH);
-	//private DigitalInput bannerCargo = new DigitalInput(Ports.INTAKE_BANNER_CARGO);
+	private AnalogToDigital bannerHatch = new AnalogToDigital(Ports.INTAKE_BANNER_HATCH);
+	private AnalogToDigital bannerCargo = new AnalogToDigital(Ports.INTAKE_BANNER_CARGO);
 	
 	//Functions
 	void setWheelSpeed(double percentSpeed) {
@@ -30,10 +33,10 @@ public class IntakeInterface extends Subsystem.Interface {
 		else solenoid.set(Value.kReverse);
 	}
 	boolean hasHatch() {
-		return false;//bannerHatch.get();
+		return !bannerHatch.get();
 	}
 	boolean hasCargo() {
-		return false;//bannerCargo.get();
+		return !bannerCargo.get();
 	}
 	
 	//Config

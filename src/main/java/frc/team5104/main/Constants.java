@@ -30,34 +30,33 @@ public class Constants {
 	
 	//IWE General
 	public static final short IWE_EJECT_TIME = 1000;
-	public static final IWEControl IWE_DEFAULT_CONTROL = IWEControl.MANUAL;
+	public static final IWEControl IWE_DEFAULT_CONTROL = IWEControl.AUTONOMOUS;
 	
 	//Wrist
 	public static final double WRIST_CALIBRATE_SPEED = 0.1;
 	public static final int WRIST_CURRENT_LIMIT = 20;
 	public static final NeutralMode WRIST_NEUTRAL_MODE = NeutralMode.Brake;
-	public static final double WRIST_MOTION_KP = 0;
+	public static final double WRIST_MOTION_KP = 20;
 	public static final double WRIST_MOTION_KI = 0;
-	public static final double WRIST_MOTION_KD = 0;
-	public static final double WRIST_MOTION_KF = 0;
-	public static final int WRIST_MOTION_ACCEL = 0;
-	public static final int WRIST_MOTION_CRUISE_VELOCITY = 0;
+	public static final double WRIST_MOTION_KD = 200;
+	public static final int WRIST_MOTION_ACCEL = 500;
+	public static final int WRIST_MOTION_CRUISE_VELOCITY = 2000;
 	
 	//Intake
-	public static final double INTAKE_INTAKE_SPEED_HATCH = 0.8;
+	public static final double INTAKE_INTAKE_SPEED_HATCH = 1;
 	public static final double INTAKE_EJECT_SPEED_HATCH = 1;
-	public static final double INTAKE_HOLD_SPEED_HATCH = 0.1;
-	public static final double INTAKE_INTAKE_SPEED_CARGO = 0.8;
+	public static final double INTAKE_HOLD_SPEED_HATCH = 0.05;
+	public static final double INTAKE_INTAKE_SPEED_CARGO = 1;
 	public static final double INTAKE_EJECT_SPEED_CARGO = 1;
-	public static final double INTAKE_HOLD_SPEED_CARGO = 0.1;
+	public static final double INTAKE_HOLD_SPEED_CARGO = 0.05;
 	public static final int INTAKE_CURRENT_LIMIT = 10;
 	public static final NeutralMode INTAKE_NEUTRAL_MODE = NeutralMode.Coast;
 	
 	//Elevator
 	public static final double ELEVATOR_SPOOL_CIRC = 1.25 * Math.PI;
 	public static final double ELEVATOR_CALIBRATE_SPEED = 0.1;
-	public static final int ELEVATOR_CURRENT_LIMIT = 20;
-	public static final NeutralMode ELEVATOR_NEUTRAL_MODE = NeutralMode.Coast;
+	public static final int ELEVATOR_CURRENT_LIMIT = 40;
+	public static final NeutralMode ELEVATOR_NEUTRAL_MODE = NeutralMode.Brake;
 	public static final double ELEVATOR_MOTION_KP = 0;
 	public static final double ELEVATOR_MOTION_KI = 0;
 	public static final double ELEVATOR_MOTION_KD = 0;

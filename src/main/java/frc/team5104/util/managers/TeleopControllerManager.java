@@ -1,7 +1,10 @@
 package frc.team5104.util.managers;
 
 import frc.team5104.util.CrashLogger;
+import frc.team5104.util.console;
 import frc.team5104.util.CrashLogger.Crash;
+import frc.team5104.util.console.c;
+import frc.team5104.util.console.t;
 
 /** Manages all the calls for all Teleop Controllers given */
 public class TeleopControllerManager {
@@ -10,6 +13,13 @@ public class TeleopControllerManager {
 	/** Tell the State Machine Manager what State Machines to use */
 	public static void useTeleopControllers(TeleopController... teleopControllers) {
 		targetTeleopControllers = teleopControllers;
+		
+		//Print out
+		String printOut = "Running Teleop Controllers: ";
+		for (TeleopController teleopController : teleopControllers) {
+			printOut += teleopController.getName() + " ";
+		}
+		console.log(c.MAIN, t.INFO, printOut);
 	}
 	
 	/** Call periodically when the robot is enabled (and wants teleoperation) */

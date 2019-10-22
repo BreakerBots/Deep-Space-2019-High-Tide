@@ -8,6 +8,8 @@ import frc.team5104.statemachines.IWE.IWEHeight;
 import frc.team5104.statemachines.IWE.IWEState;
 import frc.team5104.subsystems.drive.Drive;
 import frc.team5104.subsystems.drive.DriveHelper;
+import frc.team5104.subsystems.drive.DriveObjects.DriveSignal;
+import frc.team5104.subsystems.drive.DriveObjects.DriveUnit;
 import frc.team5104.util.managers.TeleopController;
 import frc.team5104.vision.VisionManager;
 
@@ -42,12 +44,12 @@ public class DriveController extends TeleopController {
 		double forward = Controls.DRIVE_FORWARD.getAxis() - Controls.DRIVE_REVERSE.getAxis();
 		
 		//kickstand
-		if (IWE.getState() == IWEState.PLACE && IWE.getHeight() != IWEHeight.L1) {
-			forward = DriveHelper.applyKickstandForward(forward);
-			turn = DriveHelper.applyKickstandTurn(turn);
-		}
+//		if (IWE.getState() == IWEState.PLACE && IWE.getHeight() != IWEHeight.L1) {
+//			forward = DriveHelper.applyKickstandForward(forward);
+//			turn = DriveHelper.applyKickstandTurn(turn);
+//		}
 		
-		Drive.set(DriveHelper.get(turn, forward, true));
+		Drive.set(DriveHelper.get(turn/8.0, forward/4.0, true));
 	}
 	
 	//Vision Driving

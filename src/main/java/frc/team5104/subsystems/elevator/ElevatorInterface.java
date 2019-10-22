@@ -5,6 +5,7 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import frc.team5104.main.Constants;
 import frc.team5104.main.Ports;
+import frc.team5104.util.console;
 import frc.team5104.util.managers.Subsystem;
 
 class ElevatorInterface extends Subsystem.Interface {

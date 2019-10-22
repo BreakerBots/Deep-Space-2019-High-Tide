@@ -15,8 +15,8 @@ public class DriveHelper {
 	private static final double DRIVE_CURVE_CHANGE = 1.0;
 	private static final double TURN_CURVE_SPEED_ADJUST = 0.2;
 	
-	private static final double TURN_DEADBAND = 0.08;
-	private static final double FORWARD_DEADBAND = 0.01;
+	private static final double TURN_DEADBAND = 0.08/2.0;
+	private static final double FORWARD_DEADBAND = 0.01/2.0;
 	
 	private static final double RIGHT_ACCOUNT_FORWARD = 1.000;
 	private static final double RIGHT_ACCOUNT_REVERSE = 1.000;
@@ -25,8 +25,8 @@ public class DriveHelper {
 	
 	private static final double MIN_SPEED_HIGH_GEAR_FORWARD = 0;
 	private static final double MIN_SPEED_HIGH_GEAR_TURN = 0;
-	private static final double MIN_SPEED_LOW_GEAR_FORWARD = 0;
-	private static final double MIN_SPEED_LOW_GEAR_TURN = 0;
+	private static final double MIN_SPEED_LOW_GEAR_FORWARD = 0.08;
+	private static final double MIN_SPEED_LOW_GEAR_TURN = 0.08;
 	
 	private static final double KICKSTAND_SCALAR_FORWARD = 0.25;
 	private static final double KICKSTAND_SCALAR_TURN = 0.25;
@@ -48,15 +48,15 @@ public class DriveHelper {
 		forward = Deadband.get(forward, FORWARD_DEADBAND, deadbandType.slopeAdjustment);
 		
 		//bezier curve
-		turnCurve.x1 = (1 - Math.abs(forward)) * (1 - TURN_CURVE_SPEED_ADJUST) + TURN_CURVE_SPEED_ADJUST;
-		turn = turnCurve.getPoint(turn);
+		//turnCurve.x1 = (1 - Math.abs(forward)) * (1 - TURN_CURVE_SPEED_ADJUST) + TURN_CURVE_SPEED_ADJUST;
+		//turn = turnCurve.getPoint(turn);
 		
 		//inertia
-		leftSpeedCurve.setSetpoint(forward - turn);
-		rightSpeedCurve.setSetpoint(forward + turn);
+//		leftSpeedCurve.setSetpoint(forward - turn);
+//		rightSpeedCurve.setSetpoint(forward + turn);
 		DriveSignal signal = new DriveSignal(
-			leftSpeedCurve.update() * 12, 
-			rightSpeedCurve.update() * 12, 
+			(forward + turn) * 12, 
+			(forward - turn) * 12,
 			DriveUnit.voltage
 		);
 		

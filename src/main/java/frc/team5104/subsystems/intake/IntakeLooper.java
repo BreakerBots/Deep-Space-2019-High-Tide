@@ -32,13 +32,13 @@ class IntakeLooper extends Subsystem.Looper {
 			//Intake
 			Intake._interface.setWheelSpeed(IWE.getGamePiece() == IWEGamePiece.HATCH ? 
 					Constants.INTAKE_INTAKE_SPEED_HATCH : 
-					Constants.INTAKE_INTAKE_SPEED_CARGO
+					-Constants.INTAKE_INTAKE_SPEED_CARGO
 				);
 		}
 		else if (IWE.getState() == IWEState.EJECT) {
 			//Eject
 			Intake._interface.setWheelSpeed(IWE.getGamePiece() == IWEGamePiece.HATCH ? 
-					Constants.INTAKE_EJECT_SPEED_HATCH : 
+					-Constants.INTAKE_EJECT_SPEED_HATCH : 
 					Constants.INTAKE_EJECT_SPEED_CARGO
 				);
 		}

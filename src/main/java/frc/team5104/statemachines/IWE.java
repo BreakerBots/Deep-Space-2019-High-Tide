@@ -6,9 +6,9 @@ import frc.team5104.main.Controls;
 import frc.team5104.subsystems.elevator.Elevator;
 import frc.team5104.subsystems.intake.Intake;
 import frc.team5104.subsystems.wrist.Wrist;
+import frc.team5104.util.Buffer;
 import frc.team5104.util.console;
 import frc.team5104.util.console.c;
-import frc.team5104.util.console.t;
 import frc.team5104.util.managers.StateMachine;
 
 /** Father State Machine for the Intake, Wrist, and Elevator */
@@ -27,6 +27,7 @@ public class IWE extends StateMachine {
 	private static long ejectStart = 0;
 	public static double desiredWristManaul = 0;
 	public static double desiredElevatorManaul = 0;
+	private static Buffer intakeBuffer = new Buffer(20, false);
 	
 	//External Functions (Getters and Setters)
 	public static IWEState getState() { return targetState; }
@@ -45,19 +46,23 @@ public class IWE extends StateMachine {
 	protected void update() {
 		//Automatically Enter Manual
 		if (getControl() == IWEControl.AUTONOMOUS && (Wrist.encoderDisconnected() || Elevator.encoderDisconnected())) {
-			console.log(c.IWE, t.ERROR, "ENCODER DISCONNECTED IN IWE SUBSYSTEM!!!");
+			console.error(c.IWE, "ENCODER DISCONNECTED IN IWE SUBSYSTEM!!!");
 			setControl(IWEControl.MANUAL);
 		}
 		
 		//Exit Eject (if in eject and has been ejecting for long enough)
-		if (getState() == IWEState.EJECT && (System.currentTimeMillis() + Constants.IWE_EJECT_TIME > ejectStart))
+		if (getState() == IWEState.EJECT && (System.currentTimeMillis() > ejectStart + Constants.IWE_EJECT_TIME)) {
+			console.log(c.IWE, "finished eject... idling");
 			setState(IWEState.IDLE);
+		}
 		
 		//Exit Intake (if in intake and has desired game piece)
-		if (getState() == IWEState.INTAKE && (getGamePiece() == IWEGamePiece.HATCH ? Intake.hasHatch() : Intake.hasCargo())) {
+		if (getState() == IWEState.INTAKE && intakeBuffer.getBooleanOutput()) {
+			console.log(c.IWE, "finished intake... idling");
 			setState(IWEState.IDLE);
 			Controls.IWE_INTAKE_RUMBLE.start();
 		}
+		intakeBuffer.update((getGamePiece() == IWEGamePiece.HATCH ? Intake.hasHatch() : Intake.hasCargo()));
 	}
 	protected void enabled() { setToDefaultStates(); }
 	protected void disabled() { setToDefaultStates(); }

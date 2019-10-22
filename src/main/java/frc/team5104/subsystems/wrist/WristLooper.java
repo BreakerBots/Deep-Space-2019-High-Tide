@@ -41,12 +41,12 @@ class WristLooper extends Subsystem.Looper {
 		}
 		else if (wristState == WristState.CALIBRATING) {
 			//Calibrating
-			if (!Wrist._interface.backLimitSwitchHit())
-				Wrist._interface.setPercentOutput(-Constants.WRIST_CALIBRATE_SPEED);
-			else {
+//			if (!Wrist._interface.backLimitSwitchHit())
+//				Wrist._interface.setPercentOutput(-Constants.WRIST_CALIBRATE_SPEED);
+//			else {
 				wristState = WristState.AUTONOMOUS;
 				Wrist._interface.resetEncoder();
-			}
+//			}
 		}
 		else {
 			//Manual
