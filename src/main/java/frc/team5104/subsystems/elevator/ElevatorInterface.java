@@ -5,7 +5,6 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import frc.team5104.main.Constants;
 import frc.team5104.main.Ports;
-import frc.team5104.util.console;
 import frc.team5104.util.managers.Subsystem;
 
 class ElevatorInterface extends Subsystem.Interface {
@@ -24,7 +23,6 @@ class ElevatorInterface extends Subsystem.Interface {
 	void stop() {
 		talon1.set(ControlMode.Disabled, 0);
 	}
-	
 	double getEncoderHeight() {
 		return getRawEncoderPosition() / 4096.0 * Constants.ELEVATOR_SPOOL_CIRC;
 	}
@@ -40,14 +38,12 @@ class ElevatorInterface extends Subsystem.Interface {
 	boolean encoderDisconnected() {
 		return talon1.getSensorCollection().getPulseWidthRiseToRiseUs() == 0;
 	}
-	
 	boolean lowerLimitSwitchHit() {
 		return false;//talon1.getSensorCollection().isRevLimitSwitchClosed();
 	}
 	boolean upperLimitSwitchHit() {
 		return false;//talon1.getSensorCollection().isFwdLimitSwitchClosed();
 	}
-	
 	
 	//Config
 	protected void init() {

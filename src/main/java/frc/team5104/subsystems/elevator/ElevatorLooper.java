@@ -1,12 +1,10 @@
 package frc.team5104.subsystems.elevator;
 
-import frc.team5104.main.Constants;
 import frc.team5104.statemachines.IWE;
 import frc.team5104.statemachines.IWE.IWEControl;
 import frc.team5104.statemachines.IWE.IWEGamePiece;
 import frc.team5104.statemachines.IWE.IWEHeight;
 import frc.team5104.statemachines.IWE.IWEState;
-import frc.team5104.util.console;
 import frc.team5104.util.managers.Subsystem;
 import frc.team5104.util.managers.SubsystemManager.DebugMessage;
 
@@ -44,24 +42,24 @@ class ElevatorLooper extends Subsystem.Looper {
 		}
 		
 		//Control Elevator
-		if (false) {//elevatorState == ElevatorState.AUTONOMOUS) {
-			//Auto
-			Elevator._interface.setMotionMagic(elevatorPosition.height);
-		}
-		else if (false) {//elevatorState == ElevatorState.CALIBRATING) {
-			//Calibrating
-			if (!Elevator._interface.lowerLimitSwitchHit())
-				Elevator._interface.setPercentOutput(-Constants.ELEVATOR_CALIBRATE_SPEED);
-			else {
-				elevatorState = ElevatorState.AUTONOMOUS;
-				Elevator._interface.resetEncoder();
-			}
-		}
-		else {
+//		if (elevatorState == ElevatorState.AUTONOMOUS) {
+//			//Auto
+//			Elevator._interface.setMotionMagic(elevatorPosition.height);
+//		}
+//		else if (elevatorState == ElevatorState.CALIBRATING) {
+//			//Calibrating
+//			if (!Elevator._interface.lowerLimitSwitchHit())
+//				Elevator._interface.setPercentOutput(-Constants.ELEVATOR_CALIBRATE_SPEED);
+//			else {
+//				elevatorState = ElevatorState.AUTONOMOUS;
+//				Elevator._interface.resetEncoder();
+//			}
+//		}
+//		else {
 			//Manual
 			//console.log(Elevator._interface.getRawEncoderVelocity());
 			Elevator._interface.setPercentOutput(IWE.desiredElevatorManaul);
-		}
+//		}
 	}
 
 	//Debug

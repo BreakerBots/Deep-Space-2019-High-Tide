@@ -13,20 +13,20 @@ public class VisionManager {
 	private static final double VISION_INITIAL_TURN_P = 0.5;
 	private static final double VISION_INITIAL_FORWARD_KV = 2;
 	private static final double VISION_INITIAL_TARGET_X = 0;
-	private static final double VISION_INITIAL_TOL_X = 0;
+	private static final double VISION_INITIAL_TOL_X = 5;
 	
 	//FORWARD: Drive forward to the wall, turn to keep centered on target
 	private static final double VISION_FORWARD_TURN_P = 0.1;
 	private static final double VISION_FORWARD_FORWARD_P = 1;
 	private static final double VISION_FORWARD_TARGET_X = 0;
 	private static final double VISION_FORWARD_TARGET_Y = 0;
-	private static final double VISION_FORWARD_TOL_Y = 0;
+	private static final double VISION_FORWARD_TOL_Y = 5;
 
 	//FINAL: Adjust the robot until flush
 	private static final double VISION_FINAL_TURN_P = 0.5;
 	private static final double VISION_FINAL_FORWARD_KV = 4;
 	private static final double VISION_FINAL_TARGET_X = 0;
-	private static final double VISION_FINAL_TOL_X = 0;
+	private static final double VISION_FINAL_TOL_X = 5;
 	
 	//Other Constants/Variables
 	private static enum VisionState { INITIAL, FORWARD, FINAL, FINISHED }
