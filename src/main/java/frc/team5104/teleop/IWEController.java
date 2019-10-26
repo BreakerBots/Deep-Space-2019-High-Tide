@@ -6,6 +6,7 @@ import frc.team5104.statemachines.IWE.IWEControl;
 import frc.team5104.statemachines.IWE.IWEGamePiece;
 import frc.team5104.statemachines.IWE.IWEHeight;
 import frc.team5104.statemachines.IWE.IWEState;
+import frc.team5104.subsystems.elevator.Elevator;
 import frc.team5104.util.console;
 import frc.team5104.util.console.c;
 import frc.team5104.util.managers.TeleopController;
@@ -68,6 +69,10 @@ public class IWEController extends TeleopController {
 			console.log(c.IWE, "setting control mode to " + IWE.getControl().toString().toLowerCase());
 		}
 		IWE.desiredWristManaul = Controls.IWE_WRIST_MANUAL.getAxis();
-		IWE.desiredElevatorManaul = Controls.IWE_ELEVATOR_MANUAL.getAxis();
+		IWE.desiredElevatorManaul = -Controls.IWE_ELEVATOR_MANUAL.getAxis();
+		
+		//Elevator Safety Rumble
+		if ((IWE.getState() == IWEState.PLACE || IWE.getState() == IWEState.EJECT) && IWE.getHeight() == IWEHeight.L3 && IWE.getControl() == IWEControl.MANUAL && Elevator.getMillisAtL3() > Controls.ELEVATOR_SAFETY_RUMBLE_START_TIME)
+			Controls.ELEVATOR_SAFETY_RUMBLE.start();
 	}
 }

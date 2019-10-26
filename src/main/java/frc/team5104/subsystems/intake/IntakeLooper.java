@@ -20,7 +20,7 @@ class IntakeLooper extends Subsystem.Looper {
 				//Hold
 				Intake._interface.setWheelSpeed(IWE.getGamePiece() == IWEGamePiece.HATCH ? 
 						Constants.INTAKE_HOLD_SPEED_HATCH : 
-						Constants.INTAKE_HOLD_SPEED_CARGO
+						-Constants.INTAKE_HOLD_SPEED_CARGO
 					);
 			}
 			else {

@@ -17,6 +17,7 @@ import frc.team5104.teleop.IWEController;
 import frc.team5104.util.BreakerCompressor;
 import frc.team5104.util.Controller;
 import frc.team5104.util.WebappTuner;
+import frc.team5104.util.console;
 import frc.team5104.util.managers.StateMachineManager;
 import frc.team5104.util.managers.SubsystemManager;
 import frc.team5104.util.managers.TeleopControllerManager;
@@ -28,7 +29,7 @@ public class Robot extends RobotController.BreakerRobot {
 		SubsystemManager.useSubsystems(
 			new Drive(),
 			new Wrist(),
-			new Elevator(),
+//			new Elevator(),
 			new Intake()
 		);
 		StateMachineManager.useStateMachines(
@@ -36,7 +37,7 @@ public class Robot extends RobotController.BreakerRobot {
 		);
 		TeleopControllerManager.useTeleopControllers(
 			new DriveController(),
-			/*new DriveAutoTune()*/
+//			new DriveAutoTune(),
 			new IWEController(),
 			new CompressorController()
 		);
@@ -59,6 +60,7 @@ public class Robot extends RobotController.BreakerRobot {
 		
 		StateMachineManager.enabled();
 		SubsystemManager.enabled();
+		BreakerCompressor.stop();
 	}
 	public void teleopStop() {
 		StateMachineManager.enabled();
@@ -70,9 +72,13 @@ public class Robot extends RobotController.BreakerRobot {
 		
 		StateMachineManager.update();
 		SubsystemManager.update();
-		Controller.handle();
 	}
 	
 	//Test
 	public void testLoop() { BreakerCompressor.run(); }
+	
+	//Main
+	public void mainLoop() { 
+		Controller.handle(); 
+	}
 }

@@ -19,8 +19,8 @@ public class Ports {
 	public static final int WRIST_TALON = 31;
 	public static final int INTAKE_TALON_LEFT = 41;
 	public static final int INTAKE_TALON_RIGHT = 42;
-	public static final int INTAKE_PISTON_FORWARD = 3;
-	public static final int INTAKE_PISTON_REVERSE = 4;
+	public static final int INTAKE_PISTON_FORWARD = 4;
+	public static final int INTAKE_PISTON_REVERSE = 5;
 	public static final int INTAKE_BANNER_HATCH = 3;
 	public static final int INTAKE_BANNER_CARGO = 2;
 	

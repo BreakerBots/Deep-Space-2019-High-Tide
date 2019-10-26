@@ -3,13 +3,8 @@ package frc.team5104.teleop;
 
 import frc.team5104.main.Constants;
 import frc.team5104.main.Controls;
-import frc.team5104.statemachines.IWE;
-import frc.team5104.statemachines.IWE.IWEHeight;
-import frc.team5104.statemachines.IWE.IWEState;
 import frc.team5104.subsystems.drive.Drive;
 import frc.team5104.subsystems.drive.DriveHelper;
-import frc.team5104.subsystems.drive.DriveObjects.DriveSignal;
-import frc.team5104.subsystems.drive.DriveObjects.DriveUnit;
 import frc.team5104.util.managers.TeleopController;
 import frc.team5104.vision.VisionManager;
 
@@ -21,20 +16,22 @@ public class DriveController extends TeleopController {
 	
 	protected void update() {
 		//Switch between Manual Control and Vision
-		if (Controls.TOGGLE_VISION.getPressed()) {
-			inVision = !inVision;
-			if (inVision)
-				VisionManager.init();
-		}
+//		if (Controls.TOGGLE_VISION.getPressed()) {
+//			inVision = !inVision;
+//			if (inVision) VisionManager.init();
+//			else VisionManager.end();
+//		}
 		
 		//Exit Vision (Alt.)
-		if (isAgressivelyTryingToExitVision())
-			inVision = false;
-		
-		//Update Manual Drive or Vision
-		if (inVision)
-			handleVisionDrive();
-		else
+//		if (isAgressivelyTryingToExitVision()) {
+//			inVision = false;
+//			VisionManager.end();
+//		}
+//		
+//		//Update Manual Drive or Vision
+//		if (inVision)
+//			handleVisionDrive();
+//		else
 			handleManualDrive();
 	}
 	
@@ -49,7 +46,7 @@ public class DriveController extends TeleopController {
 //			turn = DriveHelper.applyKickstandTurn(turn);
 //		}
 		
-		Drive.set(DriveHelper.get(turn/8.0, forward/4.0, true));
+		Drive.set(DriveHelper.get(turn, forward, true));
 	}
 	
 	//Vision Driving

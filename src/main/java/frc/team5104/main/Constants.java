@@ -33,8 +33,8 @@ public class Constants {
 	public static final IWEControl IWE_DEFAULT_CONTROL = IWEControl.AUTONOMOUS;
 	
 	//Wrist
-	public static final double WRIST_CALIBRATE_SPEED = 0.1;
-	public static final int WRIST_CURRENT_LIMIT = 20;
+	public static final double WRIST_CALIBRATE_SPEED = 0.25;
+	public static final int WRIST_CURRENT_LIMIT = 10;
 	public static final NeutralMode WRIST_NEUTRAL_MODE = NeutralMode.Brake;
 	public static final double WRIST_MOTION_KP = 20;
 	public static final double WRIST_MOTION_KI = 0;
@@ -55,12 +55,11 @@ public class Constants {
 	//Elevator
 	public static final double ELEVATOR_SPOOL_CIRC = 1.25 * Math.PI;
 	public static final double ELEVATOR_CALIBRATE_SPEED = 0.1;
-	public static final int ELEVATOR_CURRENT_LIMIT = 40;
+	public static final int ELEVATOR_CURRENT_LIMIT = 20;
 	public static final NeutralMode ELEVATOR_NEUTRAL_MODE = NeutralMode.Brake;
 	public static final double ELEVATOR_MOTION_KP = 0;
 	public static final double ELEVATOR_MOTION_KI = 0;
 	public static final double ELEVATOR_MOTION_KD = 0;
-	public static final double ELEVATOR_MOTION_KF = 0;
 	public static final int ELEVATOR_MOTION_ACCEL = 0;
 	public static final int ELEVATOR_MOTION_CRUISE_VELOCITY = 0;
 	

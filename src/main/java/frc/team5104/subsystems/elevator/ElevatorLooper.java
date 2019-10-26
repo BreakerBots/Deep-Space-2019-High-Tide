@@ -1,10 +1,13 @@
 package frc.team5104.subsystems.elevator;
 
+import frc.team5104.main.Constants;
 import frc.team5104.statemachines.IWE;
 import frc.team5104.statemachines.IWE.IWEControl;
 import frc.team5104.statemachines.IWE.IWEGamePiece;
 import frc.team5104.statemachines.IWE.IWEHeight;
 import frc.team5104.statemachines.IWE.IWEState;
+import frc.team5104.util.console;
+import frc.team5104.util.console.c;
 import frc.team5104.util.managers.Subsystem;
 import frc.team5104.util.managers.SubsystemManager.DebugMessage;
 
@@ -17,6 +20,10 @@ class ElevatorLooper extends Subsystem.Looper {
 	}
 	ElevatorState elevatorState;
 	ElevatorPosition elevatorPosition;
+	private ElevatorState lastElevatorState;
+	private ElevatorPosition lastElevatorPosition;
+	long elevatorStateStartTime = System.currentTimeMillis();
+	long elevatorPositionStartTime = System.currentTimeMillis();
 	
 	//Loop
 	protected void update() {
@@ -33,13 +40,16 @@ class ElevatorLooper extends Subsystem.Looper {
 				);
 		}
 		else if (IWE.getState() == IWEState.INTAKE) {
-			if (IWE.getGamePiece() == IWEGamePiece.HATCH)
-				elevatorPosition = ElevatorPosition.L1;
+			if (IWE.getGamePiece() == IWEGamePiece.HATCH) elevatorPosition = ElevatorPosition.L1;
 			else elevatorPosition = ElevatorPosition.CARGO_INTAKE_WALL;
 		}
-		else {
-			elevatorPosition = ElevatorPosition.BOTTOM;
-		}
+		else elevatorPosition = ElevatorPosition.BOTTOM;
+		
+		//Time Tracking For State/Position
+		if (lastElevatorPosition != elevatorPosition)
+			elevatorPositionStartTime = System.currentTimeMillis();
+		if (lastElevatorState != elevatorState)
+			elevatorStateStartTime = System.currentTimeMillis();
 		
 		//Control Elevator
 //		if (elevatorState == ElevatorState.AUTONOMOUS) {
@@ -54,12 +64,20 @@ class ElevatorLooper extends Subsystem.Looper {
 //				elevatorState = ElevatorState.AUTONOMOUS;
 //				Elevator._interface.resetEncoder();
 //			}
+//			
+//			//Error Catch
+//			if (System.currentTimeMillis() > elevatorStateStartTime + 6000) {
+//				console.error(c.ELEVATOR, "WTF!!!! Calibration Error (Entering Manual)");
+//				IWE.setControl(IWEControl.MANUAL);
+//			}
 //		}
 //		else {
-			//Manual
-			//console.log(Elevator._interface.getRawEncoderVelocity());
+//			//Manual
 			Elevator._interface.setPercentOutput(IWE.desiredElevatorManaul);
 //		}
+		
+		lastElevatorPosition = elevatorPosition;
+		lastElevatorState = elevatorState;
 	}
 
 	//Debug

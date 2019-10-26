@@ -16,7 +16,10 @@ class WristInterface extends Subsystem.Interface {
 	
 	//Functions
 	void setMotionMagic(double degrees) {
-		wristTalon.set(ControlMode.MotionMagic, degrees / 360.0 * 4096.0, DemandType.ArbitraryFeedForward, getFTerm());
+		wristTalon.set(
+			ControlMode.MotionMagic, degrees / 360.0 * 4096.0, 
+			DemandType.ArbitraryFeedForward, getFTerm()
+		);
 	}
 	private double getFTerm() {
 		//0 -> 0.1
@@ -48,9 +51,8 @@ class WristInterface extends Subsystem.Interface {
 	boolean encoderDisconnected() {
 		return wristTalon.getSensorCollection().getPulseWidthRiseToRiseUs() == 0;
 	}
-	
 	boolean backLimitSwitchHit() {
-		return false;//wristTalon.getSensorCollection().isFwdLimitSwitchClosed();
+		return wristTalon.getSensorCollection().isRevLimitSwitchClosed();
 	}
 	
 	

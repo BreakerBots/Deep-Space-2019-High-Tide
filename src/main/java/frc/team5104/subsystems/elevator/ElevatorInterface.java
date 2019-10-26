@@ -1,6 +1,7 @@
 package frc.team5104.subsystems.elevator;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import frc.team5104.main.Constants;
@@ -15,9 +16,19 @@ class ElevatorInterface extends Subsystem.Interface {
 	
 	//Functions
 	void setMotionMagic(double height) {
-		talon1.set(ControlMode.MotionMagic, height / Constants.ELEVATOR_SPOOL_CIRC * 4096.0);
+		talon1.set(
+			ControlMode.MotionMagic, height / Constants.ELEVATOR_SPOOL_CIRC * 4096.0,
+			DemandType.ArbitraryFeedForward, getFTerm()
+		);
+	}
+	private double getFTerm() {
+		//0 -> 0
+		//0-48 -> 0.05
+		//48+ -> 4
+		return 0;
 	}
 	void setPercentOutput(double percent) {
+//		console.log((percent * talon1.getBusVoltage()) + "V, " + talon1.getOutputCurrent() + "A");
 		talon1.set(ControlMode.PercentOutput, percent);
 	}
 	void stop() {
@@ -54,7 +65,7 @@ class ElevatorInterface extends Subsystem.Interface {
 		talon1.config_kP(0, Constants.ELEVATOR_MOTION_KP);
 		talon1.config_kI(0, Constants.ELEVATOR_MOTION_KI);
 		talon1.config_kD(0, Constants.ELEVATOR_MOTION_KD);
-		talon1.config_kF(0, Constants.ELEVATOR_MOTION_KF);
+		talon1.config_kF(0, 0);
 		talon1.configMotionAcceleration(Constants.ELEVATOR_MOTION_ACCEL);
 		talon1.configMotionCruiseVelocity(Constants.ELEVATOR_MOTION_CRUISE_VELOCITY);
 		

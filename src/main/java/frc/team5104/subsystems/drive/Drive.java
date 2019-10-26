@@ -46,6 +46,7 @@ public class Drive extends Subsystem.Actions {
 						signal.rightSpeed / _interface.getRightGearboxVoltage(),
 						ControlMode.PercentOutput
 					);
+				break;
 			}
 			case stop:
 				_interface.stop();

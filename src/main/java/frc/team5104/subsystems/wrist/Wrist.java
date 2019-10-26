@@ -14,4 +14,5 @@ public class Wrist extends Subsystem.Actions {
 	
 	//Actions (mostly in IWE)
 	public static boolean encoderDisconnected() { return _interface.encoderDisconnected(); }
+	public static boolean backLimitSwitchHit() { return _interface.backLimitSwitchHit(); }
 }

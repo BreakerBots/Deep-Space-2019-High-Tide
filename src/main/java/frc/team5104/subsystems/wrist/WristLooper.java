@@ -5,6 +5,8 @@ import frc.team5104.statemachines.IWE;
 import frc.team5104.statemachines.IWE.IWEControl;
 import frc.team5104.statemachines.IWE.IWEGamePiece;
 import frc.team5104.statemachines.IWE.IWEState;
+import frc.team5104.util.console;
+import frc.team5104.util.console.c;
 import frc.team5104.util.managers.Subsystem;
 import frc.team5104.util.managers.SubsystemManager.DebugMessage;
 
@@ -13,11 +15,13 @@ class WristLooper extends Subsystem.Looper {
 	//Enums
 	static enum WristState { CALIBRATING, MANUAL, AUTONOMOUS };
 	static enum WristPosition {
-		BACK(0), UP(90), CARGO_INTAKE_WALL(45); /*CARGO_INTAKE_GROUND(160), HATCH_PLACE_ANGLED(60), CARGO_PLACE_ANGLED(135)*/
+		BACK(0), UP(90), CARGO_INTAKE_WALL(45), CARGO_INTAKE_GROUND(135); /*CARGO_INTAKE_GROUND(160), HATCH_PLACE_ANGLED(60), CARGO_PLACE_ANGLED(135)*/
 		public double degrees; private WristPosition(double degrees) { this.degrees = degrees; }
 	}
 	WristState wristState;
 	WristPosition wristPosition;
+	private WristState lastWristState;
+	long wristStateStartTime = 0;
 	
 	//Loop
 	protected void update() {
@@ -30,9 +34,13 @@ class WristLooper extends Subsystem.Looper {
 		else if (IWE.getState() == IWEState.INTAKE) {
 			if (IWE.getGamePiece() == IWEGamePiece.HATCH)
 				wristPosition = WristPosition.UP;
-			else wristPosition = WristPosition.CARGO_INTAKE_WALL;
+			else wristPosition = WristPosition.CARGO_INTAKE_GROUND;
 		}
 		else wristPosition = WristPosition.UP;
+		
+		//Time Tracking for State
+		if (lastWristState != wristState)
+			wristStateStartTime = System.currentTimeMillis();
 		
 		//Control Wrist
 		if (wristState == WristState.AUTONOMOUS) {
@@ -41,17 +49,29 @@ class WristLooper extends Subsystem.Looper {
 		}
 		else if (wristState == WristState.CALIBRATING) {
 			//Calibrating
-//			if (!Wrist._interface.backLimitSwitchHit())
-//				Wrist._interface.setPercentOutput(-Constants.WRIST_CALIBRATE_SPEED);
-//			else {
+			if (!Wrist._interface.backLimitSwitchHit())
+				Wrist._interface.setPercentOutput(-Constants.WRIST_CALIBRATE_SPEED);
+			else {
 				wristState = WristState.AUTONOMOUS;
 				Wrist._interface.resetEncoder();
-//			}
+			}
+			
+			//Error Catch
+			if (System.currentTimeMillis() > wristStateStartTime + 6000) {
+				console.error(c.WRIST, "WTF!!!! Calibration Error (Entering Manual)");
+				IWE.setControl(IWEControl.MANUAL);
+			}
 		}
 		else {
 			//Manual
 			Wrist._interface.setPercentOutput(IWE.desiredWristManaul);
 		}
+		
+		//Zero Encoder In Runtime
+		if (Wrist._interface.backLimitSwitchHit())
+			Wrist._interface.resetEncoder();
+		
+		lastWristState = wristState;
 	}
 	
 	//Debug

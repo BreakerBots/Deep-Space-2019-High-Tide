@@ -5,6 +5,7 @@ import frc.team5104.subsystems.drive.DriveObjects.DriveSignal;
 import frc.team5104.subsystems.drive.DriveObjects.DriveUnit;
 import frc.team5104.util.BezierCurve;
 import frc.team5104.util.Deadband;
+import frc.team5104.util.console;
 import frc.team5104.util.Deadband.deadbandType;
 
 /** A class for better handling of the robot's drive train (PLAZZZ MAKE BETTEER) */
@@ -19,8 +20,8 @@ public class DriveHelper {
 	private static final double LEFT_ACCOUNT_FORWARD  = 1.000;
 	private static final double LEFT_ACCOUNT_REVERSE  = 1.000;
 	
-	private static final double MIN_SPEED_HIGH_GEAR_FORWARD = 0;
-	private static final double MIN_SPEED_HIGH_GEAR_TURN = 0;
+	private static final double MIN_SPEED_HIGH_GEAR_FORWARD = 1.00/12.0; //percent
+	private static final double MIN_SPEED_HIGH_GEAR_TURN = 1.5/12.0;
 	private static final double MIN_SPEED_LOW_GEAR_FORWARD = 0;
 	private static final double MIN_SPEED_LOW_GEAR_TURN = 0;
 	

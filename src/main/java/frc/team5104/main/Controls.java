@@ -30,6 +30,8 @@ public class Controls {
 	public static final Rumble IWE_SWITCH_HATCH_RUMBLE = new Rumble(1, false, false, 500);
 	public static final Rumble IWE_SWITCH_CARGO_RUMBLE = new Rumble(1, true, false, 500);
 	public static final Rumble IWE_SWITCH_HEIGHT_RUMBLE = new Rumble(1, true, false, 500);
+	public static final int ELEVATOR_SAFETY_RUMBLE_START_TIME = 5000;
+	public static final Rumble ELEVATOR_SAFETY_RUMBLE = new Rumble(1, true, false, 100);
 	
 	//Compressor (in CompressorController)
 	public static final Control COMPRESSOR_TOGGLE = new Control(ControlList.Menu);
