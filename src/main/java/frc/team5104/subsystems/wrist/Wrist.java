@@ -9,10 +9,12 @@ public class Wrist extends Subsystem.Actions {
 	protected String getName() { return "Wrist"; }
 	protected static WristInterface _interface = new WristInterface();
 	protected Interface getInterface() { return _interface; }
-	private static WristLooper _looper = new WristLooper();
+	protected static WristLooper _looper = new WristLooper();
 	protected Looper getLooper() { return _looper; }
 	
 	//Actions (mostly in IWE)
 	public static boolean encoderDisconnected() { return _interface.encoderDisconnected(); }
 	public static boolean backLimitSwitchHit() { return _interface.backLimitSwitchHit(); }
+	public static void setCargoIntakeGround(boolean ground) { _looper.cargoIntakeGround = ground; }
+	public static boolean getCargoIntakeGround() { return _looper.cargoIntakeGround; }
 }

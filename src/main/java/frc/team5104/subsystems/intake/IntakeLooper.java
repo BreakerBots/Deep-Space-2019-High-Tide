@@ -4,6 +4,7 @@ import frc.team5104.main.Constants;
 import frc.team5104.statemachines.IWE;
 import frc.team5104.statemachines.IWE.IWEGamePiece;
 import frc.team5104.statemachines.IWE.IWEState;
+import frc.team5104.subsystems.intake.IntakeInterface.IntakePistonMode;
 import frc.team5104.util.managers.Subsystem;
 import frc.team5104.util.managers.SubsystemManager.DebugMessage;
 
@@ -12,7 +13,11 @@ class IntakeLooper extends Subsystem.Looper {
 	//Loop
 	protected void update() {
 		//Open/Close Intake
-		Intake._interface.setMode(IWE.getGamePiece());
+		Intake._interface.setMode(
+				(IWE.getGamePiece() == IWEGamePiece.CARGO && IWE.getState() == IWEState.INTAKE) ? 
+				IntakePistonMode.OPEN :
+				IntakePistonMode.CLOSED
+			);
 		
 		//Set Wheel Speed
 		if (IWE.getState() == IWEState.IDLE || IWE.getState() == IWEState.PLACE) {

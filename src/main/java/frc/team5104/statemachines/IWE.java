@@ -18,7 +18,7 @@ public class IWE extends StateMachine {
 	//States and Variables
 	public static enum IWEState { IDLE, INTAKE, PLACE, EJECT }
 	public static enum IWEGamePiece { CARGO, HATCH }
-	public static enum IWEHeight { L1, L2, L3 }
+	public static enum IWEHeight { L1, L2, L3, SHIP }
 	public static enum IWEControl { MANUAL, AUTONOMOUS }
 	private static IWEState targetState;
 	private static IWEGamePiece targetGamePiece;
@@ -27,7 +27,7 @@ public class IWE extends StateMachine {
 	private static long ejectStart = 0;
 	public static double desiredWristManaul = 0;
 	public static double desiredElevatorManaul = 0;
-	private static Buffer intakeBuffer = new Buffer(20, false);
+	private static Buffer intakeBuffer = new Buffer(10, false);
 	
 	//External Functions (Getters and Setters)
 	public static IWEState getState() { return targetState; }

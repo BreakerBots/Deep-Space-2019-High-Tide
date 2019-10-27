@@ -7,7 +7,6 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import frc.team5104.main.Constants;
 import frc.team5104.main.Ports;
-import frc.team5104.statemachines.IWE.IWEGamePiece;
 import frc.team5104.util.AnalogToDigital;
 import frc.team5104.util.managers.Subsystem;
 
@@ -19,6 +18,7 @@ public class IntakeInterface extends Subsystem.Interface {
 	private DoubleSolenoid solenoid = new DoubleSolenoid(Ports.INTAKE_PISTON_FORWARD, Ports.INTAKE_PISTON_REVERSE);
 	private AnalogToDigital bannerHatch = new AnalogToDigital(Ports.INTAKE_BANNER_HATCH);
 	private AnalogToDigital bannerCargo = new AnalogToDigital(Ports.INTAKE_BANNER_CARGO);
+	static enum IntakePistonMode { OPEN, CLOSED };
 	
 	//Functions
 	void setWheelSpeed(double percentSpeed) {
@@ -27,8 +27,8 @@ public class IntakeInterface extends Subsystem.Interface {
 	void stopWheels() {
 		leftVictor.set(ControlMode.Disabled, 0);
 	}
-	void setMode(IWEGamePiece targetGameObject) {
-		if (targetGameObject == IWEGamePiece.HATCH) solenoid.set(Value.kForward);
+	void setMode(IntakePistonMode pistonMode) {
+		if (pistonMode == IntakePistonMode.CLOSED) solenoid.set(Value.kForward);
 		else solenoid.set(Value.kReverse);
 	}
 	boolean hasHatch() {

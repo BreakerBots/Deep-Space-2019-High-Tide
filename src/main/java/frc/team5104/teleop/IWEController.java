@@ -7,7 +7,10 @@ import frc.team5104.statemachines.IWE.IWEGamePiece;
 import frc.team5104.statemachines.IWE.IWEHeight;
 import frc.team5104.statemachines.IWE.IWEState;
 import frc.team5104.subsystems.elevator.Elevator;
+import frc.team5104.subsystems.wrist.Wrist;
+import frc.team5104.util.Deadband;
 import frc.team5104.util.console;
+import frc.team5104.util.Deadband.DeadbandType;
 import frc.team5104.util.console.c;
 import frc.team5104.util.managers.TeleopController;
 
@@ -21,16 +24,23 @@ public class IWEController extends TeleopController {
 			IWE.setState(IWEState.IDLE);
 		}
 		if (Controls.IWE_INTAKE.getPressed()) {
-			console.log(c.IWE, "intaking");
+			if (IWE.getGamePiece() == IWEGamePiece.CARGO) {
+				if (IWE.getState() == IWEState.INTAKE)
+					Wrist.setCargoIntakeGround(!Wrist.getCargoIntakeGround());
+				else Wrist.setCargoIntakeGround(true);
+				console.log(c.IWE, "intaking cargo " + (Wrist.getCargoIntakeGround() ? "ground" : "wall"));
+			}
+			else console.log(c.IWE, "intaking hatch");
+			
 			IWE.setState(IWEState.INTAKE);
 		}
 		if (Controls.IWE_PLACE_EJECT.getPressed()) {
 			if (IWE.getState() == IWEState.IDLE) {
-				console.log(c.IWE, "placing");
+				console.log(c.IWE, "placing " + IWE.getGamePiece().name().toLowerCase());
 				IWE.setState(IWEState.PLACE);
 			}
 			else if (IWE.getState() != IWEState.EJECT) {
-				console.log(c.IWE, "ejecting");
+				console.log(c.IWE, "ejecting " + IWE.getGamePiece().name().toLowerCase());
 				IWE.setState(IWEState.EJECT);
 				Controls.IWE_EJECT_RUMBLE.start();
 			}
@@ -62,6 +72,11 @@ public class IWEController extends TeleopController {
 			IWE.setHeight(IWEHeight.L3);
 			Controls.IWE_SWITCH_HEIGHT_RUMBLE.start();
 		}
+		if (Controls.IWE_HEIGHT_SHIP.getPressed()) {
+			console.log(c.IWE, "setting target height to ship");
+			IWE.setHeight(IWEHeight.SHIP);
+			Controls.IWE_SWITCH_HEIGHT_RUMBLE.start();
+		}
 		
 		//IWE Control
 		if (Controls.IWE_IDLE.getDoubleClick() == 2) {
@@ -69,7 +84,7 @@ public class IWEController extends TeleopController {
 			console.log(c.IWE, "setting control mode to " + IWE.getControl().toString().toLowerCase());
 		}
 		IWE.desiredWristManaul = Controls.IWE_WRIST_MANUAL.getAxis();
-		IWE.desiredElevatorManaul = -Controls.IWE_ELEVATOR_MANUAL.getAxis();
+		IWE.desiredElevatorManaul = -Deadband.get(Controls.IWE_ELEVATOR_MANUAL.getAxis(), .05, DeadbandType.slopeAdjustment);
 		
 		//Elevator Safety Rumble
 		if ((IWE.getState() == IWEState.PLACE || IWE.getState() == IWEState.EJECT) && IWE.getHeight() == IWEHeight.L3 && IWE.getControl() == IWEControl.MANUAL && Elevator.getMillisAtL3() > Controls.ELEVATOR_SAFETY_RUMBLE_START_TIME)

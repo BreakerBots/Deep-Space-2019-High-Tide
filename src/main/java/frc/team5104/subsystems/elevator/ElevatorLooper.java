@@ -6,6 +6,8 @@ import frc.team5104.statemachines.IWE.IWEControl;
 import frc.team5104.statemachines.IWE.IWEGamePiece;
 import frc.team5104.statemachines.IWE.IWEHeight;
 import frc.team5104.statemachines.IWE.IWEState;
+import frc.team5104.subsystems.canifier.CANifier;
+import frc.team5104.util.Buffer;
 import frc.team5104.util.console;
 import frc.team5104.util.console.c;
 import frc.team5104.util.managers.Subsystem;
@@ -15,7 +17,7 @@ class ElevatorLooper extends Subsystem.Looper {
 	//Enums
 	static enum ElevatorState { CALIBRATING, MANUAL, AUTONOMOUS };
 	static enum ElevatorPosition { 
-		BOTTOM(0), L1(12), L2(36), L3(60), CARGO_EJECT_SHIP(40), CARGO_INTAKE_WALL(20);
+		BOTTOM(0), L1(12), L2(24), L3(60), CARGO_EJECT_SHIP(40), CARGO_INTAKE_WALL(20);
 		public double height; private ElevatorPosition(double height) { this.height = height; }
 	}
 	ElevatorState elevatorState;
@@ -24,6 +26,7 @@ class ElevatorLooper extends Subsystem.Looper {
 	private ElevatorPosition lastElevatorPosition;
 	long elevatorStateStartTime = System.currentTimeMillis();
 	long elevatorPositionStartTime = System.currentTimeMillis();
+	private Buffer limitSwitchZeroBuffer = new Buffer(5, false);
 	
 	//Loop
 	protected void update() {
@@ -51,31 +54,44 @@ class ElevatorLooper extends Subsystem.Looper {
 		if (lastElevatorState != elevatorState)
 			elevatorStateStartTime = System.currentTimeMillis();
 		
-		//Control Elevator
-//		if (elevatorState == ElevatorState.AUTONOMOUS) {
-//			//Auto
-//			Elevator._interface.setMotionMagic(elevatorPosition.height);
-//		}
-//		else if (elevatorState == ElevatorState.CALIBRATING) {
-//			//Calibrating
-//			if (!Elevator._interface.lowerLimitSwitchHit())
-//				Elevator._interface.setPercentOutput(-Constants.ELEVATOR_CALIBRATE_SPEED);
-//			else {
-//				elevatorState = ElevatorState.AUTONOMOUS;
-//				Elevator._interface.resetEncoder();
-//			}
-//			
-//			//Error Catch
-//			if (System.currentTimeMillis() > elevatorStateStartTime + 6000) {
-//				console.error(c.ELEVATOR, "WTF!!!! Calibration Error (Entering Manual)");
-//				IWE.setControl(IWEControl.MANUAL);
-//			}
-//		}
-//		else {
-//			//Manual
-			Elevator._interface.setPercentOutput(IWE.desiredElevatorManaul);
-//		}
+		//Recalibrate During Runtime
+		if (elevatorState == ElevatorState.AUTONOMOUS && elevatorPosition == ElevatorPosition.BOTTOM &&
+			!CANifier.elevatorLowerLimitHit() && System.currentTimeMillis() > elevatorPositionStartTime + 6000) {
+			console.warn(c.ELEVATOR, "Recalibrating Elevator");
+			elevatorState = ElevatorState.CALIBRATING;
+		}
 		
+		//Control Elevator
+		if (elevatorState == ElevatorState.AUTONOMOUS) {
+			//Auto
+			Elevator._interface.setMotionMagic(elevatorPosition.height);
+		}
+		else if (elevatorState == ElevatorState.CALIBRATING) {
+			//Calibrating
+			if (!CANifier.elevatorLowerLimitHit())
+				Elevator._interface.setPercentOutput(-Constants.ELEVATOR_CALIBRATE_SPEED);
+			else {
+				elevatorState = ElevatorState.AUTONOMOUS;
+				Elevator._interface.resetEncoder();
+			}
+			
+			//Error Catch
+			if (System.currentTimeMillis() > elevatorStateStartTime + 6000) {
+				console.error(c.ELEVATOR, "WTF!!!! Calibration Error (Entering Manual)");
+				IWE.setControl(IWEControl.MANUAL);
+			}
+		}
+		else {
+			//Manual
+			Elevator._interface.setPercentOutput(IWE.desiredElevatorManaul);
+//			System.out.println(Elevator._interface.getRawEncoderVelocity());
+		}
+		
+		//Zero Encoder In Runtime
+		limitSwitchZeroBuffer.update(CANifier.elevatorLowerLimitHit());
+		if (limitSwitchZeroBuffer.getBooleanOutput())
+			Elevator._interface.resetEncoder();
+			
 		lastElevatorPosition = elevatorPosition;
 		lastElevatorState = elevatorState;
 	}

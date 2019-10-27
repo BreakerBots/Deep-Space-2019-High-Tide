@@ -5,8 +5,7 @@ import frc.team5104.subsystems.drive.DriveObjects.DriveSignal;
 import frc.team5104.subsystems.drive.DriveObjects.DriveUnit;
 import frc.team5104.util.BezierCurve;
 import frc.team5104.util.Deadband;
-import frc.team5104.util.console;
-import frc.team5104.util.Deadband.deadbandType;
+import frc.team5104.util.Deadband.DeadbandType;
 
 /** A class for better handling of the robot's drive train (PLAZZZ MAKE BETTEER) */
 public class DriveHelper {
@@ -40,8 +39,8 @@ public class DriveHelper {
 	/** Calculates and left and right speed (in volts) for the robot depending on input variables */
 	public static DriveSignal get(double turn, double forward, boolean inHighGear) {
 		//deadbands
-		turn = Deadband.get(turn, TURN_DEADBAND, deadbandType.slopeAdjustment);
-		forward = Deadband.get(forward, FORWARD_DEADBAND, deadbandType.slopeAdjustment);
+		turn = Deadband.get(turn, TURN_DEADBAND, DeadbandType.slopeAdjustment);
+		forward = Deadband.get(forward, FORWARD_DEADBAND, DeadbandType.slopeAdjustment);
 		
 		//bezier curve
 		turnCurve.x1 = (1 - Math.abs(forward)) * (1 - TURN_CURVE_SPEED_ADJUST) + TURN_CURVE_SPEED_ADJUST;

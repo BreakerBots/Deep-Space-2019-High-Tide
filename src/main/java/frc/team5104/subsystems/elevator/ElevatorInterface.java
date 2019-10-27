@@ -6,6 +6,7 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import frc.team5104.main.Constants;
 import frc.team5104.main.Ports;
+import frc.team5104.subsystems.canifier.CANifier;
 import frc.team5104.util.managers.Subsystem;
 
 class ElevatorInterface extends Subsystem.Interface {
@@ -20,16 +21,24 @@ class ElevatorInterface extends Subsystem.Interface {
 			ControlMode.MotionMagic, height / Constants.ELEVATOR_SPOOL_CIRC * 4096.0,
 			DemandType.ArbitraryFeedForward, getFTerm()
 		);
+		talon1.config_kP(0, Constants.ELEVATOR_MOTION_KP);
+		talon1.config_kI(0, Constants.ELEVATOR_MOTION_KI);
+		talon1.config_kD(0, Constants.ELEVATOR_MOTION_KD);
+		updateLimitSwitches();
 	}
-	private double getFTerm() {
-		//0 -> 0
-		//0-48 -> 0.05
-		//48+ -> 4
-		return 0;
+	double getFTerm() {
+		//0-26 -> 0
+		//26+ -> 0.2
+		return getEncoderHeight() > 26 ? 0.2 : 0;
 	}
 	void setPercentOutput(double percent) {
 //		console.log((percent * talon1.getBusVoltage()) + "V, " + talon1.getOutputCurrent() + "A");
 		talon1.set(ControlMode.PercentOutput, percent);
+		updateLimitSwitches();
+	}
+	void updateLimitSwitches() {
+		talon1.configPeakOutputReverse(CANifier.elevatorLowerLimitHit() ? 0 : -1);
+		talon2.configPeakOutputReverse(CANifier.elevatorLowerLimitHit() ? 0 : -1);
 	}
 	void stop() {
 		talon1.set(ControlMode.Disabled, 0);
@@ -49,12 +58,6 @@ class ElevatorInterface extends Subsystem.Interface {
 	boolean encoderDisconnected() {
 		return talon1.getSensorCollection().getPulseWidthRiseToRiseUs() == 0;
 	}
-	boolean lowerLimitSwitchHit() {
-		return false;//talon1.getSensorCollection().isRevLimitSwitchClosed();
-	}
-	boolean upperLimitSwitchHit() {
-		return false;//talon1.getSensorCollection().isFwdLimitSwitchClosed();
-	}
 	
 	//Config
 	protected void init() {
@@ -68,6 +71,7 @@ class ElevatorInterface extends Subsystem.Interface {
 		talon1.config_kF(0, 0);
 		talon1.configMotionAcceleration(Constants.ELEVATOR_MOTION_ACCEL);
 		talon1.configMotionCruiseVelocity(Constants.ELEVATOR_MOTION_CRUISE_VELOCITY);
+		talon1.setSensorPhase(true);
 		
 		talon2.configFactoryDefault();
 		talon2.configContinuousCurrentLimit(Constants.ELEVATOR_CURRENT_LIMIT, 10);

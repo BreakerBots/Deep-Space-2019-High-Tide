@@ -4,6 +4,7 @@ package frc.team5104.main;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 
 import frc.team5104.statemachines.IWE.IWEControl;
+import frc.team5104.util.WebappTuner.tunerInput;
 
 public class Constants {
 	//Console
@@ -34,12 +35,12 @@ public class Constants {
 	
 	//Wrist
 	public static final double WRIST_CALIBRATE_SPEED = 0.25;
-	public static final int WRIST_CURRENT_LIMIT = 10;
+	public static final int WRIST_CURRENT_LIMIT = 20;
 	public static final NeutralMode WRIST_NEUTRAL_MODE = NeutralMode.Brake;
 	public static final double WRIST_MOTION_KP = 20;
 	public static final double WRIST_MOTION_KI = 0;
 	public static final double WRIST_MOTION_KD = 200;
-	public static final int WRIST_MOTION_ACCEL = 500;
+	public static final int WRIST_MOTION_ACCEL = 1000;
 	public static final int WRIST_MOTION_CRUISE_VELOCITY = 2000;
 	
 	//Intake
@@ -57,11 +58,14 @@ public class Constants {
 	public static final double ELEVATOR_CALIBRATE_SPEED = 0.1;
 	public static final int ELEVATOR_CURRENT_LIMIT = 20;
 	public static final NeutralMode ELEVATOR_NEUTRAL_MODE = NeutralMode.Brake;
-	public static final double ELEVATOR_MOTION_KP = 0;
-	public static final double ELEVATOR_MOTION_KI = 0;
-	public static final double ELEVATOR_MOTION_KD = 0;
-	public static final int ELEVATOR_MOTION_ACCEL = 0;
-	public static final int ELEVATOR_MOTION_CRUISE_VELOCITY = 0;
+	@tunerInput
+	public static double ELEVATOR_MOTION_KP = 0.1;
+	@tunerInput
+	public static double ELEVATOR_MOTION_KI = 0;
+	@tunerInput
+	public static double ELEVATOR_MOTION_KD = 0;
+	public static final int ELEVATOR_MOTION_ACCEL = 1000;
+	public static final int ELEVATOR_MOTION_CRUISE_VELOCITY = 4500;
 	
 	//Autonomous
 	public static final double AUTO_MAX_VELOCITY = 10; //ft/s

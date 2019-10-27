@@ -6,18 +6,14 @@ import frc.team5104.auto.paths.RocketDoubleMiddleHatch;
 import frc.team5104.main.setup.RobotController;
 import frc.team5104.main.setup.RobotState;
 import frc.team5104.statemachines.IWE;
-import frc.team5104.subsystems.drive.Drive;
 import frc.team5104.subsystems.drive.Odometry;
 import frc.team5104.subsystems.elevator.Elevator;
-import frc.team5104.subsystems.intake.Intake;
-import frc.team5104.subsystems.wrist.Wrist;
 import frc.team5104.teleop.CompressorController;
 import frc.team5104.teleop.DriveController;
 import frc.team5104.teleop.IWEController;
 import frc.team5104.util.BreakerCompressor;
 import frc.team5104.util.Controller;
 import frc.team5104.util.WebappTuner;
-import frc.team5104.util.console;
 import frc.team5104.util.managers.StateMachineManager;
 import frc.team5104.util.managers.SubsystemManager;
 import frc.team5104.util.managers.TeleopControllerManager;
@@ -27,10 +23,10 @@ public class Robot extends RobotController.BreakerRobot {
 	public Robot() {
 		//Managers
 		SubsystemManager.useSubsystems(
-			new Drive(),
-			new Wrist(),
-//			new Elevator(),
-			new Intake()
+//			new Drive(),
+//			new Wrist(),
+			new Elevator()
+//			new Intake()
 		);
 		StateMachineManager.useStateMachines(
 			new IWE()
@@ -49,8 +45,8 @@ public class Robot extends RobotController.BreakerRobot {
 		AutoManager.setTargetPath(new RocketDoubleMiddleHatch());
 		
 		//Debug Subsystems
-		WebappTuner.init(Constants.class/*WristInterface.class*/);
-		SubsystemManager.debug(/*Wrist.class*/);
+		WebappTuner.init(Constants.class);
+		SubsystemManager.debug();
 	}
 	
 	//Teleop (includes sandstorm)

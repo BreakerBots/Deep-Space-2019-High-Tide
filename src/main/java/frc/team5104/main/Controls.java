@@ -23,6 +23,7 @@ public class Controls {
 	public static final Control IWE_HEIGHT_L1 = new Control(ControlList.DirectionPadDown);
 	public static final Control IWE_HEIGHT_L2 = new Control(ControlList.DirectionPadRight);
 	public static final Control IWE_HEIGHT_L3 = new Control(ControlList.DirectionPadUp);
+	public static final Control IWE_HEIGHT_SHIP = new Control(ControlList.DirectionPadLeft);
 	public static final Control IWE_ELEVATOR_MANUAL = new Control(ControlList.RightJoystickY);
 	public static final Control IWE_WRIST_MANUAL = new Control(ControlList.RightJoystickX);
 	public static final Rumble IWE_INTAKE_RUMBLE = new Rumble(1, false, true, 500); //called in IWE directly
