@@ -15,7 +15,8 @@ class WristInterface extends Subsystem.Interface {
 	private TalonSRX wristTalon = new TalonSRX(Ports.WRIST_TALON);
 	
 	//Functions
-	void setMotionMagic(double degrees) {
+	void setMotionMagic(double degrees, boolean limpMode) {
+		setLimpMode(limpMode);
 		wristTalon.set(
 			ControlMode.MotionMagic, degrees / 360.0 * 4096.0, 
 			DemandType.ArbitraryFeedForward, getFTerm()
@@ -28,12 +29,17 @@ class WristInterface extends Subsystem.Interface {
 		return (-getEncoderRotation() / 900.0) + 0.1;
 	}
 	void setPercentOutput(double percent) {
+		setLimpMode(false);
 		wristTalon.set(ControlMode.PercentOutput, percent);
 	}
 	void stop() {
+		setLimpMode(false);
 		wristTalon.set(ControlMode.Disabled, 0);
 	}
-	
+	void setLimpMode(boolean limp) {
+		wristTalon.configPeakOutputForward(limp ? Constants.WRIST_LIMP_MODE_MAX_SPEED : 1);
+		wristTalon.configPeakOutputReverse(limp ? -Constants.WRIST_LIMP_MODE_MAX_SPEED : -1);
+	}
 	double getEncoderRotation() {
 		return getRawEncoderRotation() / 4096.0 * 360.0;
 	}

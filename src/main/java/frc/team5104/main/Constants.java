@@ -42,6 +42,8 @@ public class Constants {
 	public static final double WRIST_MOTION_KD = 200;
 	public static final int WRIST_MOTION_ACCEL = 1000;
 	public static final int WRIST_MOTION_CRUISE_VELOCITY = 2000;
+	public static final double WRIST_LIMP_MODE_MAX_SPEED = 0.2;
+	public static final int WRIST_LIMP_MODE_TIME_START = 1500;
 	
 	//Intake
 	public static final double INTAKE_INTAKE_SPEED_HATCH = 1;

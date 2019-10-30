@@ -65,7 +65,7 @@ class WristLooper extends Subsystem.Looper {
 		
 		//Recalibrate During Runtime
 		if (wristState == WristState.AUTONOMOUS && wristPosition == WristPosition.BACK &&
-			!Wrist.backLimitSwitchHit() && System.currentTimeMillis() > wristPositionStartTime + 6000) {
+			!Wrist.backLimitSwitchHit() && System.currentTimeMillis() > wristPositionStartTime + 3000) {
 			console.warn(c.WRIST, "Recalibrating Wrist");
 			wristState = WristState.CALIBRATING;
 		}
@@ -73,7 +73,7 @@ class WristLooper extends Subsystem.Looper {
 		//Control Wrist
 		if (wristState == WristState.AUTONOMOUS) {
 			//Autonomous
-			Wrist._interface.setMotionMagic(wristPosition.degrees);
+			Wrist._interface.setMotionMagic(wristPosition.degrees, wristPositionStartTime > Constants.WRIST_LIMP_MODE_TIME_START);
 			
 			//Error Catch
 			//if (giving neg output for too long) { stop(); }
