@@ -20,7 +20,6 @@ import frc.team5104.util.managers.StateMachineManager;
 import frc.team5104.util.managers.SubsystemManager;
 import frc.team5104.util.managers.TeleopControllerManager;
 import frc.team5104.vision.Limelight;
-import frc.team5104.vision.VisionManager;
 import frc.team5104.util.Webapp;
 
 public class Robot extends RobotController.BreakerRobot {
@@ -50,7 +49,7 @@ public class Robot extends RobotController.BreakerRobot {
 		Limelight.init();
 		
 		//Debug Subsystems
-		WebappTuner.init(VisionManager.class, Limelight.class, Drive.class/*Constants.class*/);
+		WebappTuner.init(/*VisionManager.class, Limelight.class, Drive.class*//*Constants.class*/);
 		SubsystemManager.debug();
 	}
 	
