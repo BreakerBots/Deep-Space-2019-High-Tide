@@ -3,18 +3,33 @@ package frc.team5104.vision;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import frc.team5104.util.WebappTuner.tunerOutput;
 import frc.team5104.util.console;
 import frc.team5104.util.console.c;
 
 public class Limelight {
 	private static NetworkTable table;
-	public static NetworkTableEntry getEntry(String key) { return table.getEntry(key); }
-	public static void setEntry(String key, double entry) { table.getEntry(key).setDouble(entry); }
+	public static NetworkTableEntry getEntry(String key) { 
+		if (table != null)
+			return table.getEntry(key); 
+		else return null;
+	}
+	public static void setEntry(String key, double entry) { 
+		if (table != null)
+			getEntry(key).setDouble(entry); 
+	}
+	public static double getDouble(String key, double defaultValue) {
+		if (table != null)
+			return getEntry(key).getDouble(defaultValue);
+		else return defaultValue;
+	}
 
-	public static double getTargetX() { return getEntry("tx").getDouble(5104); }
-	public static double getTargetY() { return getEntry("ty").getDouble(5104); }
-	public static boolean hasTarget() { return getEntry("tv").getDouble(0) == 1; }
-	public static boolean isConnected() { return getEntry("tl").getDouble(0) == 0.0; }
+	@tunerOutput
+	public static double getTargetX() { return getDouble("tx", 5104); }
+	@tunerOutput
+	public static double getTargetY() { return getDouble("ty", 5104); }
+	public static boolean hasTarget() { return getDouble("tv", 0) == 1; }
+	public static boolean isConnected() { return getDouble("tl", 0) != 0.0; }
 	
 	public static enum LEDMode { OFF(1), ON(3), BLINK(2); int value; private LEDMode(int value) { this.value = value; } }
 	public static void setLEDMode(LEDMode ledMode) { 

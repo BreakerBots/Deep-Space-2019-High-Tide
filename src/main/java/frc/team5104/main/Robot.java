@@ -6,8 +6,10 @@ import frc.team5104.auto.paths.RocketDoubleMiddleHatch;
 import frc.team5104.main.setup.RobotController;
 import frc.team5104.main.setup.RobotState;
 import frc.team5104.statemachines.IWE;
+import frc.team5104.subsystems.drive.Drive;
 import frc.team5104.subsystems.drive.Odometry;
-import frc.team5104.subsystems.elevator.Elevator;
+import frc.team5104.subsystems.intake.Intake;
+import frc.team5104.subsystems.wrist.Wrist;
 import frc.team5104.teleop.CompressorController;
 import frc.team5104.teleop.DriveController;
 import frc.team5104.teleop.IWEController;
@@ -17,16 +19,18 @@ import frc.team5104.util.WebappTuner;
 import frc.team5104.util.managers.StateMachineManager;
 import frc.team5104.util.managers.SubsystemManager;
 import frc.team5104.util.managers.TeleopControllerManager;
+import frc.team5104.vision.Limelight;
+import frc.team5104.vision.VisionManager;
 import frc.team5104.util.Webapp;
 
 public class Robot extends RobotController.BreakerRobot {
 	public Robot() {
 		//Managers
 		SubsystemManager.useSubsystems(
-//			new Drive(),
-//			new Wrist(),
-			new Elevator()
-//			new Intake()
+			new Drive(),
+			new Wrist(),
+//			new Elevator()
+			new Intake()
 		);
 		StateMachineManager.useStateMachines(
 			new IWE()
@@ -43,9 +47,10 @@ public class Robot extends RobotController.BreakerRobot {
 		Webapp.run();
 		Odometry.run();
 		AutoManager.setTargetPath(new RocketDoubleMiddleHatch());
+		Limelight.init();
 		
 		//Debug Subsystems
-		WebappTuner.init(Constants.class);
+		WebappTuner.init(VisionManager.class, Limelight.class, Drive.class/*Constants.class*/);
 		SubsystemManager.debug();
 	}
 	

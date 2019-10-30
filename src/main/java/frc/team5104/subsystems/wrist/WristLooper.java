@@ -29,6 +29,7 @@ class WristLooper extends Subsystem.Looper {
 	long wristPositionStartTime = 0;
 	boolean cargoIntakeGround = false;
 	private Buffer limitSwitchZeroBuffer = new Buffer(5, false);
+	private Buffer averageMotorOutput = new Buffer(300, 0.0);
 	
 	//Loop
 	protected void update() {
@@ -73,6 +74,10 @@ class WristLooper extends Subsystem.Looper {
 		if (wristState == WristState.AUTONOMOUS) {
 			//Autonomous
 			Wrist._interface.setMotionMagic(wristPosition.degrees);
+			
+			//Error Catch
+			//if (giving neg output for too long) { stop(); }
+			//if (giving pos output for too long) { stop(); }
 		}
 		else if (wristState == WristState.CALIBRATING) {
 			//Calibrating
@@ -99,8 +104,10 @@ class WristLooper extends Subsystem.Looper {
 		if (limitSwitchZeroBuffer.getBooleanOutput())
 			Wrist._interface.resetEncoder();
 		
+		//Other
 		lastWristState = wristState;
 		lastWristPosition = wristPosition;
+		averageMotorOutput.update(Wrist._interface.getMotorPercentOutput());
 	}
 	
 	//Debug

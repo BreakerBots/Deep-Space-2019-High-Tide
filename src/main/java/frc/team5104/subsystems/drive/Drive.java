@@ -5,6 +5,7 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import frc.team5104.subsystems.drive.DriveObjects.DriveEncoders;
 import frc.team5104.subsystems.drive.DriveObjects.DriveSignal;
 import frc.team5104.subsystems.drive.DriveObjects.DriveUnits;
+import frc.team5104.util.WebappTuner.tunerOutput;
 import frc.team5104.util.managers.Subsystem;
 import frc.team5104.util.managers.Subsystem.Interface;
 import frc.team5104.util.managers.Subsystem.Looper;
@@ -58,4 +59,8 @@ public class Drive extends Subsystem.Actions {
 	public static void resetEncoders() { _interface.resetEncoders(); }
 	public static double getGyro() { return _interface.getGyro(); }
 	public static void resetGyro() { _interface.resetGyro(); }
+	@tunerOutput
+	public static double getLeftGearboxOutputVoltage() { return _interface.getLeftGearboxOutputVoltage(); }
+	@tunerOutput
+	public static double getRightGearboxOutputVoltage() { return _interface.getRightGearboxOutputVoltage(); }
 }

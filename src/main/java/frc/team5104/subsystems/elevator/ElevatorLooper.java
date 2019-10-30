@@ -27,6 +27,7 @@ class ElevatorLooper extends Subsystem.Looper {
 	long elevatorStateStartTime = System.currentTimeMillis();
 	long elevatorPositionStartTime = System.currentTimeMillis();
 	private Buffer limitSwitchZeroBuffer = new Buffer(5, false);
+	private Buffer averageMotorOutput = new Buffer(300, 0.0);
 	
 	//Loop
 	protected void update() {
@@ -65,6 +66,10 @@ class ElevatorLooper extends Subsystem.Looper {
 		if (elevatorState == ElevatorState.AUTONOMOUS) {
 			//Auto
 			Elevator._interface.setMotionMagic(elevatorPosition.height);
+			
+			//Error Catch
+			//if (giving neg output for too long) { stop(); }
+			//if (giving pos output for too long) { stop(); }
 		}
 		else if (elevatorState == ElevatorState.CALIBRATING) {
 			//Calibrating
@@ -92,8 +97,10 @@ class ElevatorLooper extends Subsystem.Looper {
 		if (limitSwitchZeroBuffer.getBooleanOutput())
 			Elevator._interface.resetEncoder();
 			
+		//Other
 		lastElevatorPosition = elevatorPosition;
 		lastElevatorState = elevatorState;
+		averageMotorOutput.update(Elevator._interface.getMotorPercentOutput());
 	}
 
 	//Debug

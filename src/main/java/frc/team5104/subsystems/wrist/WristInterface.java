@@ -54,7 +54,9 @@ class WristInterface extends Subsystem.Interface {
 	boolean backLimitSwitchHit() {
 		return wristTalon.getSensorCollection().isRevLimitSwitchClosed();
 	}
-	
+	double getMotorPercentOutput() {
+		return wristTalon.getMotorOutputPercent();
+	}
 	
 	//Config
 	protected void init() {

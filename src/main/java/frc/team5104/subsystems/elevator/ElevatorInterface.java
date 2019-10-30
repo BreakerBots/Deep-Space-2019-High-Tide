@@ -58,6 +58,9 @@ class ElevatorInterface extends Subsystem.Interface {
 	boolean encoderDisconnected() {
 		return talon1.getSensorCollection().getPulseWidthRiseToRiseUs() == 0;
 	}
+	double getMotorPercentOutput() {
+		return talon1.getMotorOutputPercent();
+	}
 	
 	//Config
 	protected void init() {

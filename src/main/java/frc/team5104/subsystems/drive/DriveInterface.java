@@ -30,6 +30,8 @@ class DriveInterface extends Subsystem.Interface {
 	
 	double getLeftGearboxVoltage() { return talonL1.getBusVoltage(); }
 	double getRightGearboxVoltage() { return talonR1.getBusVoltage(); }
+	double getLeftGearboxOutputVoltage() { return talonL1.getMotorOutputVoltage(); }
+	double getRightGearboxOutputVoltage() { return talonR1.getMotorOutputVoltage(); }
 
 	void resetGyro() { /*?*/ }
 	double getGyro() { return -1; }

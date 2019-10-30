@@ -16,22 +16,22 @@ public class DriveController extends TeleopController {
 	
 	protected void update() {
 		//Switch between Manual Control and Vision
-//		if (Controls.TOGGLE_VISION.getPressed()) {
-//			inVision = !inVision;
-//			if (inVision) VisionManager.init();
-//			else VisionManager.end();
-//		}
+		if (Controls.TOGGLE_VISION.getPressed()) {
+			inVision = !inVision;
+			if (inVision) VisionManager.init();
+			else VisionManager.end();
+		}
 		
 		//Exit Vision (Alt.)
-//		if (isAgressivelyTryingToExitVision()) {
-//			inVision = false;
-//			VisionManager.end();
-//		}
-//		
-//		//Update Manual Drive or Vision
-//		if (inVision)
-//			handleVisionDrive();
-//		else
+		if (isAgressivelyTryingToExitVision()) {
+			inVision = false;
+			VisionManager.end();
+		}
+		
+		//Update Manual Drive or Vision
+		if (inVision)
+			handleVisionDrive();
+		else
 			handleManualDrive();
 	}
 	
