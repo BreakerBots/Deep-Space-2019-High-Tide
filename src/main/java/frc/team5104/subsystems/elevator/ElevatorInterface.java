@@ -7,7 +7,6 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import frc.team5104.main.Constants;
 import frc.team5104.main.Ports;
 import frc.team5104.subsystems.canifier.CANifier;
-import frc.team5104.util.WebappTuner.tunerOutput;
 import frc.team5104.util.managers.Subsystem;
 
 public class ElevatorInterface extends Subsystem.Interface {

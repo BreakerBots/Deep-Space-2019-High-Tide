@@ -1,7 +1,5 @@
 package frc.team5104.subsystems.elevator;
 
-import org.opencv.highgui.ImageWindow;
-
 import frc.team5104.main.Constants;
 import frc.team5104.statemachines.IWE;
 import frc.team5104.statemachines.IWE.IWEControl;

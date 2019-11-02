@@ -9,6 +9,9 @@ import frc.team5104.util.Controller.Rumble;
  * All the controls for the robot
  */
 public class Controls {
+	//Main
+	public static final Control IDLE = new Control(ControlList.List); //single-tap -> idle, double-top -> manual mode
+	
 	//Drive (in DriveController)
 	public static final Control DRIVE_TURN = new Control(ControlList.LeftJoystickX);
 	public static final Control DRIVE_FORWARD = new Control(ControlList.RightTrigger);
@@ -17,7 +20,6 @@ public class Controls {
 	
 	//IWE (in IWEController)
 	public static final Control IWE_INTAKE = new Control(ControlList.X);
-	public static final Control IWE_IDLE = new Control(ControlList.List); //single-tap -> idle, double-top -> manual mode
 	public static final Control IWE_PLACE_EJECT = new Control(ControlList.B);
 	public static final Control IWE_SWITCH_GAME_PIECE = new Control(ControlList.Y);
 	public static final Control IWE_HEIGHT_L1 = new Control(ControlList.DirectionPadDown);

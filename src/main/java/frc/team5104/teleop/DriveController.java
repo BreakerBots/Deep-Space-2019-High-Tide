@@ -22,8 +22,14 @@ public class DriveController extends TeleopController {
 			else VisionManager.end();
 		}
 		
-		//Exit Vision (Alt.)
-		if (isAgressivelyTryingToExitVision()) {
+		//Enter Vision (Alt)
+		if (Controls.IWE_INTAKE_WITH_VISION.getPressed()) {
+			inVision = true;
+			VisionManager.init();
+		}
+		
+		//Exit Vision (Alts)
+		if (isAgressivelyTryingToExitVision() || Controls.IDLE.getPressed()) {
 			inVision = false;
 			VisionManager.end();
 		}

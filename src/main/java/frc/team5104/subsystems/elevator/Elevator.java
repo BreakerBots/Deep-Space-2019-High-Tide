@@ -1,5 +1,6 @@
 package frc.team5104.subsystems.elevator;
 
+import frc.team5104.main.Constants;
 import frc.team5104.subsystems.canifier.CANifier;
 import frc.team5104.util.WebappTuner.tunerOutput;
 import frc.team5104.util.managers.Subsystem;
@@ -24,4 +25,5 @@ public class Elevator extends Subsystem.Actions {
 	public static double getEncoderHeight() { return _interface.getEncoderHeight(); }
 	@tunerOutput
 	public static double getTargetEncoderHeight() { return _interface.lastTargetHeight; }
+	public static boolean isAtTargetHeight() { return Math.abs(getEncoderHeight() - getTargetEncoderHeight()) < Constants.ELEVATOR_HEIGHT_TOL; }
 }

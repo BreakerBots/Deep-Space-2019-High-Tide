@@ -44,6 +44,9 @@ public class IWE extends StateMachine {
 	public static void setHeight(IWEHeight targetHeight) { IWE.targetHeight = targetHeight; }
 	public static IWEControl getControl() { return control; }
 	public static void setControl(IWEControl control) { IWE.control = control; }
+	public static IWESequence getActiveSequence() { return activeSequence; }
+	public static void setActiveSequence(IWESequence activeSequence) { IWE.activeSequence = activeSequence; }
+	public static void clearActiveSequence() { IWE.activeSequence = IWESequence.NONE; }
 	
 	//Manage States
 	protected void update() {
@@ -51,6 +54,15 @@ public class IWE extends StateMachine {
 		if (getControl() == IWEControl.AUTONOMOUS && (Wrist.encoderDisconnected() || Elevator.encoderDisconnected())) {
 			console.error(c.IWE, "ENCODER DISCONNECTED IN IWE SUBSYSTEM!!!");
 			setControl(IWEControl.MANUAL);
+		}
+		
+		//Place Eject Idle Sequence
+		if (getActiveSequence() == IWESequence.PLACE_EJECT_IDLE) {
+			if (getState() == IWEState.IDLE || getState() == IWEState.INTAKE) 
+				setState(IWEState.PLACE);
+			else if (getState() == IWEState.PLACE && Elevator.isAtTargetHeight()) 
+				setState(IWEState.EJECT);
+			else clearActiveSequence();
 		}
 		
 		//Exit Eject (if in eject and has been ejecting for long enough)
@@ -74,5 +86,6 @@ public class IWE extends StateMachine {
 		targetGamePiece = IWEGamePiece.HATCH;
 		targetHeight = IWEHeight.L1;
 		control = Constants.IWE_DEFAULT_CONTROL;
+		activeSequence = IWESequence.NONE;
 	}
 }

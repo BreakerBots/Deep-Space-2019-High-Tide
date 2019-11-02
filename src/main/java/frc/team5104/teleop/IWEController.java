@@ -5,9 +5,9 @@ import frc.team5104.statemachines.IWE;
 import frc.team5104.statemachines.IWE.IWEControl;
 import frc.team5104.statemachines.IWE.IWEGamePiece;
 import frc.team5104.statemachines.IWE.IWEHeight;
+import frc.team5104.statemachines.IWE.IWESequence;
 import frc.team5104.statemachines.IWE.IWEState;
 import frc.team5104.subsystems.elevator.Elevator;
-import frc.team5104.subsystems.wrist.Wrist;
 import frc.team5104.util.Deadband;
 import frc.team5104.util.console;
 import frc.team5104.util.Deadband.DeadbandType;
@@ -18,11 +18,14 @@ public class IWEController extends TeleopController {
 	protected String getName() { return "IWE Controller"; }
 
 	protected void update() {
-		//IWE State
-		if (Controls.IWE_IDLE.getPressed()) {
+		//Idle
+		if (Controls.IDLE.getPressed()) {
 			console.log(c.IWE, "idling");
 			IWE.setState(IWEState.IDLE);
+			IWE.clearActiveSequence();
 		}
+		
+		//Intake & Intake w/ Vision
 		if (Controls.IWE_INTAKE.getPressed()) {
 			if (IWE.getGamePiece() == IWEGamePiece.CARGO) {
 				IWE.cargoIntakeGround = IWE.getState() == IWEState.INTAKE ? !IWE.cargoIntakeGround : true;
@@ -39,9 +42,8 @@ public class IWEController extends TeleopController {
 			else console.log(c.IWE, "vision intaking hatch");
 			IWE.setState(IWEState.INTAKE);
 		}
-		if (Controls.IWE_PLACE_EJECT_IDLE_SEQUENCE.getPressed()) {
-			
-		}
+		
+		//Eject
 		if (Controls.IWE_PLACE_EJECT.getPressed()) {
 			if (IWE.getState() == IWEState.IDLE) {
 				console.log(c.IWE, "placing " + IWE.getGamePiece().name().toLowerCase());
@@ -54,7 +56,12 @@ public class IWEController extends TeleopController {
 			}
 		}
 		
-		//IWE Game Piece
+		//Sequences
+		if (Controls.IWE_PLACE_EJECT_IDLE_SEQUENCE.getPressed()) {
+			IWE.setActiveSequence(IWESequence.PLACE_EJECT_IDLE);
+		}
+		
+		//Game Piece
 		if (Controls.IWE_SWITCH_GAME_PIECE.getPressed()) {
 			IWE.setGamePiece(IWE.getGamePiece() == IWEGamePiece.HATCH ? IWEGamePiece.CARGO : IWEGamePiece.HATCH);
 			console.log(c.IWE, "switcing game piece to " + IWE.getGamePiece().toString().toLowerCase());
@@ -64,7 +71,7 @@ public class IWEController extends TeleopController {
 				Controls.IWE_SWITCH_CARGO_RUMBLE.start();
 		}
 		
-		//IWE Height
+		//Height
 		if (Controls.IWE_HEIGHT_L1.getPressed()) {
 			console.log(c.IWE, "setting target height to L1");
 			IWE.setHeight(IWEHeight.L1);
@@ -86,8 +93,8 @@ public class IWEController extends TeleopController {
 			Controls.IWE_SWITCH_HEIGHT_RUMBLE.start();
 		}
 		
-		//IWE Control
-		if (Controls.IWE_IDLE.getDoubleClick() == 2) {
+		//Control Mode
+		if (Controls.IDLE.getDoubleClick() == 2) {
 			IWE.setControl(IWE.getControl() == IWEControl.AUTONOMOUS ? IWEControl.MANUAL : IWEControl.AUTONOMOUS);
 			console.log(c.IWE, "setting control mode to " + IWE.getControl().toString().toLowerCase());
 		}
