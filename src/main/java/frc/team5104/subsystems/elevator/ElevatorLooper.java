@@ -1,5 +1,7 @@
 package frc.team5104.subsystems.elevator;
 
+import org.opencv.highgui.ImageWindow;
+
 import frc.team5104.main.Constants;
 import frc.team5104.statemachines.IWE;
 import frc.team5104.statemachines.IWE.IWEControl;
@@ -17,7 +19,9 @@ class ElevatorLooper extends Subsystem.Looper {
 	//Enums
 	static enum ElevatorState { CALIBRATING, MANUAL, AUTONOMOUS };
 	static enum ElevatorPosition { 
-		BOTTOM(0), L1(12), L2(24), L3(60), CARGO_EJECT_SHIP(40), CARGO_INTAKE_WALL(20);
+		BOTTOM(0), 
+		CARGO_SHIP(30), CARGO_WALL(20), CARGO_L1(12), CARGO_L2(24), CARGO_L3(60), 
+		HATCH_L2(24), HATCH_L3(60);
 		public double height; private ElevatorPosition(double height) { this.height = height; }
 	}
 	ElevatorState elevatorState;
@@ -38,14 +42,28 @@ class ElevatorLooper extends Subsystem.Looper {
 		//Sync Elevator Height
 		if (IWE.getState() == IWEState.EJECT || IWE.getState() == IWEState.PLACE) {
 			elevatorPosition = (
-					IWE.getHeight() == IWEHeight.L3 ? ElevatorPosition.L3 : 
-					(IWE.getHeight() == IWEHeight.L2 ? ElevatorPosition.L2 : 
-					ElevatorPosition.L1)
-				);
+				// L3 Cargo, Hatch
+				IWE.getHeight() == IWEHeight.L3 ? 
+					(IWE.getGamePiece() == IWE.IWEGamePiece.CARGO ? 
+						ElevatorPosition.CARGO_L3 : ElevatorPosition.HATCH_L3) :
+				//L2 Cargo, Hatch
+				(IWE.getHeight() == IWEHeight.L2 ? 
+					(IWE.getGamePiece() == IWE.IWEGamePiece.CARGO ?
+						ElevatorPosition.CARGO_L2 : ElevatorPosition.HATCH_L2) : 
+				//Ship + L1 Cargo, Hatch
+					(IWE.getGamePiece() == IWE.IWEGamePiece.CARGO ? 
+						(IWE.getHeight() == IWEHeight.L1 ? 
+							ElevatorPosition.CARGO_L1 : ElevatorPosition.CARGO_SHIP) :
+						ElevatorPosition.BOTTOM))
+			);
 		}
 		else if (IWE.getState() == IWEState.INTAKE) {
-			if (IWE.getGamePiece() == IWEGamePiece.HATCH) elevatorPosition = ElevatorPosition.L1;
-			else elevatorPosition = ElevatorPosition.CARGO_INTAKE_WALL;
+			if (IWE.getGamePiece() == IWEGamePiece.HATCH) elevatorPosition = ElevatorPosition.BOTTOM;
+			else {
+				if (IWE.cargoIntakeGround)
+					elevatorPosition = ElevatorPosition.BOTTOM;
+				else elevatorPosition = ElevatorPosition.CARGO_WALL;
+			}
 		}
 		else elevatorPosition = ElevatorPosition.BOTTOM;
 		
@@ -56,11 +74,11 @@ class ElevatorLooper extends Subsystem.Looper {
 			elevatorStateStartTime = System.currentTimeMillis();
 		
 		//Recalibrate During Runtime
-		if (elevatorState == ElevatorState.AUTONOMOUS && elevatorPosition == ElevatorPosition.BOTTOM &&
-			!CANifier.elevatorLowerLimitHit() && System.currentTimeMillis() > elevatorPositionStartTime + 6000) {
-			console.warn(c.ELEVATOR, "Recalibrating Elevator");
-			elevatorState = ElevatorState.CALIBRATING;
-		}
+//		if (elevatorState == ElevatorState.AUTONOMOUS && elevatorPosition == ElevatorPosition.BOTTOM &&
+//			!CANifier.elevatorLowerLimitHit() && System.currentTimeMillis() > elevatorPositionStartTime + 6000) {
+//			console.warn(c.ELEVATOR, "Recalibrating Elevator");
+//			elevatorState = ElevatorState.CALIBRATING;
+//		}
 		
 		//Control Elevator
 		if (elevatorState == ElevatorState.AUTONOMOUS) {

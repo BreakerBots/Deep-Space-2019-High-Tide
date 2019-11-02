@@ -7,16 +7,19 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import frc.team5104.main.Constants;
 import frc.team5104.main.Ports;
 import frc.team5104.subsystems.canifier.CANifier;
+import frc.team5104.util.WebappTuner.tunerOutput;
 import frc.team5104.util.managers.Subsystem;
 
-class ElevatorInterface extends Subsystem.Interface {
+public class ElevatorInterface extends Subsystem.Interface {
 
 	//Devices
 	private TalonSRX talon1 = new TalonSRX(Ports.ELEVATOR_TALON_1);
 	private TalonSRX talon2 = new TalonSRX(Ports.ELEVATOR_TALON_2);
+	double lastTargetHeight = 0;
 	
 	//Functions
 	void setMotionMagic(double height) {
+		lastTargetHeight = height;
 		talon1.set(
 			ControlMode.MotionMagic, height / Constants.ELEVATOR_SPOOL_CIRC * 4096.0,
 			DemandType.ArbitraryFeedForward, getFTerm()
@@ -24,12 +27,14 @@ class ElevatorInterface extends Subsystem.Interface {
 		talon1.config_kP(0, Constants.ELEVATOR_MOTION_KP);
 		talon1.config_kI(0, Constants.ELEVATOR_MOTION_KI);
 		talon1.config_kD(0, Constants.ELEVATOR_MOTION_KD);
+		talon1.configMotionAcceleration(Constants.ELEVATOR_MOTION_ACCEL);
+		talon1.configMotionCruiseVelocity(Constants.ELEVATOR_MOTION_CRUISE_VELOCITY);
 		updateLimitSwitches();
 	}
 	double getFTerm() {
 		//0-26 -> 0
 		//26+ -> 0.2
-		return getEncoderHeight() > 26 ? 0.2 : 0;
+		return getEncoderHeight() > 26 ? 0.2 : (getEncoderHeight() < 3 ? -0.2 : 0);
 	}
 	void setPercentOutput(double percent) {
 //		console.log((percent * talon1.getBusVoltage()) + "V, " + talon1.getOutputCurrent() + "A");
@@ -75,11 +80,13 @@ class ElevatorInterface extends Subsystem.Interface {
 		talon1.configMotionAcceleration(Constants.ELEVATOR_MOTION_ACCEL);
 		talon1.configMotionCruiseVelocity(Constants.ELEVATOR_MOTION_CRUISE_VELOCITY);
 		talon1.setSensorPhase(true);
+		talon1.configClosedloopRamp(0.1);
 		
 		talon2.configFactoryDefault();
 		talon2.configContinuousCurrentLimit(Constants.ELEVATOR_CURRENT_LIMIT, 10);
 		talon2.enableCurrentLimit(true);
 		talon2.setNeutralMode(Constants.ELEVATOR_NEUTRAL_MODE);
 		talon2.set(ControlMode.Follower, talon1.getDeviceID());
+		talon2.configClosedloopRamp(0.1);
 	}
 }

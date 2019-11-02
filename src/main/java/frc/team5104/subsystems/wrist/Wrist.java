@@ -15,6 +15,5 @@ public class Wrist extends Subsystem.Actions {
 	//Actions (mostly in IWE)
 	public static boolean encoderDisconnected() { return _interface.encoderDisconnected(); }
 	public static boolean backLimitSwitchHit() { return _interface.backLimitSwitchHit(); }
-	public static void setCargoIntakeGround(boolean ground) { _looper.cargoIntakeGround = ground; }
-	public static boolean getCargoIntakeGround() { return _looper.cargoIntakeGround; }
+	public static double getEncoder() { return _interface.getEncoderRotation(); }
 }

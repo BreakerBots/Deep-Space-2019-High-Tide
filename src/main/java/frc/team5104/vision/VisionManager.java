@@ -25,7 +25,7 @@ public class VisionManager {
 	@tunerInput
 	private static double VISION_FORWARD_TURN_P = 0.2;
 	@tunerInput
-	private static double VISION_FORWARD_FORWARD_P = 0.8;
+	private static double VISION_FORWARD_FORWARD_P = 1;
 	@tunerInput
 	private static double VISION_FORWARD_FORWARD_PE = 0.5;
 	@tunerInput
@@ -33,7 +33,7 @@ public class VisionManager {
 	@tunerInput
 	private static double VISION_FORWARD_TARGET_X = 2.2;
 	@tunerInput
-	private static double VISION_FORWARD_TARGET_Y = 10.0;
+	private static double VISION_FORWARD_TARGET_Y = 2.0;
 	@tunerInput
 	private static double VISION_FORWARD_TOL_Y = 0.5;
 

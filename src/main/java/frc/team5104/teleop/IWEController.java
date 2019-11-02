@@ -25,14 +25,22 @@ public class IWEController extends TeleopController {
 		}
 		if (Controls.IWE_INTAKE.getPressed()) {
 			if (IWE.getGamePiece() == IWEGamePiece.CARGO) {
-				if (IWE.getState() == IWEState.INTAKE)
-					Wrist.setCargoIntakeGround(!Wrist.getCargoIntakeGround());
-				else Wrist.setCargoIntakeGround(true);
-				console.log(c.IWE, "intaking cargo " + (Wrist.getCargoIntakeGround() ? "ground" : "wall"));
+				IWE.cargoIntakeGround = IWE.getState() == IWEState.INTAKE ? !IWE.cargoIntakeGround : true;
+				console.log(c.IWE, "intaking cargo " + (IWE.cargoIntakeGround ? "ground" : "wall"));
 			}
 			else console.log(c.IWE, "intaking hatch");
-			
 			IWE.setState(IWEState.INTAKE);
+		}
+		if (Controls.IWE_INTAKE_WITH_VISION.getPressed()) {
+			if (IWE.getGamePiece() == IWEGamePiece.CARGO) {
+				IWE.cargoIntakeGround = false;
+				console.log(c.IWE, "vision intaking cargo " + (IWE.cargoIntakeGround ? "ground" : "wall"));
+			}
+			else console.log(c.IWE, "vision intaking hatch");
+			IWE.setState(IWEState.INTAKE);
+		}
+		if (Controls.IWE_PLACE_EJECT_IDLE_SEQUENCE.getPressed()) {
+			
 		}
 		if (Controls.IWE_PLACE_EJECT.getPressed()) {
 			if (IWE.getState() == IWEState.IDLE) {

@@ -27,7 +27,6 @@ class WristLooper extends Subsystem.Looper {
 	private WristPosition lastWristPosition;
 	long wristStateStartTime = 0;
 	long wristPositionStartTime = 0;
-	boolean cargoIntakeGround = false;
 	private Buffer limitSwitchZeroBuffer = new Buffer(5, false);
 	private Buffer averageMotorOutput = new Buffer(300, 0.0);
 	
@@ -46,7 +45,7 @@ class WristLooper extends Subsystem.Looper {
 		}
 		else {
 			if (IWE.getState() == IWEState.INTAKE) {
-				if (cargoIntakeGround)
+				if (IWE.cargoIntakeGround)
 					wristPosition = WristPosition.CARGO_INTAKE_GROUND;
 				else wristPosition = WristPosition.CARGO_INTAKE_WALL;
 			}
@@ -65,7 +64,7 @@ class WristLooper extends Subsystem.Looper {
 		
 		//Recalibrate During Runtime
 		if (wristState == WristState.AUTONOMOUS && wristPosition == WristPosition.BACK &&
-			!Wrist.backLimitSwitchHit() && System.currentTimeMillis() > wristPositionStartTime + 3000) {
+			!Wrist.backLimitSwitchHit() && System.currentTimeMillis() > wristPositionStartTime + 8000) {
 			console.warn(c.WRIST, "Recalibrating Wrist");
 			wristState = WristState.CALIBRATING;
 		}
@@ -73,7 +72,7 @@ class WristLooper extends Subsystem.Looper {
 		//Control Wrist
 		if (wristState == WristState.AUTONOMOUS) {
 			//Autonomous
-			Wrist._interface.setMotionMagic(wristPosition.degrees, wristPositionStartTime > Constants.WRIST_LIMP_MODE_TIME_START);
+			Wrist._interface.setMotionMagic(wristPosition.degrees, System.currentTimeMillis() > wristPositionStartTime + Constants.WRIST_LIMP_MODE_TIME_START);
 			
 			//Error Catch
 			//if (giving neg output for too long) { stop(); }

@@ -20,10 +20,13 @@ public class IWE extends StateMachine {
 	public static enum IWEGamePiece { CARGO, HATCH }
 	public static enum IWEHeight { L1, L2, L3, SHIP }
 	public static enum IWEControl { MANUAL, AUTONOMOUS }
+	public static enum IWESequence { NONE, PLACE_EJECT_IDLE }
 	private static IWEState targetState;
 	private static IWEGamePiece targetGamePiece;
 	private static IWEHeight targetHeight;
 	private static IWEControl control;
+	private static IWESequence activeSequence;
+	public static boolean cargoIntakeGround = true;
 	private static long ejectStart = 0;
 	public static double desiredWristManaul = 0;
 	public static double desiredElevatorManaul = 0;

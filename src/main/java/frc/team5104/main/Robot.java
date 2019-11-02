@@ -8,6 +8,8 @@ import frc.team5104.main.setup.RobotState;
 import frc.team5104.statemachines.IWE;
 import frc.team5104.subsystems.drive.Drive;
 import frc.team5104.subsystems.drive.Odometry;
+import frc.team5104.subsystems.elevator.Elevator;
+import frc.team5104.subsystems.elevator.ElevatorInterface;
 import frc.team5104.subsystems.intake.Intake;
 import frc.team5104.subsystems.wrist.Wrist;
 import frc.team5104.teleop.CompressorController;
@@ -16,6 +18,7 @@ import frc.team5104.teleop.IWEController;
 import frc.team5104.util.BreakerCompressor;
 import frc.team5104.util.Controller;
 import frc.team5104.util.WebappTuner;
+import frc.team5104.util.console;
 import frc.team5104.util.managers.StateMachineManager;
 import frc.team5104.util.managers.SubsystemManager;
 import frc.team5104.util.managers.TeleopControllerManager;
@@ -28,7 +31,7 @@ public class Robot extends RobotController.BreakerRobot {
 		SubsystemManager.useSubsystems(
 			new Drive(),
 			new Wrist(),
-//			new Elevator()
+			new Elevator(),
 			new Intake()
 		);
 		StateMachineManager.useStateMachines(
@@ -49,7 +52,7 @@ public class Robot extends RobotController.BreakerRobot {
 		Limelight.init();
 		
 		//Debug Subsystems
-		WebappTuner.init(/*VisionManager.class, Limelight.class, Drive.class*//*Constants.class*/);
+		WebappTuner.init(Constants.class, Elevator.class);
 		SubsystemManager.debug();
 	}
 	

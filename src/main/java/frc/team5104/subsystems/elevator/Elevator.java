@@ -1,6 +1,7 @@
 package frc.team5104.subsystems.elevator;
 
 import frc.team5104.subsystems.canifier.CANifier;
+import frc.team5104.util.WebappTuner.tunerOutput;
 import frc.team5104.util.managers.Subsystem;
 import frc.team5104.util.managers.Subsystem.Interface;
 import frc.team5104.util.managers.Subsystem.Looper;
@@ -17,4 +18,10 @@ public class Elevator extends Subsystem.Actions {
 	public static boolean encoderDisconnected() { return _interface.encoderDisconnected(); }
 	public static int getMillisAtL3() { return (int) (System.currentTimeMillis() - _looper.elevatorPositionStartTime); }
 	public static boolean lowerLimitSwitchHit() { return CANifier.elevatorLowerLimitHit(); }
+	@tunerOutput
+	public static double getMotorOutputPercent() { return _interface.getMotorPercentOutput() * 100; }
+	@tunerOutput
+	public static double getEncoderHeight() { return _interface.getEncoderHeight(); }
+	@tunerOutput
+	public static double getTargetEncoderHeight() { return _interface.lastTargetHeight; }
 }
