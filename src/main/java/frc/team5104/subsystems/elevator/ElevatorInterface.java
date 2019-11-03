@@ -7,6 +7,7 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import frc.team5104.main.Constants;
 import frc.team5104.main.Ports;
 import frc.team5104.subsystems.canifier.CANifier;
+import frc.team5104.subsystems.elevator.ElevatorLooper.ElevatorPosition;
 import frc.team5104.util.managers.Subsystem;
 
 public class ElevatorInterface extends Subsystem.Interface {
@@ -31,9 +32,12 @@ public class ElevatorInterface extends Subsystem.Interface {
 		updateLimitSwitches();
 	}
 	double getFTerm() {
-		//0-26 -> 0
-		//26+ -> 0.2
-		return getEncoderHeight() > 26 ? 0.2 : (getEncoderHeight() < 3 ? -0.2 : 0);
+		double f = 0;
+		if (getEncoderHeight() > 26) 
+			f += 0.2;
+		if (Elevator._looper.elevatorPosition == ElevatorPosition.BOTTOM)
+			f -= 0.2;
+		return f;
 	}
 	void setPercentOutput(double percent) {
 //		console.log((percent * talon1.getBusVoltage()) + "V, " + talon1.getOutputCurrent() + "A");

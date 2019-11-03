@@ -3,6 +3,8 @@ package frc.team5104.vision;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import frc.team5104.util.CrashLogger;
+import frc.team5104.util.CrashLogger.Crash;
 import frc.team5104.util.WebappTuner.tunerOutput;
 import frc.team5104.util.console;
 import frc.team5104.util.console.c;
@@ -37,16 +39,32 @@ public class Limelight {
 			setEntry("ledMode", ledMode.value);  
 		else console.warn(c.VISION, "limelight is not connected");
 	}
+
+	public static enum CamMode { VISION(0), DRIVE(1); int value; private CamMode(int value) { this.value = value; } }
+	public static void setcamMode(CamMode cMode) { 
+		if (isConnected())
+			setEntry("camMode", cMode.value);  
+		else console.warn(c.VISION, "limelight is not connected");
+	}
 	
 	public static void init() {
-		table = NetworkTableInstance.getDefault().getTable("limelight");
-		if (isConnected()) {
-			setLEDMode(LEDMode.OFF);
-			setEntry("camMode", 0);
-			setEntry("pipeline", 0);
-			setEntry("stream", 0);
-			setEntry("snapshot", 0);
-		}
-		else console.warn(c.VISION, "limelight is not connected");
+		Thread initLimelightThread = new Thread() {
+			public void run() {
+				try { while (!Thread.interrupted()) {
+					table = NetworkTableInstance.getDefault().getTable("limelight");
+					if (isConnected()) {
+						setLEDMode(LEDMode.OFF);
+						setEntry("camMode", 1);
+						setEntry("pipeline", 0);
+						setEntry("stream", 0);
+						setEntry("snapshot", 0);
+						break;
+					}
+					else Thread.sleep(200);
+				} }
+				catch (Exception e) { CrashLogger.logCrash(new Crash("Init Limelight Thread", e)); }
+			}
+		};
+		initLimelightThread.start();
 	}
 }

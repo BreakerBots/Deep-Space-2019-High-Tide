@@ -8,6 +8,7 @@ import frc.team5104.util.console;
 import frc.team5104.util.console.c;
 import frc.team5104.util.console.t;
 import frc.team5104.vision.Limelight.LEDMode;
+import frc.team5104.vision.Limelight.CamMode;
 
 public class VisionManager {
 
@@ -39,9 +40,7 @@ public class VisionManager {
 
 	//FINAL: Adjust the robot until flush
 	@tunerInput
-	private static double VISION_FINAL_TURN_P = 0.01;
-	@tunerInput
-	private static double VISION_FINAL_FORWARD_KV = 0.3;
+	private static double VISION_FINAL_TURN_P = 0.5;
 	@tunerInput
 	private static double VISION_FINAL_TARGET_X = 2.2;
 	@tunerInput
@@ -49,24 +48,13 @@ public class VisionManager {
 	
 	//Other Constants/Variables
 	private static enum VisionState { INITIAL, FORWARD, FINAL, FINISHED }
-	private static VisionState visionState = VisionState.INITIAL;
-	private static VisionState lastVisionState = VisionState.INITIAL;
+	private static VisionState visionState = VisionState.FINISHED;
+	private static VisionState lastVisionState = VisionState.FINISHED;
 	private static final int VISION_LOST_TARGET_EXIT_COUNT = 20;
 	private static long stateStartTime = System.currentTimeMillis();
 	private static int lostTargetCount;
 	private static double lastX, lastY;
 	
-	//Initialize
-	public static void init() {
-		Limelight.init();
-		Limelight.setLEDMode(LEDMode.ON);
-		visionState = VisionState.INITIAL;
-		stateStartTime = System.currentTimeMillis();
-		lostTargetCount = 0;
-		lastX = 0;
-		lastY = 0;
-	}
-
 	//Update Loop
 	public static DriveSignal getNextDriveSignal() {
 		//Read x, y values and set to last values if can't read value
@@ -90,7 +78,7 @@ public class VisionManager {
 			stateStartTime = System.currentTimeMillis();
 		
 		//Handle States
-		DriveSignal returnSignal;
+		DriveSignal returnSignal = new DriveSignal();
 		switch (visionState) {
 			//Final Turn
 			case INITIAL: {
@@ -124,15 +112,10 @@ public class VisionManager {
 				
 				double errorX = VISION_FINAL_TARGET_X - x;
 				double turn = VISION_FINAL_TURN_P * errorX;
-				double forward = VISION_FINAL_FORWARD_KV;
-				returnSignal = new DriveSignal(forward - turn, forward + turn, true, DriveUnit.voltage);
+				returnSignal = new DriveSignal(-turn, turn, true, DriveUnit.voltage);
 				break;
 			}
-			
-			default: {
-				returnSignal = new DriveSignal();
-				break;
-			}
+			default: break;
 		}
 		
 		//Save last Values
@@ -146,11 +129,22 @@ public class VisionManager {
 		return returnSignal;
 	}
 
-	public static boolean isFinished() {
-		return visionState == VisionState.FINISHED;
-	}
+	//Getters
+	public static boolean isFinished() { return visionState == VisionState.FINISHED; }
+	public static boolean isInVision() { return !isFinished(); }
 
+	//Start and End
 	public static void end() {
 		Limelight.setLEDMode(LEDMode.OFF);
+		Limelight.setcamMode(CamMode.DRIVE);
+	}
+	public static void start() {
+		Limelight.setLEDMode(LEDMode.ON);
+		Limelight.setcamMode(CamMode.VISION);
+		visionState = VisionState.INITIAL;
+		stateStartTime = System.currentTimeMillis();
+		lostTargetCount = 0;
+		lastX = 0;
+		lastY = 0;
 	}
 }

@@ -6,6 +6,7 @@ import frc.team5104.statemachines.IWE.IWEControl;
 import frc.team5104.statemachines.IWE.IWEGamePiece;
 import frc.team5104.statemachines.IWE.IWEHeight;
 import frc.team5104.statemachines.IWE.IWEState;
+import frc.team5104.subsystems.elevator.Elevator;
 import frc.team5104.util.Buffer;
 import frc.team5104.util.console;
 import frc.team5104.util.console.c;
@@ -17,8 +18,8 @@ class WristLooper extends Subsystem.Looper {
 	//Enums
 	static enum WristState { CALIBRATING, MANUAL, AUTONOMOUS };
 	static enum WristPosition {
-		BACK(0), HATCH_INTAKE(80), HATCH_EJECT(80), CARGO_EJECT_ROCKET(60), 
-		CARGO_EJECT_SHIP(120), CARGO_INTAKE_WALL(50), CARGO_INTAKE_GROUND(130); /*CARGO_INTAKE_GROUND(160), HATCH_PLACE_ANGLED(60), CARGO_PLACE_ANGLED(135)*/
+		BACK(0), HATCH_INTAKE(80), HATCH_EJECT(80), CARGO_EJECT_ROCKET(30), 
+		CARGO_EJECT_SHIP(120), CARGO_INTAKE_WALL(50), CARGO_INTAKE_GROUND(125); /*CARGO_INTAKE_GROUND(160), HATCH_PLACE_ANGLED(60), CARGO_PLACE_ANGLED(135)*/
 		public double degrees; private WristPosition(double degrees) { this.degrees = degrees; }
 	}
 	WristState wristState;
@@ -37,13 +38,16 @@ class WristLooper extends Subsystem.Looper {
 		else if (wristState == WristState.MANUAL) wristState = WristState.CALIBRATING;
 		
 		//Sync Wrist Position
-		if (IWE.getState() == IWEState.IDLE) wristPosition = WristPosition.BACK;
+		if (IWE.getState() == IWEState.IDLE || !Elevator.isRoughlyAtTargetHeight()) 
+			wristPosition = WristPosition.BACK;
 		else if (IWE.getGamePiece() == IWEGamePiece.HATCH) {
+			//Hatch
 			if (IWE.getState() == IWEState.INTAKE)
 				wristPosition = WristPosition.HATCH_INTAKE;
 			else wristPosition = WristPosition.HATCH_EJECT;
 		}
 		else {
+			//Cargo
 			if (IWE.getState() == IWEState.INTAKE) {
 				if (IWE.cargoIntakeGround)
 					wristPosition = WristPosition.CARGO_INTAKE_GROUND;

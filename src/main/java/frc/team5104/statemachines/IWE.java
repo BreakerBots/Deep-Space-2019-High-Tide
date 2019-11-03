@@ -62,13 +62,13 @@ public class IWE extends StateMachine {
 				setState(IWEState.PLACE);
 			else if (getState() == IWEState.PLACE && Elevator.isAtTargetHeight()) 
 				setState(IWEState.EJECT);
-			else clearActiveSequence();
 		}
 		
 		//Exit Eject (if in eject and has been ejecting for long enough)
 		if (getState() == IWEState.EJECT && (System.currentTimeMillis() > ejectStart + Constants.IWE_EJECT_TIME)) {
 			console.log(c.IWE, "finished eject... idling");
 			setState(IWEState.IDLE);
+			clearActiveSequence();
 		}
 		
 		//Exit Intake (if in intake and has desired game piece)

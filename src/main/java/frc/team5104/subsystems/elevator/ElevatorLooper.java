@@ -17,15 +17,15 @@ class ElevatorLooper extends Subsystem.Looper {
 	//Enums
 	static enum ElevatorState { CALIBRATING, MANUAL, AUTONOMOUS };
 	static enum ElevatorPosition { 
-		BOTTOM(0), 
-		CARGO_SHIP(30), CARGO_WALL(20), CARGO_L1(12), CARGO_L2(24), CARGO_L3(60), 
-		HATCH_L2(24), HATCH_L3(60);
+		BOTTOM(-4), 
+		CARGO_SHIP(24), CARGO_WALL(20), CARGO_L1(4), CARGO_L2(25), CARGO_L3(58), 
+		HATCH_L2(20), HATCH_L3(52);
 		public double height; private ElevatorPosition(double height) { this.height = height; }
 	}
 	ElevatorState elevatorState;
 	ElevatorPosition elevatorPosition;
-	private ElevatorState lastElevatorState;
-	private ElevatorPosition lastElevatorPosition;
+	ElevatorState lastElevatorState;
+	ElevatorPosition lastElevatorPosition;
 	long elevatorStateStartTime = System.currentTimeMillis();
 	long elevatorPositionStartTime = System.currentTimeMillis();
 	private Buffer limitSwitchZeroBuffer = new Buffer(5, false);

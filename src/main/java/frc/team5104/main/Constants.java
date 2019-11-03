@@ -71,6 +71,7 @@ public class Constants {
 	@tunerInput
 	public static int ELEVATOR_MOTION_CRUISE_VELOCITY = 12000;
 	public static double ELEVATOR_HEIGHT_TOL = 6;
+	public static double ELEVATOR_HEIGHT_TOL_ROUGH = 16;
 	
 	//Autonomous
 	public static final double AUTO_MAX_VELOCITY = 10; //ft/s

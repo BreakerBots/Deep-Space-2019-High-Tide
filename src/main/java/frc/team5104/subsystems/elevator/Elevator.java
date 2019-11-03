@@ -12,7 +12,7 @@ public class Elevator extends Subsystem.Actions {
 	protected String getName() { return "Elevator"; }
 	static ElevatorInterface _interface = new ElevatorInterface();
 	protected Interface getInterface() { return _interface; }
-	private static ElevatorLooper _looper = new ElevatorLooper();
+	static ElevatorLooper _looper = new ElevatorLooper();
 	protected Looper getLooper() { return _looper; }
 	
 	//Actions (mostly in IWE)
@@ -26,4 +26,5 @@ public class Elevator extends Subsystem.Actions {
 	@tunerOutput
 	public static double getTargetEncoderHeight() { return _interface.lastTargetHeight; }
 	public static boolean isAtTargetHeight() { return Math.abs(getEncoderHeight() - getTargetEncoderHeight()) < Constants.ELEVATOR_HEIGHT_TOL; }
+	public static boolean isRoughlyAtTargetHeight() { return Math.abs(getEncoderHeight() - getTargetEncoderHeight()) < Constants.ELEVATOR_HEIGHT_TOL_ROUGH; }
 }
