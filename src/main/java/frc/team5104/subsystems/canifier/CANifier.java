@@ -16,7 +16,6 @@ public class CANifier extends Subsystem.Actions {
 	public static void display(LEDsMode ledmode) {
 		_looper.ledmode = ledmode;
 	}
-	
 	public static boolean elevatorLowerLimitHit() {
 		return !_interface.revLimitHit();
 	}

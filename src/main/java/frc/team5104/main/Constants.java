@@ -2,9 +2,7 @@
 package frc.team5104.main;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
-
 import frc.team5104.statemachines.IWE.IWEControl;
-import frc.team5104.util.WebappTuner.tunerInput;
 
 public class Constants {
 	//Console
@@ -13,7 +11,7 @@ public class Constants {
 	
 	//Loops
 	public static final int MAIN_LOOP_SPEED = 50;
-	public static final int ODOMETRY_LOOP_SPEED = 100;
+	public static final int AUTONOMOUS_LOOP_SPEED = 100;
 	
 	//Robot Meta
 	public static final String ROBOT_NAME = "High-Tide";
@@ -44,6 +42,7 @@ public class Constants {
 	public static final int WRIST_MOTION_CRUISE_VELOCITY = 2000;
 	public static final double WRIST_LIMP_MODE_MAX_SPEED = 0.1;
 	public static final int WRIST_LIMP_MODE_TIME_START = 1500;
+	public static final double WRIST_ANGLE_TOL = 10;
 	
 	//Intake
 	public static final double INTAKE_INTAKE_SPEED_HATCH = 1;
@@ -60,18 +59,13 @@ public class Constants {
 	public static final double ELEVATOR_CALIBRATE_SPEED = 0.25;
 	public static final int ELEVATOR_CURRENT_LIMIT = 20;
 	public static final NeutralMode ELEVATOR_NEUTRAL_MODE = NeutralMode.Brake;
-	@tunerInput
-	public static double ELEVATOR_MOTION_KP = 0.5;
-	@tunerInput
-	public static double ELEVATOR_MOTION_KI = 0;
-	@tunerInput
-	public static double ELEVATOR_MOTION_KD = 5;
-	@tunerInput
-	public static int ELEVATOR_MOTION_ACCEL = 12000;
-	@tunerInput
-	public static int ELEVATOR_MOTION_CRUISE_VELOCITY = 12000;
-	public static double ELEVATOR_HEIGHT_TOL = 6;
-	public static double ELEVATOR_HEIGHT_TOL_ROUGH = 16;
+	public static final double ELEVATOR_MOTION_KP = 0.5;
+	public static final double ELEVATOR_MOTION_KI = 0;
+	public static final double ELEVATOR_MOTION_KD = 6;
+	public static final int ELEVATOR_MOTION_ACCEL = 12000;
+	public static final int ELEVATOR_MOTION_CRUISE_VELOCITY = 12000;
+	public static final double ELEVATOR_HEIGHT_TOL = 6;
+	public static final double ELEVATOR_HEIGHT_TOL_ROUGH = 12;
 	
 	//Autonomous
 	public static final double AUTO_MAX_VELOCITY = 10; //ft/s

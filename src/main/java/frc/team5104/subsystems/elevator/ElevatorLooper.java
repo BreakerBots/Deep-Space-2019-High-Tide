@@ -8,12 +8,12 @@ import frc.team5104.statemachines.IWE.IWEHeight;
 import frc.team5104.statemachines.IWE.IWEState;
 import frc.team5104.subsystems.canifier.CANifier;
 import frc.team5104.util.Buffer;
+import frc.team5104.util.WebappTuner.tunerInput;
 import frc.team5104.util.console;
 import frc.team5104.util.console.c;
 import frc.team5104.util.managers.Subsystem;
-import frc.team5104.util.managers.SubsystemManager.DebugMessage;
 
-class ElevatorLooper extends Subsystem.Looper {
+public class ElevatorLooper extends Subsystem.Looper {
 	//Enums
 	static enum ElevatorState { CALIBRATING, MANUAL, AUTONOMOUS };
 	static enum ElevatorPosition { 
@@ -31,8 +31,33 @@ class ElevatorLooper extends Subsystem.Looper {
 	private Buffer limitSwitchZeroBuffer = new Buffer(5, false);
 	private Buffer averageMotorOutput = new Buffer(300, 0.0);
 	
+	//tuner heights
+	@tunerInput
+	static double CARGO_SHIP = ElevatorPosition.CARGO_SHIP.height; 
+	@tunerInput
+	static double CARGO_WALL = ElevatorPosition.CARGO_WALL.height;
+	@tunerInput
+	static double CARGO_L1 = ElevatorPosition.CARGO_L1.height;
+	@tunerInput
+	static double CARGO_L2 = ElevatorPosition.CARGO_L2.height;
+	@tunerInput
+	static double CARGO_L3 = ElevatorPosition.CARGO_L3.height;
+	@tunerInput
+	static double HATCH_L2 = ElevatorPosition.HATCH_L2.height;
+	@tunerInput
+	static double HATCH_L3 = ElevatorPosition.HATCH_L3.height;
+	
 	//Loop
 	protected void update() {
+		//tuner heights
+		ElevatorPosition.CARGO_SHIP.height = CARGO_SHIP;
+		ElevatorPosition.CARGO_WALL.height = CARGO_WALL;
+		ElevatorPosition.CARGO_L1.height = CARGO_L1;
+		ElevatorPosition.CARGO_L2.height = CARGO_L2;
+		ElevatorPosition.CARGO_L3.height = CARGO_L3;
+		ElevatorPosition.HATCH_L2.height = HATCH_L2;
+		ElevatorPosition.HATCH_L3.height = HATCH_L3;
+		
 		//Sync Elevator State (Force Manaul if IWE is Manual. If switched from manual -> auto then bring it into calibrating)
 		if (IWE.getControl() == IWEControl.MANUAL) elevatorState = ElevatorState.MANUAL;
 		else if (elevatorState == ElevatorState.MANUAL) elevatorState = ElevatorState.CALIBRATING;
@@ -119,15 +144,6 @@ class ElevatorLooper extends Subsystem.Looper {
 		averageMotorOutput.update(Elevator._interface.getMotorPercentOutput());
 	}
 
-	//Debug
-	protected DebugMessage debug() {
-		return new DebugMessage(
-				"heit: ", Elevator._interface.getRawEncoderPosition(),
-				"vel: ", Elevator._interface.getRawEncoderVelocity(),
-				"po: ", IWE.desiredElevatorManaul
-			);
-	}
-	
 	//Enabled/Disabled
 	protected void disabled() {
 		if (IWE.getControl() == IWEControl.AUTONOMOUS)

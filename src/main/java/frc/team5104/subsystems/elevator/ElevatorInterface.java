@@ -24,11 +24,6 @@ public class ElevatorInterface extends Subsystem.Interface {
 			ControlMode.MotionMagic, height / Constants.ELEVATOR_SPOOL_CIRC * 4096.0,
 			DemandType.ArbitraryFeedForward, getFTerm()
 		);
-		talon1.config_kP(0, Constants.ELEVATOR_MOTION_KP);
-		talon1.config_kI(0, Constants.ELEVATOR_MOTION_KI);
-		talon1.config_kD(0, Constants.ELEVATOR_MOTION_KD);
-		talon1.configMotionAcceleration(Constants.ELEVATOR_MOTION_ACCEL);
-		talon1.configMotionCruiseVelocity(Constants.ELEVATOR_MOTION_CRUISE_VELOCITY);
 		updateLimitSwitches();
 	}
 	double getFTerm() {

@@ -3,6 +3,9 @@ package frc.team5104.teleop;
 
 import frc.team5104.main.Constants;
 import frc.team5104.main.Controls;
+import frc.team5104.statemachines.IWE;
+import frc.team5104.statemachines.IWE.IWEGamePiece;
+import frc.team5104.statemachines.IWE.IWEHeight;
 import frc.team5104.subsystems.drive.Drive;
 import frc.team5104.subsystems.drive.DriveHelper;
 import frc.team5104.subsystems.elevator.Elevator;
@@ -20,14 +23,14 @@ public class DriveController extends TeleopController {
 		}
 		
 		//Enter Vision (Alt)
-		if (Controls.IWE_INTAKE_WITH_VISION.getPressed()) {
+		if (Controls.IWE_INTAKE_WITH_VISION.getPressed())
 			VisionManager.start();
-		}
+		if (Controls.IWE_VPEI_SEQUENCE.getPressed() && !(IWE.getHeight() == IWEHeight.SHIP && IWE.getGamePiece() == IWEGamePiece.CARGO))
+			VisionManager.start();
 		
 		//Exit Vision (Alts)
-		if (isAgressivelyTryingToExitVision() || Controls.IDLE.getPressed()) {
+		if (isAgressivelyTryingToExitVision() || Controls.IDLE.getPressed())
 			VisionManager.end();
-		}
 		
 		//Update Manual Drive or Vision
 		if (VisionManager.isInVision())

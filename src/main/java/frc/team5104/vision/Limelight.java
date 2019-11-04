@@ -50,7 +50,7 @@ public class Limelight {
 	public static void init() {
 		Thread initLimelightThread = new Thread() {
 			public void run() {
-				try { while (!Thread.interrupted()) {
+				while (!Thread.interrupted()) { try { 
 					table = NetworkTableInstance.getDefault().getTable("limelight");
 					if (isConnected()) {
 						setLEDMode(LEDMode.OFF);
@@ -58,11 +58,12 @@ public class Limelight {
 						setEntry("pipeline", 0);
 						setEntry("stream", 0);
 						setEntry("snapshot", 0);
+						console.log(c.VISION, "connected to limelight");
 						break;
 					}
 					else Thread.sleep(200);
-				} }
-				catch (Exception e) { CrashLogger.logCrash(new Crash("Init Limelight Thread", e)); }
+				}
+				catch (Exception e) { CrashLogger.logCrash(new Crash("Init Limelight Thread", e)); } }
 			}
 		};
 		initLimelightThread.start();

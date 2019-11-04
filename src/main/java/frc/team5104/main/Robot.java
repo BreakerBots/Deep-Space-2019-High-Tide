@@ -9,6 +9,7 @@ import frc.team5104.statemachines.IWE;
 import frc.team5104.subsystems.drive.Drive;
 import frc.team5104.subsystems.drive.Odometry;
 import frc.team5104.subsystems.elevator.Elevator;
+import frc.team5104.subsystems.elevator.ElevatorLooper;
 import frc.team5104.subsystems.intake.Intake;
 import frc.team5104.subsystems.wrist.Wrist;
 import frc.team5104.teleop.CompressorController;
@@ -49,8 +50,7 @@ public class Robot extends RobotController.BreakerRobot {
 		Limelight.init();
 		
 		//Debug Subsystems
-		WebappTuner.init();
-		SubsystemManager.debug();
+		WebappTuner.init(Elevator.class, ElevatorLooper.class);
 	}
 	
 	//Teleop (includes sandstorm)

@@ -10,6 +10,7 @@ import frc.team5104.util.Buffer;
 import frc.team5104.util.console;
 import frc.team5104.util.console.c;
 import frc.team5104.util.managers.StateMachine;
+import frc.team5104.vision.VisionManager;
 
 /** Father State Machine for the Intake, Wrist, and Elevator */
 public class IWE extends StateMachine {
@@ -20,7 +21,7 @@ public class IWE extends StateMachine {
 	public static enum IWEGamePiece { CARGO, HATCH }
 	public static enum IWEHeight { L1, L2, L3, SHIP }
 	public static enum IWEControl { MANUAL, AUTONOMOUS }
-	public static enum IWESequence { NONE, PLACE_EJECT_IDLE }
+	public static enum IWESequence { NONE, VPEI }
 	private static IWEState targetState;
 	private static IWEGamePiece targetGamePiece;
 	private static IWEHeight targetHeight;
@@ -57,11 +58,18 @@ public class IWE extends StateMachine {
 		}
 		
 		//Place Eject Idle Sequence
-		if (getActiveSequence() == IWESequence.PLACE_EJECT_IDLE) {
-			if (getState() == IWEState.IDLE || getState() == IWEState.INTAKE) 
-				setState(IWEState.PLACE);
-			else if (getState() == IWEState.PLACE && Elevator.isAtTargetHeight()) 
-				setState(IWEState.EJECT);
+		if (getActiveSequence() == IWESequence.VPEI) {
+			if (VisionManager.isInVision()) {
+				if (IWE.getHeight() == IWEHeight.L1 || IWE.getHeight() == IWEHeight.SHIP)
+					IWE.setState(IWEState.PLACE);
+				else IWE.setState(IWEState.IDLE);
+			}
+			else {
+				if (getState() == IWEState.IDLE || getState() == IWEState.INTAKE) 
+					setState(IWEState.PLACE);
+				else if (getState() == IWEState.PLACE && Elevator.isAtTargetHeight() && Wrist.isAtTargetAngle()) 
+					setState(IWEState.EJECT);
+			}
 		}
 		
 		//Exit Eject (if in eject and has been ejecting for long enough)

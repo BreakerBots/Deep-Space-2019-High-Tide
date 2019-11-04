@@ -1,5 +1,9 @@
 package frc.team5104.vision;
 
+import frc.team5104.statemachines.IWE;
+import frc.team5104.statemachines.IWE.IWEGamePiece;
+import frc.team5104.statemachines.IWE.IWEHeight;
+import frc.team5104.statemachines.IWE.IWEState;
 import frc.team5104.subsystems.drive.DriveObjects.DriveSignal;
 import frc.team5104.subsystems.drive.DriveObjects.DriveUnit;
 import frc.team5104.util.BreakerMath;
@@ -34,17 +38,21 @@ public class VisionManager {
 	@tunerInput
 	private static double VISION_FORWARD_TARGET_X = 2.2;
 	@tunerInput
-	private static double VISION_FORWARD_TARGET_Y = 2.0;
+	private static double VISION_FORWARD_TARGET_Y_NORMAL = 2.0;
 	@tunerInput
-	private static double VISION_FORWARD_TOL_Y = 0.5;
+	private static double VISION_FORWARD_TARGET_Y_EARLY = 10.0;
+	@tunerInput
+	private static double VISION_FORWARD_TARGET_Y_VERY_EARLY = 14.0;
+	@tunerInput
+	private static double VISION_FORWARD_TOL_Y = 1;
 
 	//FINAL: Adjust the robot until flush
 	@tunerInput
-	private static double VISION_FINAL_TURN_P = 0.5;
+	private static double VISION_FINAL_TURN_P = 0.25;
 	@tunerInput
 	private static double VISION_FINAL_TARGET_X = 2.2;
 	@tunerInput
-	private static double VISION_FINAL_TOL_X = 0.5;
+	private static double VISION_FINAL_TOL_X = 2;
 	
 	//Other Constants/Variables
 	private static enum VisionState { INITIAL, FORWARD, FINAL, FINISHED }
@@ -94,12 +102,24 @@ public class VisionManager {
 				
 			//Forward
 			case FORWARD: {
-				if (Math.abs(VISION_FORWARD_TARGET_Y - y) < VISION_FORWARD_TOL_Y)
+				double targetY = VISION_FORWARD_TARGET_Y_NORMAL;
+				if (IWE.getState() != IWEState.INTAKE && 
+					(IWE.getHeight() == IWEHeight.L2 || IWE.getHeight() == IWEHeight.L3) &&
+					IWE.getGamePiece() == IWEGamePiece.HATCH) {
+					targetY = VISION_FORWARD_TARGET_Y_EARLY;
+				}
+				if (IWE.getState() != IWEState.INTAKE && 
+					IWE.getHeight() != IWEHeight.SHIP &&
+					IWE.getGamePiece() == IWEGamePiece.CARGO) {
+					targetY = VISION_FORWARD_TARGET_Y_VERY_EARLY;
+				}
+				
+				if (Math.abs(targetY - y) < VISION_FORWARD_TOL_Y)
 					visionState = VisionState.FINAL;
 				
 				double errorX = VISION_FORWARD_TARGET_X - x;
 				double turn = VISION_FORWARD_TURN_P * errorX;
-				double errorY = VISION_FORWARD_TARGET_Y - y;
+				double errorY = targetY - y;
 				double forward = VISION_FORWARD_FORWARD_P * Math.pow(-errorY-VISION_FORWARD_FORWARD_SUB, VISION_FORWARD_FORWARD_PE);
 				returnSignal = new DriveSignal(forward - turn, forward + turn, true, DriveUnit.voltage);
 				break;

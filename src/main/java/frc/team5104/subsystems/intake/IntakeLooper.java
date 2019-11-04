@@ -6,7 +6,6 @@ import frc.team5104.statemachines.IWE.IWEGamePiece;
 import frc.team5104.statemachines.IWE.IWEState;
 import frc.team5104.subsystems.intake.IntakeInterface.IntakePistonMode;
 import frc.team5104.util.managers.Subsystem;
-import frc.team5104.util.managers.SubsystemManager.DebugMessage;
 
 class IntakeLooper extends Subsystem.Looper {
 
@@ -49,14 +48,6 @@ class IntakeLooper extends Subsystem.Looper {
 		}
 	}
 
-	//Debug
-	protected DebugMessage debug() {
-		return new DebugMessage(
-				"hasCargo: ", Intake._interface.hasCargo(),
-				"hasHatch: ", Intake._interface.hasHatch()
-			);
-	}
-	
 	//Enabled/Disabled
 	protected void disabled() { Intake._interface.stopWheels(); }
 	protected void enabled() { }

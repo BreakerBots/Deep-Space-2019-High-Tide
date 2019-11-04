@@ -11,7 +11,6 @@ import frc.team5104.util.Buffer;
 import frc.team5104.util.console;
 import frc.team5104.util.console.c;
 import frc.team5104.util.managers.Subsystem;
-import frc.team5104.util.managers.SubsystemManager.DebugMessage;
 
 class WristLooper extends Subsystem.Looper {
 	
@@ -111,15 +110,6 @@ class WristLooper extends Subsystem.Looper {
 		lastWristState = wristState;
 		lastWristPosition = wristPosition;
 		averageMotorOutput.update(Wrist._interface.getMotorPercentOutput());
-	}
-	
-	//Debug
-	protected DebugMessage debug() {
-		return new DebugMessage(
-				"rot: ", Wrist._interface.getRawEncoderRotation(),
-				"vel: ", Wrist._interface.getRawEncoderVelocity(),
-				"po: ", IWE.desiredWristManaul
-			);
 	}
 
 	//Enabled/Disabled

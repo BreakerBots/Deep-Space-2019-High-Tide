@@ -6,6 +6,7 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import frc.team5104.main.Constants;
 import frc.team5104.main.Ports;
+import frc.team5104.subsystems.wrist.WristLooper.WristPosition;
 import frc.team5104.util.WebappTuner.tunerOutput;
 import frc.team5104.util.managers.Subsystem;
 
@@ -13,12 +14,14 @@ class WristInterface extends Subsystem.Interface {
 
 	//Devices
 	private TalonSRX wristTalon = new TalonSRX(Ports.WRIST_TALON);
+	double lastTargetAngle = 0;
 	
 	//Functions
-	void setMotionMagic(double degrees, boolean limpMode) {
+	void setMotionMagic(double angle, boolean limpMode) {
+		lastTargetAngle = angle;
 		setLimpMode(limpMode);
 		wristTalon.set(
-			ControlMode.MotionMagic, degrees / 360.0 * 4096.0, 
+			ControlMode.MotionMagic, angle / 360.0 * 4096.0, 
 			DemandType.ArbitraryFeedForward, getFTerm()
 		);
 	}
@@ -26,7 +29,10 @@ class WristInterface extends Subsystem.Interface {
 		//0 -> 0.1
 		//90 -> 0
 		//180 -> -0.1
-		return (-getEncoderRotation() / 900.0) + 0.1;
+		double f = (-getEncoderAngle() / 900.0) + 0.1;
+		if (Wrist._looper.wristPosition == WristPosition.BACK)
+			f -= 0.1;
+		return f;
 	}
 	void setPercentOutput(double percent) {
 		setLimpMode(false);
@@ -40,11 +46,11 @@ class WristInterface extends Subsystem.Interface {
 		wristTalon.configPeakOutputForward(limp ? getFTerm() + Constants.WRIST_LIMP_MODE_MAX_SPEED : 1);
 		wristTalon.configPeakOutputReverse(limp ? getFTerm() - Constants.WRIST_LIMP_MODE_MAX_SPEED : -1);
 	}
-	double getEncoderRotation() {
-		return getRawEncoderRotation() / 4096.0 * 360.0;
+	double getEncoderAngle() {
+		return getRawEncoderAngle() / 4096.0 * 360.0;
 	}
 	@tunerOutput
-	double getRawEncoderRotation() {
+	double getRawEncoderAngle() {
 		return wristTalon.getSelectedSensorPosition();
 	}
 	@tunerOutput

@@ -41,7 +41,7 @@ public class Odometry {
 		if (_thread == null)
 			init();
 		
-		_thread.startPeriodic(1.0 / Constants.ODOMETRY_LOOP_SPEED);
+		_thread.startPeriodic(1.0 / Constants.AUTONOMOUS_LOOP_SPEED);
 	}
 	
 	public static void stop() {
