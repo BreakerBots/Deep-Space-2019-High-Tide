@@ -43,8 +43,17 @@ class WristInterface extends Subsystem.Interface {
 		wristTalon.set(ControlMode.Disabled, 0);
 	}
 	void setLimpMode(boolean limp) {
-		wristTalon.configPeakOutputForward(limp ? getFTerm() + Constants.WRIST_LIMP_MODE_MAX_SPEED : 1);
-		wristTalon.configPeakOutputReverse(limp ? getFTerm() - Constants.WRIST_LIMP_MODE_MAX_SPEED : -1);
+		if (limp) {
+			wristTalon.configPeakOutputForward(getFTerm() + Constants.WRIST_LIMP_MODE_MAX_SPEED);
+			wristTalon.configPeakOutputReverse(getFTerm() - Constants.WRIST_LIMP_MODE_MAX_SPEED);
+		}
+		else {
+			wristTalon.configPeakOutputForward(1);
+			
+			if (Wrist._looper.wristPosition == WristPosition.BACK && getEncoderAngle() < 45)
+				wristTalon.configPeakOutputReverse(-0.25);
+			else wristTalon.configPeakOutputReverse(-1);
+		}
 	}
 	double getEncoderAngle() {
 		return getRawEncoderAngle() / 4096.0 * 360.0;

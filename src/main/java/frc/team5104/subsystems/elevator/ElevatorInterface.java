@@ -40,8 +40,18 @@ public class ElevatorInterface extends Subsystem.Interface {
 		updateLimitSwitches();
 	}
 	void updateLimitSwitches() {
-		talon1.configPeakOutputReverse(CANifier.elevatorLowerLimitHit() ? 0 : -1);
-		talon2.configPeakOutputReverse(CANifier.elevatorLowerLimitHit() ? 0 : -1);
+		if (CANifier.elevatorLowerLimitHit()) {
+			talon1.configPeakOutputReverse(0);
+			talon2.configPeakOutputReverse(0);
+		}
+		else if (Elevator._looper.elevatorPosition == ElevatorPosition.BOTTOM && getEncoderHeight() < 6) {
+			talon1.configPeakOutputReverse(-0.15);
+			talon2.configPeakOutputReverse(-0.15);
+		}
+		else {
+			talon1.configPeakOutputReverse(-1);
+			talon2.configPeakOutputReverse(-1);
+		}
 	}
 	void stop() {
 		talon1.set(ControlMode.Disabled, 0);

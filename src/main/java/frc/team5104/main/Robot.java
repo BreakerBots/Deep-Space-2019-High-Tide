@@ -48,6 +48,7 @@ public class Robot extends RobotController.BreakerRobot {
 		Odometry.run();
 		AutoManager.setTargetPath(new RocketDoubleMiddleHatch());
 		Limelight.init();
+		BreakerCompressor.stop();
 		
 		//Debug Subsystems
 		WebappTuner.init(Elevator.class, ElevatorLooper.class);
