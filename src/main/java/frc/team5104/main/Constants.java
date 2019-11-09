@@ -63,7 +63,7 @@ public class Constants {
 	public static final double ELEVATOR_MOTION_KI = 0;
 	public static final double ELEVATOR_MOTION_KD = 6;
 	public static final int ELEVATOR_MOTION_ACCEL = 12000;
-	public static final int ELEVATOR_MOTION_CRUISE_VELOCITY = 12000;
+	public static final int ELEVATOR_MOTION_CRUISE_VELOCITY = 16000;
 	public static final double ELEVATOR_HEIGHT_TOL = 6;
 	public static final double ELEVATOR_HEIGHT_TOL_ROUGH = 12;
 	

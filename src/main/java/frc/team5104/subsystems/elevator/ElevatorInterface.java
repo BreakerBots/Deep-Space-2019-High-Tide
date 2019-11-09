@@ -29,9 +29,9 @@ public class ElevatorInterface extends Subsystem.Interface {
 	double getFTerm() {
 		double f = 0;
 		if (getEncoderHeight() > 26) 
-			f += 0.2;
+			f += 0.08;
 		if (Elevator._looper.elevatorPosition == ElevatorPosition.BOTTOM)
-			f -= 0.2;
+			f -= 0.25;
 		return f;
 	}
 	void setPercentOutput(double percent) {
@@ -45,8 +45,8 @@ public class ElevatorInterface extends Subsystem.Interface {
 			talon2.configPeakOutputReverse(0);
 		}
 		else if (Elevator._looper.elevatorPosition == ElevatorPosition.BOTTOM && getEncoderHeight() < 6) {
-			talon1.configPeakOutputReverse(-0.15);
-			talon2.configPeakOutputReverse(-0.15);
+			talon1.configPeakOutputReverse(-0.3);
+			talon2.configPeakOutputReverse(-0.3);
 		}
 		else {
 			talon1.configPeakOutputReverse(-1);

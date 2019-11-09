@@ -17,8 +17,8 @@ public class ElevatorLooper extends Subsystem.Looper {
 	//Enums
 	static enum ElevatorState { CALIBRATING, MANUAL, AUTONOMOUS };
 	static enum ElevatorPosition { 
-		BOTTOM(-2), 
-		CARGO_SHIP(24), CARGO_WALL(20), CARGO_L1(4), CARGO_L2(25), CARGO_L3(58), 
+		BOTTOM(-4), 
+		CARGO_SHIP(24), CARGO_WALL(20), CARGO_L1(4), CARGO_L2(28), CARGO_L3(52), 
 		HATCH_L2(26), HATCH_L3(52);
 		public double height; private ElevatorPosition(double height) { this.height = height; }
 	}
