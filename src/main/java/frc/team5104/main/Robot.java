@@ -13,8 +13,8 @@ import frc.team5104.subsystems.elevator.ElevatorLooper;
 import frc.team5104.subsystems.intake.Intake;
 import frc.team5104.subsystems.wrist.Wrist;
 import frc.team5104.teleop.CompressorController;
-import frc.team5104.teleop.DriveController;
-import frc.team5104.teleop.IWEController;
+import frc.team5104.teleop.DriveController2;
+import frc.team5104.teleop.IWEController2;
 import frc.team5104.util.BreakerCompressor;
 import frc.team5104.util.Controller;
 import frc.team5104.util.WebappTuner;
@@ -37,8 +37,8 @@ public class Robot extends RobotController.BreakerRobot {
 			new IWE()
 		);
 		TeleopControllerManager.useTeleopControllers(
-			new DriveController(),
-			new IWEController(),
+			new DriveController2(),
+			new IWEController2(),
 			new CompressorController()
 		);
 		

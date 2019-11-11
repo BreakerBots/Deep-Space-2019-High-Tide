@@ -31,7 +31,7 @@ public class ElevatorInterface extends Subsystem.Interface {
 		if (getEncoderHeight() > 26) 
 			f += 0.08;
 		if (Elevator._looper.elevatorPosition == ElevatorPosition.BOTTOM)
-			f -= 0.25;
+			f -= 0.2;
 		return f;
 	}
 	void setPercentOutput(double percent) {
