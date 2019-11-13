@@ -19,12 +19,6 @@ public class BreakerMath {
 	public static boolean roughlyEquals(int a, int b, double tolerance) {
 		return Math.abs(a - b) <= tolerance;
 	}
-	public static boolean inRange(double a, double mag) {
-        return inRange(a, -mag, mag);
-    }
-	public static boolean inRange(double a, double min, double max) {
-        return a > min && a < max;
-    }
 	
 	//Rounding
 	public static double round(double a, int places) {
