@@ -28,7 +28,7 @@ public class Constants {
 	public static final double DRIVE_AGGR_EXIT_VISION_THRESHOLD = 0.25;
 	
 	//IWE General
-	public static final short IWE_EJECT_TIME = 1000;
+	public static final short IWE_EJECT_TIME = 250;
 	public static final IWEControl IWE_DEFAULT_CONTROL = IWEControl.AUTONOMOUS;
 	
 	//Wrist
@@ -62,8 +62,8 @@ public class Constants {
 	public static final double ELEVATOR_MOTION_KP = 0.5;
 	public static final double ELEVATOR_MOTION_KI = 0;
 	public static final double ELEVATOR_MOTION_KD = 6;
-	public static final int ELEVATOR_MOTION_ACCEL = 12000;
-	public static final int ELEVATOR_MOTION_CRUISE_VELOCITY = 16000;
+	public static final int ELEVATOR_MOTION_ACCEL = 20000;
+	public static final int ELEVATOR_MOTION_CRUISE_VELOCITY = 20000;
 	public static final double ELEVATOR_HEIGHT_TOL = 6;
 	public static final double ELEVATOR_HEIGHT_TOL_ROUGH = 12;
 	

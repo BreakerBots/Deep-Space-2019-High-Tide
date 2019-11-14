@@ -3,6 +3,7 @@ package frc.team5104.main;
 
 import frc.team5104.util.Controller.Control;
 import frc.team5104.util.Controller.ControlList;
+import frc.team5104.util.Controller.Controllers;
 import frc.team5104.util.Controller.Rumble;
 
 /**
@@ -40,4 +41,12 @@ public class Controls {
 	
 	//Compressor (in CompressorController)
 	public static final Control COMPRESSOR_TOGGLE = new Control(ControlList.Menu);
+	
+	// Operator
+	public static final Control IWE_HATCH_OP = new Control(ControlList.X, Controllers.Secondary);
+	public static final Control IWE_CARGO_OP = new Control(ControlList.B, Controllers.Secondary);
+	public static final Control IWE_HEIGHT_L1_OP = new Control(ControlList.DirectionPadDown, Controllers.Secondary);
+	public static final Control IWE_HEIGHT_L2_OP = new Control(ControlList.DirectionPadRight, Controllers.Secondary);
+	public static final Control IWE_HEIGHT_L3_OP = new Control(ControlList.DirectionPadUp, Controllers.Secondary);
+	public static final Control IWE_HEIGHT_SHIP_OP = new Control(ControlList.DirectionPadLeft, Controllers.Secondary);
 }

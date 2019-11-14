@@ -26,8 +26,8 @@ import edu.wpi.first.wpilibj.Joystick;
 public class Controller {
 	//List of Controllers
 	public static enum Controllers {
-		Main(0);
-		//Secondary(1);
+		Main(0), 
+		Secondary(1);
 		private Joystick handler;
 		private Controllers(int slot) { this.handler = new Joystick(slot); }
 	};

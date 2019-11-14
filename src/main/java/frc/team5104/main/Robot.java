@@ -22,6 +22,7 @@ import frc.team5104.util.managers.StateMachineManager;
 import frc.team5104.util.managers.SubsystemManager;
 import frc.team5104.util.managers.TeleopControllerManager;
 import frc.team5104.vision.Limelight;
+import frc.team5104.vision.VisionManager;
 import frc.team5104.util.Webapp;
 
 public class Robot extends RobotController.BreakerRobot {
@@ -51,12 +52,12 @@ public class Robot extends RobotController.BreakerRobot {
 		BreakerCompressor.stop();
 		
 		//Debug Subsystems
-		WebappTuner.init(Elevator.class, ElevatorLooper.class);
+		WebappTuner.init(VisionManager.class);
 	}
 	
 	//Teleop (includes sandstorm)
 	public void teleopStart() {
-		if (RobotState.isSandstorm()) { Odometry.reset(); AutoManager.run(); }
+		if (false/*RobotState.isSandstorm()*/) { Odometry.reset(); AutoManager.run(); }
 		else { TeleopControllerManager.enabled(); }
 		StateMachineManager.enabled();
 		SubsystemManager.enabled();
@@ -67,7 +68,7 @@ public class Robot extends RobotController.BreakerRobot {
 		SubsystemManager.disabled();
 	}
 	public void teleopLoop() {
-		if (RobotState.isSandstorm()) { BreakerCompressor.stop(); }
+		if (/*RobotState.isSandstorm()*/false) { BreakerCompressor.stop(); }
 		else { TeleopControllerManager.update(); }
 		StateMachineManager.update();
 		SubsystemManager.update();

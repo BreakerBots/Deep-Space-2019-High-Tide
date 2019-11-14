@@ -17,7 +17,7 @@ class WristLooper extends Subsystem.Looper {
 	//Enums
 	static enum WristState { CALIBRATING, MANUAL, AUTONOMOUS };
 	static enum WristPosition {
-		BACK(0), HATCH_INTAKE(80), HATCH_EJECT(80), CARGO_EJECT_ROCKET(30), 
+		BACK(0), HATCH_INTAKE(72), HATCH_EJECT(75), CARGO_EJECT_ROCKET(40), 
 		CARGO_EJECT_SHIP(120), CARGO_INTAKE_WALL(50), CARGO_INTAKE_GROUND(125); /*CARGO_INTAKE_GROUND(160), HATCH_PLACE_ANGLED(60), CARGO_PLACE_ANGLED(135)*/
 		public double degrees; private WristPosition(double degrees) { this.degrees = degrees; }
 	}

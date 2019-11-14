@@ -56,7 +56,7 @@ public class IWEController extends TeleopController {
 			}
 		}
 		
-		//Sequences
+		//Sequences....
 		if (Controls.IWE_VPEI_SEQUENCE.getPressed() && !(IWE.getHeight() == IWEHeight.SHIP && IWE.getGamePiece() == IWEGamePiece.CARGO)) {
 			IWE.setActiveSequence(IWESequence.VPEI);
 		}
@@ -71,23 +71,26 @@ public class IWEController extends TeleopController {
 				Controls.IWE_SWITCH_CARGO_RUMBLE.start();
 		}
 		
+		if (Controls.IWE_CARGO_OP.getPressed()) IWE.setGamePiece(IWEGamePiece.CARGO);
+		if (Controls.IWE_HATCH_OP.getPressed()) IWE.setGamePiece(IWEGamePiece.HATCH);
+		
 		//Height
-		if (Controls.IWE_HEIGHT_L1.getPressed()) {
+		if (Controls.IWE_HEIGHT_L1.getPressed() || Controls.IWE_HEIGHT_L1_OP.getPressed()) {
 			console.log(c.IWE, "setting target height to L1");
 			IWE.setHeight(IWEHeight.L1);
 			Controls.IWE_SWITCH_HEIGHT_RUMBLE.start();
 		}
-		if (Controls.IWE_HEIGHT_L2.getPressed()) {
+		if (Controls.IWE_HEIGHT_L2.getPressed() || Controls.IWE_HEIGHT_L2_OP.getPressed()) {
 			console.log(c.IWE, "setting target height to L2");
 			IWE.setHeight(IWEHeight.L2);
 			Controls.IWE_SWITCH_HEIGHT_RUMBLE.start();
 		}
-		if (Controls.IWE_HEIGHT_L3.getPressed()) {
+		if (Controls.IWE_HEIGHT_L3.getPressed() || Controls.IWE_HEIGHT_L3_OP.getPressed()) {
 			console.log(c.IWE, "setting target height to L3");
 			IWE.setHeight(IWEHeight.L3);
 			Controls.IWE_SWITCH_HEIGHT_RUMBLE.start();
 		}
-		if (Controls.IWE_HEIGHT_SHIP.getPressed()) {
+		if (Controls.IWE_HEIGHT_SHIP.getPressed() || Controls.IWE_HEIGHT_SHIP_OP.getPressed()) {
 			console.log(c.IWE, "setting target height to ship");
 			IWE.setHeight(IWEHeight.SHIP);
 			Controls.IWE_SWITCH_HEIGHT_RUMBLE.start();

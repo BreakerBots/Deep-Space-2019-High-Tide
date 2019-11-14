@@ -24,8 +24,8 @@ public class DriveHelper {
 	private static final double MIN_SPEED_LOW_GEAR_FORWARD = 0;
 	private static final double MIN_SPEED_LOW_GEAR_TURN = 0;
 	
-	private static final double KICKSTAND_SCALAR_FORWARD = 0.25;
-	private static final double KICKSTAND_SCALAR_TURN = 0.25;
+	private static final double KICKSTAND_SCALAR_FORWARD = 0.5;
+	private static final double KICKSTAND_SCALAR_TURN = 0.5;
 	
 	private static final double TURN_CURVE_SPEED_ADJUST = 0.2;
 	

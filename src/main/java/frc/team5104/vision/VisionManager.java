@@ -38,11 +38,11 @@ public class VisionManager {
 	@tunerInput
 	private static double VISION_FORWARD_TARGET_X = 2.2;
 	@tunerInput
-	private static double VISION_FORWARD_TARGET_Y_NORMAL = 2.0;
+	private static double VISION_FORWARD_TARGET_Y_NORMAL = 0;
 	@tunerInput
-	private static double VISION_FORWARD_TARGET_Y_EARLY = 10.0;
+	private static double VISION_FORWARD_TARGET_Y_EARLY = 4.0;
 	@tunerInput
-	private static double VISION_FORWARD_TARGET_Y_VERY_EARLY = 14.0;
+	private static double VISION_FORWARD_TARGET_Y_VERY_EARLY = 12.0;
 	@tunerInput
 	private static double VISION_FORWARD_TOL_Y = 1;
 
