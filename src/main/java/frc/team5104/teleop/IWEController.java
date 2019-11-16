@@ -5,7 +5,6 @@ import frc.team5104.statemachines.IWE;
 import frc.team5104.statemachines.IWE.IWEControl;
 import frc.team5104.statemachines.IWE.IWEGamePiece;
 import frc.team5104.statemachines.IWE.IWEHeight;
-import frc.team5104.statemachines.IWE.IWESequence;
 import frc.team5104.statemachines.IWE.IWEState;
 import frc.team5104.subsystems.elevator.Elevator;
 import frc.team5104.util.Deadband;
@@ -22,7 +21,6 @@ public class IWEController extends TeleopController {
 		if (Controls.IDLE.getPressed()) {
 			console.log(c.IWE, "idling");
 			IWE.setState(IWEState.IDLE);
-			IWE.clearActiveSequence();
 		}
 		
 		//Intake & Intake w/ Vision
@@ -34,31 +32,28 @@ public class IWEController extends TeleopController {
 			else console.log(c.IWE, "intaking hatch");
 			IWE.setState(IWEState.INTAKE);
 		}
-		if (Controls.IWE_INTAKE_WITH_VISION.getPressed() && IWE.getGamePiece() == IWEGamePiece.HATCH) {
-			if (IWE.getGamePiece() == IWEGamePiece.CARGO) {
-				IWE.cargoIntakeGround = false;
-				console.log(c.IWE, "vision intaking cargo " + (IWE.cargoIntakeGround ? "ground" : "wall"));
-			}
-			else console.log(c.IWE, "vision intaking hatch");
-			IWE.setState(IWEState.INTAKE);
-		}
 		
 		//Eject
 		if (Controls.IWE_PLACE_EJECT.getPressed()) {
 			if (IWE.getState() == IWEState.IDLE) {
-				console.log(c.IWE, "placing " + IWE.getGamePiece().name().toLowerCase());
+				if (IWE.getHeight() == IWEHeight.L2 || IWE.getHeight() == IWEHeight.L3) {
+					console.log(c.IWE, "preparing to place " + IWE.getGamePiece().name().toLowerCase() + " at " + IWE.getHeight().name().toLowerCase());
+					IWE.setState(IWEState.PLACE_READY);
+				}
+				else {
+					console.log(c.IWE, "placing " + IWE.getGamePiece().name().toLowerCase() + " at " + IWE.getHeight().name().toLowerCase());
+					IWE.setState(IWEState.PLACE);
+				}
+			}
+			else if (IWE.getState() == IWEState.PLACE_READY) {
+				console.log(c.IWE, "placing " + IWE.getGamePiece().name().toLowerCase() + " at " + IWE.getHeight().name().toLowerCase());
 				IWE.setState(IWEState.PLACE);
 			}
-			else if (IWE.getState() != IWEState.EJECT) {
-				console.log(c.IWE, "ejecting " + IWE.getGamePiece().name().toLowerCase());
+			else if (IWE.getState() == IWEState.PLACE) {
+				console.log(c.IWE, "ejecting " + IWE.getGamePiece().name().toLowerCase() + " at " + IWE.getHeight().name().toLowerCase());
 				IWE.setState(IWEState.EJECT);
 				Controls.IWE_EJECT_RUMBLE.start();
 			}
-		}
-		
-		//Sequences....
-		if (Controls.IWE_VPEI_SEQUENCE.getPressed() && !(IWE.getHeight() == IWEHeight.SHIP && IWE.getGamePiece() == IWEGamePiece.CARGO)) {
-			IWE.setActiveSequence(IWESequence.VPEI);
 		}
 		
 		//Game Piece

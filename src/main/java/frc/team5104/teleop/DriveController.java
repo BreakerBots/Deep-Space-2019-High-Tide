@@ -6,6 +6,7 @@ import frc.team5104.main.Controls;
 import frc.team5104.statemachines.IWE;
 import frc.team5104.statemachines.IWE.IWEGamePiece;
 import frc.team5104.statemachines.IWE.IWEHeight;
+import frc.team5104.statemachines.IWE.IWEState;
 import frc.team5104.subsystems.drive.Drive;
 import frc.team5104.subsystems.drive.DriveHelper;
 import frc.team5104.subsystems.elevator.Elevator;
@@ -15,25 +16,17 @@ import frc.team5104.vision.VisionManager;
 public class DriveController extends TeleopController {
 	protected String getName() { return "Drive Controller"; }
 
+	boolean visionEnabled = false;
+	
 	protected void update() {
 		//Switch between Manual Control and Vision
-		if (Controls.TOGGLE_VISION.getPressed()) {
-			if (VisionManager.isInVision()) VisionManager.end();
-			else VisionManager.start();
-		}
-		
-		//Enter Vision (Alt)
-		if (Controls.IWE_INTAKE_WITH_VISION.getPressed())
-			VisionManager.start();
-		if (Controls.IWE_VPEI_SEQUENCE.getPressed() && !(IWE.getHeight() == IWEHeight.SHIP && IWE.getGamePiece() == IWEGamePiece.CARGO))
-			VisionManager.start();
-		
-		//Exit Vision (Alts)
-		if (isAgressivelyTryingToExitVision() || Controls.IDLE.getPressed())
-			VisionManager.end();
+		if (Controls.TOGGLE_VISION.getPressed())
+			visionEnabled = !visionEnabled;
 		
 		//Update Manual Drive or Vision
-		if (VisionManager.isInVision())
+		if ((IWE.getState() == IWEState.INTAKE ||
+			((IWE.getState() == IWEState.PLACE || IWE.getState() == IWEState.EJECT) && !(IWE.getGamePiece() == IWEGamePiece.CARGO && IWE.getHeight() == IWEHeight.SHIP)) ||
+			IWE.getState() == IWEState.PLACE_READY) && visionEnabled)
 			handleVisionDrive();
 		else
 			handleManualDrive();
@@ -52,17 +45,10 @@ public class DriveController extends TeleopController {
 	
 	//Vision Driving
 	private void handleVisionDrive() {
+		if (!VisionManager.isInVision())
+			VisionManager.start();
 		Drive.set(VisionManager.getNextDriveSignal());
 		if (VisionManager.isFinished())
 			VisionManager.end();
-	}
-	
-	//Aggressively Exit Vision :)
-	private boolean isAgressivelyTryingToExitVision() {
-		return (
-			(Math.abs(Controls.DRIVE_TURN.getAxis()) > Constants.DRIVE_AGGR_EXIT_VISION_THRESHOLD) ||
-			(Math.abs(Controls.DRIVE_FORWARD.getAxis()) > Constants.DRIVE_AGGR_EXIT_VISION_THRESHOLD) ||
-			(Math.abs(Controls.DRIVE_REVERSE.getAxis()) > Constants.DRIVE_AGGR_EXIT_VISION_THRESHOLD)
-		);
 	}
 }
