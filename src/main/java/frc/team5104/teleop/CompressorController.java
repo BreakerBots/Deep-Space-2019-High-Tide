@@ -18,6 +18,10 @@ public class CompressorController extends TeleopController {
 		}
 	}
 	
+	protected void enabled() {
+		stop();
+	}
+	
 	public static void stop() {
 		compressor.stop();
 	}

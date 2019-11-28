@@ -1,11 +1,8 @@
 /*BreakerBots Robotics Team 2019*/
 package frc.team5104.main;
 
-import frc.team5104.auto.AutoManager;
-import frc.team5104.auto.paths.RocketDoubleMiddleHatch;
 import frc.team5104.auto.util.Odometry;
 import frc.team5104.main.setup.RobotController;
-import frc.team5104.statemachines.IWE;
 import frc.team5104.subsystems.drive.Drive;
 import frc.team5104.subsystems.elevator.Elevator;
 import frc.team5104.subsystems.intake.Intake;
@@ -16,7 +13,6 @@ import frc.team5104.teleop.IWEController;
 import frc.team5104.util.BreakerCompressor;
 import frc.team5104.util.WebappTuner;
 import frc.team5104.util.XboxController;
-import frc.team5104.util.managers.StateMachineManager;
 import frc.team5104.util.managers.SubsystemManager;
 import frc.team5104.util.managers.TeleopControllerManager;
 import frc.team5104.vision.Limelight;
@@ -32,9 +28,6 @@ public class Robot extends RobotController.BreakerRobot {
 			new Elevator(),
 			new Intake()
 		);
-		StateMachineManager.useStateMachines(
-			new IWE()
-		);
 		TeleopControllerManager.useTeleopControllers(
 			new DriveController(),
 			new IWEController(),
@@ -42,31 +35,27 @@ public class Robot extends RobotController.BreakerRobot {
 		);
 		
 		//Other Initialization
-//		CameraServer.getInstance().startAutomaticCapture();
 		Webapp.run();
 		Odometry.run();
-		AutoManager.setTargetPath(new RocketDoubleMiddleHatch());
 		Limelight.init();
 		BreakerCompressor.stop();
-		
-		//Debug Subsystems
 		WebappTuner.init(VisionManager.class);
 	}
 	
 	//Teleop (includes sandstorm)
 	public void teleopStart() {
 		TeleopControllerManager.enabled();
-		StateMachineManager.enabled();
+		Superstructure.enabled();
 		SubsystemManager.enabled();
-		BreakerCompressor.stop();
 	}
 	public void teleopStop() {
-		StateMachineManager.enabled();
+		TeleopControllerManager.disabled();
+		Superstructure.enabled();
 		SubsystemManager.disabled();
 	}
 	public void teleopLoop() {
 		TeleopControllerManager.update();
-		StateMachineManager.update();
+		Superstructure.update();
 		SubsystemManager.update();
 	}
 	

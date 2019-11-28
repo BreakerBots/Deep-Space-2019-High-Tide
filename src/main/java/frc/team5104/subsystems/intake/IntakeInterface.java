@@ -27,12 +27,10 @@ public class IntakeInterface {
 		if (pistonMode == IntakePistonMode.CLOSED) solenoid.set(Value.kForward);
 		else solenoid.set(Value.kReverse);
 	}
-	
-	//External Functions
-	public static boolean hasHatch() {
+	static boolean hasHatch() {
 		return !bannerHatch.get();
 	}
-	public static boolean hasCargo() {
+	static boolean hasCargo() {
 		return !bannerCargo.get();
 	}
 	

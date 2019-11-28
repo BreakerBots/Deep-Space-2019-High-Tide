@@ -2,10 +2,10 @@
 package frc.team5104.teleop;
 
 import frc.team5104.main.Controls;
-import frc.team5104.statemachines.IWE;
-import frc.team5104.statemachines.IWE.IWEGamePiece;
-import frc.team5104.statemachines.IWE.IWEHeight;
-import frc.team5104.statemachines.IWE.IWEState;
+import frc.team5104.main.Superstructure;
+import frc.team5104.main.Superstructure.GamePiece;
+import frc.team5104.main.Superstructure.Height;
+import frc.team5104.main.Superstructure.SystemState;
 import frc.team5104.subsystems.drive.Drive;
 import frc.team5104.subsystems.drive.DriveHelper;
 import frc.team5104.util.managers.TeleopController;
@@ -21,9 +21,9 @@ public class DriveController extends TeleopController {
 			visionEnabled = !visionEnabled;
 		
 		//Update Manual Drive or Vision
-		if ((IWE.getState() == IWEState.INTAKE ||
-			((IWE.getState() == IWEState.PLACE || IWE.getState() == IWEState.EJECT) && !(IWE.getGamePiece() == IWEGamePiece.CARGO && IWE.getHeight() == IWEHeight.SHIP)) ||
-			IWE.getState() == IWEState.PLACE_READY) && visionEnabled)
+		if ((Superstructure.getState() == SystemState.INTAKE ||
+			((Superstructure.getState() == SystemState.PLACE || Superstructure.getState() == SystemState.EJECT) && !(Superstructure.getGamePiece() == GamePiece.CARGO && Superstructure.getHeight() == Height.SHIP)) ||
+			Superstructure.getState() == SystemState.PLACE_READY) && visionEnabled)
 			handleVisionDrive();
 		else
 			handleManualDrive();

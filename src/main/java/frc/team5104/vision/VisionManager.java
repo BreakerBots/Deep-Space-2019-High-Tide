@@ -1,9 +1,9 @@
 package frc.team5104.vision;
 
-import frc.team5104.statemachines.IWE;
-import frc.team5104.statemachines.IWE.IWEGamePiece;
-import frc.team5104.statemachines.IWE.IWEHeight;
-import frc.team5104.statemachines.IWE.IWEState;
+import frc.team5104.main.Superstructure;
+import frc.team5104.main.Superstructure.GamePiece;
+import frc.team5104.main.Superstructure.Height;
+import frc.team5104.main.Superstructure.SystemState;
 import frc.team5104.subsystems.drive.DriveConstants.DriveSignal;
 import frc.team5104.subsystems.drive.DriveConstants.DriveUnit;
 import frc.team5104.util.BreakerMath;
@@ -103,14 +103,14 @@ public class VisionManager {
 			//Forward
 			case FORWARD: {
 				double targetY = VISION_FORWARD_TARGET_Y_NORMAL;
-				if (IWE.getState() != IWEState.INTAKE && 
-					(IWE.getHeight() == IWEHeight.L2 || IWE.getHeight() == IWEHeight.L3) &&
-					IWE.getGamePiece() == IWEGamePiece.HATCH) {
+				if (Superstructure.getState() != SystemState.INTAKE && 
+					(Superstructure.getHeight() == Height.L2 || Superstructure.getHeight() == Height.L3) &&
+					Superstructure.getGamePiece() == GamePiece.HATCH) {
 					targetY = VISION_FORWARD_TARGET_Y_EARLY;
 				}
-				if (IWE.getState() != IWEState.INTAKE && 
-					IWE.getHeight() != IWEHeight.SHIP &&
-					IWE.getGamePiece() == IWEGamePiece.CARGO) {
+				if (Superstructure.getState() != SystemState.INTAKE && 
+					Superstructure.getHeight() != Height.SHIP &&
+					Superstructure.getGamePiece() == GamePiece.CARGO) {
 					targetY = VISION_FORWARD_TARGET_Y_VERY_EARLY;
 				}
 				

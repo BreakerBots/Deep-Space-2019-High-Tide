@@ -1,13 +1,13 @@
 package frc.team5104.subsystems.elevator;
 
-import frc.team5104.statemachines.IWE;
-import frc.team5104.statemachines.IWE.IWEControl;
-import frc.team5104.statemachines.IWE.IWEGamePiece;
-import frc.team5104.statemachines.IWE.IWEHeight;
-import frc.team5104.statemachines.IWE.IWEState;
+import frc.team5104.main.Superstructure;
+import frc.team5104.main.Superstructure.ControlMode;
+import frc.team5104.main.Superstructure.GamePiece;
+import frc.team5104.main.Superstructure.Height;
+import frc.team5104.main.Superstructure.SystemState;
 import frc.team5104.subsystems.elevator.ElevatorConstants.ElevatorPosition;
 import frc.team5104.subsystems.elevator.ElevatorConstants.ElevatorState;
-import frc.team5104.util.Buffer;
+import frc.team5104.util.MovingAverage;
 import frc.team5104.util.console;
 import frc.team5104.util.console.c;
 import frc.team5104.util.managers.Subsystem;
@@ -18,11 +18,11 @@ public class Elevator extends Subsystem {
 	//Enabled, Disabled, Init
 	protected void init() { ElevatorInterface.init(); }
 	protected void enabled() {
-		if (IWE.getControl() == IWEControl.AUTONOMOUS)
+		if (Superstructure.getControlMode() == ControlMode.AUTONOMOUS)
 			elevatorState = ElevatorState.CALIBRATING;
 	}
 	protected void disabled() {
-		if (IWE.getControl() == IWEControl.AUTONOMOUS)
+		if (Superstructure.getControlMode() == ControlMode.AUTONOMOUS)
 			elevatorState = ElevatorState.CALIBRATING;
 		ElevatorInterface.stop();
 	}
@@ -34,8 +34,8 @@ public class Elevator extends Subsystem {
 	static ElevatorPosition lastElevatorPosition;
 	static long elevatorStateStartTime = System.currentTimeMillis();
 	static long elevatorPositionStartTime = System.currentTimeMillis();
-	static Buffer limitSwitchZeroBuffer = new Buffer(5, false);
-	static Buffer averageMotorOutput = new Buffer(300, 0.0);
+	static MovingAverage limitSwitchZeroBuffer = new MovingAverage(5, false);
+	static MovingAverage averageMotorOutput = new MovingAverage(300, 0.0);
 	protected void update() {
 		syncStates();
 		
@@ -62,12 +62,12 @@ public class Elevator extends Subsystem {
 			//Error Catch
 			if (System.currentTimeMillis() > elevatorStateStartTime + 6000) {
 				console.error(c.ELEVATOR, "WTF!!!! Calibration Error (Entering Manual)");
-				IWE.setControl(IWEControl.MANUAL);
+				Superstructure.setControlMode(ControlMode.MANUAL);
 			}
 		}
 		else {
 			//Manual
-			ElevatorInterface.setPercentOutput(IWE.desiredElevatorManaul);
+			ElevatorInterface.setPercentOutput(Superstructure.desiredElevatorManaul);
 		}
 		
 		//Zero Encoder In Runtime
@@ -84,31 +84,31 @@ public class Elevator extends Subsystem {
 	//Sync States with IWE
 	void syncStates() {
 		//Sync Elevator State (Force Manaul if IWE is Manual. If switched from manual -> auto then bring it into calibrating)
-		if (IWE.getControl() == IWEControl.MANUAL) elevatorState = ElevatorState.MANUAL;
+		if (Superstructure.getControlMode() == ControlMode.MANUAL) elevatorState = ElevatorState.MANUAL;
 		else if (elevatorState == ElevatorState.MANUAL) elevatorState = ElevatorState.CALIBRATING;
 		
 		//Sync Elevator Height
-		if (IWE.getState() == IWEState.EJECT || IWE.getState() == IWEState.PLACE) {
+		if (Superstructure.getState() == SystemState.EJECT || Superstructure.getState() == SystemState.PLACE) {
 			elevatorPosition = (
 				// L3 Cargo, Hatch
-				IWE.getHeight() == IWEHeight.L3 ? 
-					(IWE.getGamePiece() == IWE.IWEGamePiece.CARGO ? 
+				Superstructure.getHeight() == Height.L3 ? 
+					(Superstructure.getGamePiece() == Superstructure.GamePiece.CARGO ? 
 						ElevatorPosition.CARGO_L3 : ElevatorPosition.HATCH_L3) :
 				//L2 Cargo, Hatch
-				(IWE.getHeight() == IWEHeight.L2 ? 
-					(IWE.getGamePiece() == IWE.IWEGamePiece.CARGO ?
+				(Superstructure.getHeight() == Height.L2 ? 
+					(Superstructure.getGamePiece() == Superstructure.GamePiece.CARGO ?
 						ElevatorPosition.CARGO_L2 : ElevatorPosition.HATCH_L2) : 
 				//Ship + L1 Cargo, Hatch
-					(IWE.getGamePiece() == IWE.IWEGamePiece.CARGO ? 
-						(IWE.getHeight() == IWEHeight.L1 ? 
+					(Superstructure.getGamePiece() == Superstructure.GamePiece.CARGO ? 
+						(Superstructure.getHeight() == Height.L1 ? 
 							ElevatorPosition.CARGO_L1 : ElevatorPosition.CARGO_SHIP) :
 						ElevatorPosition.BOTTOM))
 			);
 		}
-		else if (IWE.getState() == IWEState.INTAKE) {
-			if (IWE.getGamePiece() == IWEGamePiece.HATCH) elevatorPosition = ElevatorPosition.BOTTOM;
+		else if (Superstructure.getState() == SystemState.INTAKE) {
+			if (Superstructure.getGamePiece() == GamePiece.HATCH) elevatorPosition = ElevatorPosition.BOTTOM;
 			else {
-				if (IWE.cargoIntakeGround)
+				if (Superstructure.cargoIntakeGround)
 					elevatorPosition = ElevatorPosition.BOTTOM;
 				else elevatorPosition = ElevatorPosition.CARGO_WALL;
 			}
