@@ -55,7 +55,7 @@ public class Superstructure {
 		if (getState() == SystemState.INTAKE && (getGamePiece() == GamePiece.HATCH ? Intake.hasHatch() : Intake.hasCargo())) {
 			console.log(c.IWE, "finished intake... idling");
 			setState(SystemState.IDLE);
-			Controls.IWE_INTAKE_RUMBLE.start();
+			Controls.INTAKE_RUMBLE.start();
 		}
 	}
 	static void enabled() { setToDefaultStates(); }

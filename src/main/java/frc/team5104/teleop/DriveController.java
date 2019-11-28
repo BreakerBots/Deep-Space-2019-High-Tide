@@ -12,7 +12,7 @@ import frc.team5104.util.managers.TeleopController;
 import frc.team5104.vision.VisionManager;
 
 public class DriveController extends TeleopController {
-	protected String getName() { return "Drive Controller"; }
+	protected String getName() { return "Drive-Controller"; }
 
 	boolean visionEnabled = false;
 	protected void update() {
