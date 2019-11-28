@@ -1,9 +1,10 @@
-/*BreakerBots Robotics Team 2019*/
-package frc.team5104.subsystems.drive;
+/* BreakerBots Robotics Team (FRC 5104) 2020 */
+package frc.team5104.auto.util;
 
 import frc.team5104.main.Constants;
-import frc.team5104.subsystems.drive.DriveObjects.DriveUnits;
-import frc.team5104.subsystems.drive.DriveObjects.RobotPosition;
+import frc.team5104.subsystems.drive.DriveInterface;
+import frc.team5104.subsystems.drive.DriveConstants.DriveUnits;
+import frc.team5104.subsystems.drive.DriveConstants.RobotPosition;
 import frc.team5104.util.BreakerMath;
 import frc.team5104.util.CrashLogger;
 import frc.team5104.util.CrashLogger.Crash;
@@ -23,13 +24,13 @@ public class Odometry {
 	public volatile static RobotPosition position = new RobotPosition(0, 0, 0);
 	
 	private static void init() {
-		lastPos = currentPos = (Drive.getEncoders().leftPositionRaw + Drive.getEncoders().rightPositionRaw) / 2.0;
+		lastPos = currentPos = (DriveInterface.getEncoders().leftPositionRaw + DriveInterface.getEncoders().rightPositionRaw) / 2.0;
 		_thread = new Notifier(() -> {
 			try {
-				currentPos = (Drive.getEncoders().leftPositionRaw + Drive.getEncoders().rightPositionRaw) / 2.0;
+				currentPos = (DriveInterface.getEncoders().leftPositionRaw + DriveInterface.getEncoders().rightPositionRaw) / 2.0;
 				dPos = DriveUnits.ticksToFeet(currentPos - lastPos);
 				lastPos = currentPos;
-				theta = Units.degreesToRadians(BreakerMath.boundDegrees180(Drive.getGyro()));
+				theta = Units.degreesToRadians(BreakerMath.boundDegrees180(DriveInterface.getGyro()));
 	            position.addX(Math.cos(theta) * dPos);
 	            position.addY(Math.sin(theta) * dPos);
 	            position.setTheta(theta);
@@ -41,7 +42,7 @@ public class Odometry {
 		if (_thread == null)
 			init();
 		
-		_thread.startPeriodic(1.0 / Constants.AUTONOMOUS_LOOP_SPEED);
+		_thread.startPeriodic(1.0 / Constants.AUTO_LOOP_SPEED);
 	}
 	
 	public static void stop() {
@@ -56,8 +57,8 @@ public class Odometry {
 	public static void reset() {
 		console.log("Resetting Odometry");
 		stop();
-		Drive.resetEncoders();
-		Drive.resetGyro();
+		DriveInterface.resetEncoders();
+		DriveInterface.resetGyro();
 		lastPos = 0; 
 		currentPos = 0; 
 		dPos = 0; 

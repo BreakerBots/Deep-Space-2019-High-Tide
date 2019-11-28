@@ -3,21 +3,17 @@ package frc.team5104.subsystems.wrist;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-
-import frc.team5104.main.Constants;
 import frc.team5104.main.Ports;
-import frc.team5104.subsystems.wrist.WristLooper.WristPosition;
-import frc.team5104.util.WebappTuner.tunerOutput;
-import frc.team5104.util.managers.Subsystem;
+import frc.team5104.subsystems.wrist.WristConstants.WristPosition;
 
-class WristInterface extends Subsystem.Interface {
+public class WristInterface {
 
 	//Devices
-	private TalonSRX wristTalon = new TalonSRX(Ports.WRIST_TALON);
-	double lastTargetAngle = 0;
+	private static TalonSRX wristTalon;
+	static double lastTargetAngle = 0;
 	
-	//Functions
-	void setMotionMagic(double angle, boolean limpMode) {
+	//Internal Functions
+	static void setMotionMagic(double angle, boolean limpMode) {
 		lastTargetAngle = angle;
 		setLimpMode(limpMode);
 		wristTalon.set(
@@ -25,72 +21,69 @@ class WristInterface extends Subsystem.Interface {
 			DemandType.ArbitraryFeedForward, getFTerm()
 		);
 	}
-	private double getFTerm() {
-		//0 -> 0.1
-		//90 -> 0
-		//180 -> -0.1
+	static double getFTerm() {
 		double f = (-getEncoderAngle() / 900.0) + 0.1;
-		if (Wrist._looper.wristPosition == WristPosition.BACK)
+		if (Wrist.wristPosition == WristPosition.BACK)
 			f -= 0.1;
 		return f;
 	}
-	void setPercentOutput(double percent) {
+	static void setPercentOutput(double percent) {
 		setLimpMode(false);
 		wristTalon.set(ControlMode.PercentOutput, percent);
 	}
-	void stop() {
+	static void stop() {
 		setLimpMode(false);
 		wristTalon.set(ControlMode.Disabled, 0);
 	}
-	void setLimpMode(boolean limp) {
+	static void setLimpMode(boolean limp) {
 		if (limp) {
-			wristTalon.configPeakOutputForward(getFTerm() + Constants.WRIST_LIMP_MODE_MAX_SPEED);
-			wristTalon.configPeakOutputReverse(getFTerm() - Constants.WRIST_LIMP_MODE_MAX_SPEED);
+			wristTalon.configPeakOutputForward(getFTerm() + WristConstants.WRIST_LIMP_MODE_MAX_SPEED);
+			wristTalon.configPeakOutputReverse(getFTerm() - WristConstants.WRIST_LIMP_MODE_MAX_SPEED);
 		}
 		else {
 			wristTalon.configPeakOutputForward(1);
-			
-			if (Wrist._looper.wristPosition == WristPosition.BACK && getEncoderAngle() < 45)
+			if (Wrist.wristPosition == WristPosition.BACK && getEncoderAngle() < 45)
 				wristTalon.configPeakOutputReverse(-0.25);
 			else wristTalon.configPeakOutputReverse(-1);
 		}
 	}
-	double getEncoderAngle() {
+	
+	//External Functions
+	public static double getEncoderAngle() {
 		return getRawEncoderAngle() / 4096.0 * 360.0;
 	}
-	@tunerOutput
-	double getRawEncoderAngle() {
+	public static double getRawEncoderAngle() {
 		return wristTalon.getSelectedSensorPosition();
 	}
-	@tunerOutput
-	double getRawEncoderVelocity() {
+	public static double getRawEncoderVelocity() {
 		return wristTalon.getSelectedSensorVelocity();
 	}
-	void resetEncoder() {
+	public static void resetEncoder() {
 		wristTalon.setSelectedSensorPosition(0);
 	}
-	boolean encoderDisconnected() {
+	public static boolean encoderDisconnected() {
 		return wristTalon.getSensorCollection().getPulseWidthRiseToRiseUs() == 0;
 	}
-	boolean backLimitSwitchHit() {
+	public static boolean backLimitSwitchHit() {
 		return wristTalon.getSensorCollection().isRevLimitSwitchClosed();
 	}
-	double getMotorPercentOutput() {
+	public static double getMotorPercentOutput() {
 		return wristTalon.getMotorOutputPercent();
 	}
 	
 	//Config
-	protected void init() {
+	static void init() {
+		wristTalon = new TalonSRX(Ports.WRIST_TALON);
 		wristTalon.configFactoryDefault();
-		wristTalon.configContinuousCurrentLimit(Constants.WRIST_CURRENT_LIMIT, 10);
+		wristTalon.configContinuousCurrentLimit(WristConstants.WRIST_CURRENT_LIMIT, 10);
 		wristTalon.enableCurrentLimit(true);
-		wristTalon.setNeutralMode(Constants.WRIST_NEUTRAL_MODE);
-		wristTalon.config_kP(0, Constants.WRIST_MOTION_KP);
-		wristTalon.config_kI(0, Constants.WRIST_MOTION_KI);
-		wristTalon.config_kD(0, Constants.WRIST_MOTION_KD);
+		wristTalon.setNeutralMode(WristConstants.WRIST_NEUTRAL_MODE);
+		wristTalon.config_kP(0, WristConstants.WRIST_MOTION_KP);
+		wristTalon.config_kI(0, WristConstants.WRIST_MOTION_KI);
+		wristTalon.config_kD(0, WristConstants.WRIST_MOTION_KD);
 		wristTalon.config_kF(0, 0);
-		wristTalon.configMotionAcceleration(Constants.WRIST_MOTION_ACCEL);
-		wristTalon.configMotionCruiseVelocity(Constants.WRIST_MOTION_CRUISE_VELOCITY);
+		wristTalon.configMotionAcceleration(WristConstants.WRIST_MOTION_ACCEL);
+		wristTalon.configMotionCruiseVelocity(WristConstants.WRIST_MOTION_CRUISE_VELOCITY);
 		wristTalon.configNominalOutputForward(0);
 		wristTalon.configNominalOutputReverse(0);
 		wristTalon.configPeakOutputForward(1);

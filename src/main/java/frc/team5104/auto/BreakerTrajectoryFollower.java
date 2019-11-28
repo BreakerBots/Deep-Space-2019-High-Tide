@@ -1,12 +1,12 @@
-/*BreakerBots Robotics Team 2019*/
+/* BreakerBots Robotics Team (FRC 5104) 2020 */
 package frc.team5104.auto;
 
 import frc.team5104.auto.util.Trajectory;
 import frc.team5104.auto.util.TrajectorySegment;
-import frc.team5104.main.Constants;
-import frc.team5104.subsystems.drive.DriveObjects.DriveSignal;
-import frc.team5104.subsystems.drive.DriveObjects.DriveUnit;
-import frc.team5104.subsystems.drive.DriveObjects.RobotPosition;
+import frc.team5104.subsystems.drive.DriveConstants;
+import frc.team5104.subsystems.drive.DriveConstants.DriveSignal;
+import frc.team5104.subsystems.drive.DriveConstants.DriveUnit;
+import frc.team5104.subsystems.drive.DriveConstants.RobotPosition;
 import frc.team5104.util.BreakerMath;
 import frc.team5104.util.Units;
 
@@ -16,8 +16,8 @@ import frc.team5104.util.Units;
  */
 public class BreakerTrajectoryFollower {
 
-	private static final double beta = Constants.AUTO_CORRECTION_FACTOR;
-	private static final double zeta = Constants.AUTO_DAMPENING_FACTOR;
+	private static final double beta = AutoConstants.AUTO_CORRECTION_FACTOR;
+	private static final double zeta = AutoConstants.AUTO_DAMPENING_FACTOR;
 	
 	private int trajectoryIndex;
 	
@@ -55,18 +55,19 @@ public class BreakerTrajectoryFollower {
 		double w = calcAngleVel(current.x, current.y, current.theta, current.velocity, w_d);
 
 		//Clamp Angular and Linear Velocities
-		v = BreakerMath.clamp(v, -Constants.AUTO_MAX_VELOCITY, Constants.AUTO_MAX_VELOCITY);
+		v = BreakerMath.clamp(v, -AutoConstants.AUTO_MAX_VELOCITY, AutoConstants.AUTO_MAX_VELOCITY);
 		w = BreakerMath.clamp(w, Math.PI * -2, Math.PI * 2);
 
 		//Convert Angular and Linear Velocities to into wheel speeds 
-		left  = ((+Constants.DRIVE_WHEEL_BASE_WIDTH * w) / 2 + v);
-		right = ((-Constants.DRIVE_WHEEL_BASE_WIDTH * w) / 2 + v);
+		left  = ((+DriveConstants.DRIVE_WHEEL_BASE_WIDTH * w) / 2 + v);
+		right = ((-DriveConstants.DRIVE_WHEEL_BASE_WIDTH * w) / 2 + v);
 
 		//Go to the next index
-		trajectoryIndex += 1;
+		trajectoryIndex++;
 	   
-		return new DriveSignal(
-				left, right, true
+		return new DriveSignal (
+				left, right, true, DriveUnit.feetPerSecond,
+				((DriveConstants.DRIVE_KS + (DriveConstants.DRIVE_KV * current.velocity) + (DriveConstants.DRIVE_KA * current.acceleration))) / 12.0
 			);
 	}
 

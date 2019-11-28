@@ -1,4 +1,4 @@
-/*BreakerBots Robotics Team 2019*/
+/* BreakerBots Robotics Team (FRC 5104) 2020 */
 package frc.team5104.auto;
 
 import edu.wpi.first.wpilibj.Notifier;
@@ -34,12 +34,13 @@ public class AutoManager {
 	public static void setTargetPath(AutoPath path) { targetPath = path; }
 	
 	public static void run() {
-		if (_thread == null) init();
-		_thread.startPeriodic(1.0 / Constants.AUTONOMOUS_LOOP_SPEED);
+		init();
+		_thread.startPeriodic(1.0 / Constants.AUTO_LOOP_SPEED);
 	}
 	
 	public static void stop() {
-		if (_thread != null) _thread.stop();
+		if (_thread != null) 
+			_thread.stop();
 		_thread = null;
 		pathScheduler = null;
 	}

@@ -5,50 +5,50 @@ import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
-import frc.team5104.main.Constants;
 import frc.team5104.main.Ports;
 import frc.team5104.util.AnalogToDigital;
-import frc.team5104.util.managers.Subsystem;
 
-public class IntakeInterface extends Subsystem.Interface {
+public class IntakeInterface {
 
 	//Devices
-	private VictorSPX leftVictor = new VictorSPX(Ports.INTAKE_TALON_LEFT);
-	private VictorSPX rightVictor = new VictorSPX(Ports.INTAKE_TALON_RIGHT);
-	private DoubleSolenoid solenoid = new DoubleSolenoid(Ports.INTAKE_PISTON_FORWARD, Ports.INTAKE_PISTON_REVERSE);
-	private AnalogToDigital bannerHatch = new AnalogToDigital(Ports.INTAKE_BANNER_HATCH);
-	private AnalogToDigital bannerCargo = new AnalogToDigital(Ports.INTAKE_BANNER_CARGO);
+	private static VictorSPX leftVictor, rightVictor;
+	private static DoubleSolenoid solenoid;
+	private static AnalogToDigital bannerHatch, bannerCargo;
 	static enum IntakePistonMode { OPEN, CLOSED };
 	
-	//Functions
-	void setWheelSpeed(double percentSpeed) {
+	//Internal Functions
+	static void setWheelSpeed(double percentSpeed) {
 		leftVictor.set(ControlMode.PercentOutput, percentSpeed);
 	}
-	void stopWheels() {
+	static void stopWheels() {
 		leftVictor.set(ControlMode.Disabled, 0);
 	}
-	void setMode(IntakePistonMode pistonMode) {
+	static void setMode(IntakePistonMode pistonMode) {
 		if (pistonMode == IntakePistonMode.CLOSED) solenoid.set(Value.kForward);
 		else solenoid.set(Value.kReverse);
 	}
-	boolean hasHatch() {
+	
+	//External Functions
+	public static boolean hasHatch() {
 		return !bannerHatch.get();
 	}
-	boolean hasCargo() {
+	public static boolean hasCargo() {
 		return !bannerCargo.get();
 	}
 	
 	//Config
-	protected void init() {
+	static void init() {
+		leftVictor = new VictorSPX(Ports.INTAKE_TALON_LEFT);
+		rightVictor = new VictorSPX(Ports.INTAKE_TALON_RIGHT);
+		solenoid = new DoubleSolenoid(Ports.INTAKE_PISTON_FORWARD, Ports.INTAKE_PISTON_REVERSE);
+		bannerHatch = new AnalogToDigital(Ports.INTAKE_BANNER_HATCH);
+		bannerCargo = new AnalogToDigital(Ports.INTAKE_BANNER_CARGO);
+		
 		leftVictor.configFactoryDefault();
-//		leftTalon.configContinuousCurrentLimit(Constants.INTAKE_CURRENT_LIMIT, 10);
-//		leftTalon.enableCurrentLimit(true);
-		leftVictor.setNeutralMode(Constants.INTAKE_NEUTRAL_MODE);
+		leftVictor.setNeutralMode(IntakeConstants.INTAKE_NEUTRAL_MODE);
 		
 		rightVictor.configFactoryDefault();
-//		rightTalon.configContinuousCurrentLimit(Constants.INTAKE_CURRENT_LIMIT, 10);
-//		rightTalon.enableCurrentLimit(true);
-		rightVictor.setNeutralMode(Constants.INTAKE_NEUTRAL_MODE);
+		rightVictor.setNeutralMode(IntakeConstants.INTAKE_NEUTRAL_MODE);
 		rightVictor.set(ControlMode.Follower, leftVictor.getDeviceID());
 	}
 }

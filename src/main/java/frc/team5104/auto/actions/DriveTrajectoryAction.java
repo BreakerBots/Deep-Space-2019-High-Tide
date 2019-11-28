@@ -1,13 +1,13 @@
-/*BreakerBots Robotics Team 2019*/
+/* BreakerBots Robotics Team (FRC 5104) 2020 */
 package frc.team5104.auto.actions;
 
 import frc.team5104.auto.BreakerTrajectoryFollower;
 import frc.team5104.auto.BreakerTrajectoryGenerator;
 import frc.team5104.auto.util.AutoPathAction;
+import frc.team5104.auto.util.Odometry;
 import frc.team5104.auto.util.TrajectoryWaypoint;
 import frc.team5104.subsystems.drive.Drive;
-import frc.team5104.subsystems.drive.DriveObjects.DriveSignal;
-import frc.team5104.subsystems.drive.Odometry;
+import frc.team5104.subsystems.drive.DriveConstants.DriveSignal;
 import frc.team5104.util.console;
 import frc.team5104.util.console.c;
 
@@ -27,7 +27,7 @@ public class DriveTrajectoryAction extends AutoPathAction {
     	console.log(c.AUTO, "Running Trajectory");
     	
     	//Reset Odometry and Get Path (Reset it twice to make sure it all good)
-    	follower = new BreakerTrajectoryFollower( BreakerTrajectoryGenerator.getTrajectory(waypoints) );
+    	follower = new BreakerTrajectoryFollower(BreakerTrajectoryGenerator.getTrajectory(waypoints));
 		Odometry.reset();
 		
 		//Wait 100ms for Device Catchup

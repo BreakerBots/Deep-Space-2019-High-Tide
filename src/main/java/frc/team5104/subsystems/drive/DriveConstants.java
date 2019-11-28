@@ -1,9 +1,19 @@
 /* BreakerBots Robotics Team (FRC 5104) 2020 */
 package frc.team5104.subsystems.drive;
 
-import frc.team5104.main.Constants;
-
-public class DriveObjects {
+public class DriveConstants {
+	public static final double DRIVE_WHEEL_DIAMETER = 6.0/12.0; //ft
+	public static final double DRIVE_TICKS_PER_REVOLUTION = 4096.0 * 3.0 * (54.0/30.0);
+	public static final double DRIVE_WHEEL_BASE_WIDTH = 24.25 / 12.0; //ft
+	public static final int DRIVE_CURRENT_LIMIT = 40; //amps
+	public static final double DRIVE_KP = 0.5;
+	public static final double DRIVE_KI = 0;
+	public static final double DRIVE_KD = 0;
+	public static final double DRIVE_KS = 1.48;
+	public static final double DRIVE_KA = 0.773;
+	public static final double DRIVE_KV = 0.431;
+	
+	//Classes Below
 	/** A simple class for sending/saving drive-train movement signals. */
 	public static class DriveSignal {
 		// Robot Drive Signal Variables
@@ -117,18 +127,18 @@ public class DriveObjects {
 	public static class DriveUnits {
 		// Ticks and Wheel Revs
 		public static double ticksToWheelRevolutions(double ticks) {
-			return ticks / Constants.DRIVE_TICKS_PER_REVOLUTION;
+			return ticks / DRIVE_TICKS_PER_REVOLUTION;
 		}
 		public static double wheelRevolutionsToTicks(double revs) {
-			return revs * Constants.DRIVE_TICKS_PER_REVOLUTION;
+			return revs * DRIVE_TICKS_PER_REVOLUTION;
 		}
 		
 		// Feet and Wheel Revs
 		public static double feetToWheelRevolutions(double feet) {
-			return feet / (Constants.DRIVE_WHEEL_DIAMETER * Math.PI);
+			return feet / (DRIVE_WHEEL_DIAMETER * Math.PI);
 		}
 		public static double wheelRevolutionsToFeet(double revs) {
-			return revs * (Constants.DRIVE_WHEEL_DIAMETER * Math.PI);
+			return revs * (DRIVE_WHEEL_DIAMETER * Math.PI);
 		}
 		
 		// Feet and Ticks

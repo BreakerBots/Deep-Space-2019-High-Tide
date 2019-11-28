@@ -1,36 +1,64 @@
 /* BreakerBots Robotics Team (FRC 5104) 2020 */
 package frc.team5104.subsystems.drive;
 
-import frc.team5104.subsystems.drive.DriveObjects.DriveEncoders;
-import frc.team5104.subsystems.drive.DriveObjects.DriveSignal;
-import frc.team5104.subsystems.drive.DriveObjects.DriveUnits;
-import frc.team5104.util.WebappTuner.tunerOutput;
-import frc.team5104.util.managers.Subsystem;
-import frc.team5104.util.managers.Subsystem.Interface;
-import frc.team5104.util.managers.Subsystem.Looper;
+import com.ctre.phoenix.motorcontrol.ControlMode;
 
-public class Drive extends Subsystem.Actions {
-	//Meta
+import frc.team5104.subsystems.drive.DriveConstants.DriveSignal;
+import frc.team5104.subsystems.drive.DriveConstants.DriveUnits;
+import frc.team5104.util.managers.Subsystem;
+
+public class Drive extends Subsystem {
 	protected String getName() { return "Drive"; }
-	protected static DriveInterface _interface = new DriveInterface();
-	protected Interface getInterface() { return _interface; }
-	protected static DriveLooper _looper = new DriveLooper();
-	protected Looper getLooper() { return _looper; }
 
 	//Actions
-	public static void set(DriveSignal signal) { _looper.setDriveSignal(signal); }
-	public static void stop() { _looper.setDriveSignal(new DriveSignal()); }
-	
-	@tunerOutput
-	public static double getLeftEncoderFPS() { return DriveUnits.wheelRevolutionsToFeet(getEncoders().leftVelocityRevs); }
-	@tunerOutput
-	public static double getRightEncoderFPS() { return DriveUnits.wheelRevolutionsToFeet(getEncoders().rightVelocityRevs); }
-	public static DriveEncoders getEncoders() { return _interface.getEncoders(); }
-	public static void resetEncoders() { _interface.resetEncoders(); }
-	
-	public static double getGyro() { return _interface.getGyro(); }
-	public static void resetGyro() { _interface.resetGyro(); }
-	
-	public static double getLeftGearboxOutputVoltage() { return _interface.getLeftGearboxOutputVoltage(); }
-	public static double getRightGearboxOutputVoltage() { return _interface.getRightGearboxOutputVoltage(); }
+	public static void set(DriveSignal signal) { currentDriveSignal = signal; }
+	public static void stop() { currentDriveSignal = new DriveSignal(); }
+
+	//Enabled, Disabled, Init
+	protected void init() { DriveInterface.init(); }
+	protected void enabled() {
+		currentDriveSignal = new DriveSignal();
+	}
+	protected void disabled() {
+		currentDriveSignal = new DriveSignal();
+	}
+
+	//Loop
+	private static DriveSignal currentDriveSignal = new DriveSignal();
+	protected void update() {
+		DriveInterface.shift(currentDriveSignal.isHighGear);
+		switch (currentDriveSignal.unit) {
+			case percentOutput: {
+				DriveInterface.set(
+						currentDriveSignal.leftSpeed, 
+						currentDriveSignal.rightSpeed, 
+						ControlMode.PercentOutput,
+						currentDriveSignal.feedForward
+					);
+				break;
+			}
+			case feetPerSecond: {
+				DriveInterface.set(
+						DriveUnits.feetPerSecondToTalonVel(currentDriveSignal.leftSpeed), 
+						DriveUnits.feetPerSecondToTalonVel(currentDriveSignal.rightSpeed), 
+						ControlMode.Velocity,
+						currentDriveSignal.feedForward
+					);
+				break;
+			}
+			case voltage: {
+				DriveInterface.set(
+						currentDriveSignal.leftSpeed / DriveInterface.getLeftGearboxVoltage(),
+						currentDriveSignal.rightSpeed / DriveInterface.getRightGearboxVoltage(),
+						ControlMode.PercentOutput,
+						currentDriveSignal.feedForward
+					);
+				break;
+			}
+			case stop:
+				DriveInterface.stop();
+				break;
+		}
+		currentDriveSignal = new DriveSignal();
+	}
 }

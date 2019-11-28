@@ -1,11 +1,11 @@
 /*BreakerBots Robotics Team 2019*/
 package frc.team5104.statemachines;
 
-import frc.team5104.main.Constants;
 import frc.team5104.main.Controls;
-import frc.team5104.subsystems.elevator.Elevator;
-import frc.team5104.subsystems.intake.Intake;
-import frc.team5104.subsystems.wrist.Wrist;
+import frc.team5104.subsystems.elevator.ElevatorInterface;
+import frc.team5104.subsystems.intake.IntakeConstants;
+import frc.team5104.subsystems.intake.IntakeInterface;
+import frc.team5104.subsystems.wrist.WristInterface;
 import frc.team5104.util.Buffer;
 import frc.team5104.util.console;
 import frc.team5104.util.console.c;
@@ -46,13 +46,13 @@ public class IWE extends StateMachine {
 	//Manage States
 	protected void update() {
 		//Automatically Enter Manual
-		if (getControl() == IWEControl.AUTONOMOUS && (Wrist.encoderDisconnected() || Elevator.encoderDisconnected())) {
+		if (getControl() == IWEControl.AUTONOMOUS && (WristInterface.encoderDisconnected() || ElevatorInterface.encoderDisconnected())) {
 			console.error(c.IWE, "ENCODER DISCONNECTED IN IWE SUBSYSTEM!!!");
 			setControl(IWEControl.MANUAL);
 		}
 		
 		//Exit Eject (if in eject and has been ejecting for long enough)
-		if (getState() == IWEState.EJECT && (System.currentTimeMillis() > ejectStart + Constants.IWE_EJECT_TIME)) {
+		if (getState() == IWEState.EJECT && (System.currentTimeMillis() > ejectStart + IntakeConstants.INTAKE_EJECT_TIME)) {
 			console.log(c.IWE, "finished eject... idling");
 			setState(IWEState.IDLE);
 		}
@@ -63,7 +63,7 @@ public class IWE extends StateMachine {
 			setState(IWEState.IDLE);
 			Controls.IWE_INTAKE_RUMBLE.start();
 		}
-		intakeBuffer.update((getGamePiece() == IWEGamePiece.HATCH ? Intake.hasHatch() : Intake.hasCargo()));
+		intakeBuffer.update((getGamePiece() == IWEGamePiece.HATCH ? IntakeInterface.hasHatch() : IntakeInterface.hasCargo()));
 	}
 	protected void enabled() { setToDefaultStates(); }
 	protected void disabled() { setToDefaultStates(); }
@@ -71,6 +71,6 @@ public class IWE extends StateMachine {
 		targetState = IWEState.IDLE;
 		targetGamePiece = IWEGamePiece.HATCH;
 		targetHeight = IWEHeight.L1;
-		control = Constants.IWE_DEFAULT_CONTROL;
+		control = IWEControl.AUTONOMOUS;
 	}
 }
