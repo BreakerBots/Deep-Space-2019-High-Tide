@@ -1,4 +1,4 @@
-/* Breakerbots Robotics Team 2019 */
+/* BreakerBots Robotics Team (FRC 5104) 2020 */
 package frc.team5104.util;
 
 import java.io.BufferedInputStream;
@@ -23,7 +23,6 @@ public class Webapp {
 
 	public static boolean run() {
 		try {
-			
 			File dir = new File(getBaseUrl());
 			if (dir.exists() == false) {
 				console.log(c.WEBAPP, "Webapp not on roboRio. Please deploy the webapp using `webapp deploy`");

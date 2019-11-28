@@ -1,3 +1,4 @@
+/* BreakerBots Robotics Team (FRC 5104) 2020 */
 package frc.team5104.util.managers;
 
 import frc.team5104.util.CrashLogger;
@@ -14,11 +15,11 @@ private static StateMachine[] targetStateMachines;
 		targetStateMachines = availableStateMachines;
 		
 		//Print out
-		String printOut = "Running State Machines: ";
+		String message = "Running State Machines: ";
 		for (StateMachine state_machine : targetStateMachines) {
-			printOut += state_machine.getName() + " ";
+			message += state_machine.getName() + ", ";
 		}
-		console.log(c.MAIN, t.INFO, printOut);
+		console.log(c.MAIN, t.INFO, message.substring(0, message.length()-2));
 	}
 
 	/** Call when the robot becomes enabled */

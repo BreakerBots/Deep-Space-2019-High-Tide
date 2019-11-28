@@ -1,10 +1,11 @@
-/*BreakerBots Robotics Team 2019*/
+/* BreakerBots Robotics Team (FRC 5104) 2020 */
 package frc.team5104.util;
 
 import java.io.File;
 import java.io.PrintWriter;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
@@ -23,13 +24,14 @@ public class console {
 		OTHER,
 		AUTO,
 		WEBAPP,
+		VISION,
 		
 		DRIVE,
-		ELEVATOR,
 		INTAKE,
 		WRIST,
-		IWE,
-		VISION
+		ELEVATOR,
+		IWE
+		//slap ur subsystems here
 	};
 	/** Types of Logging */
 	public static enum t {
@@ -238,6 +240,53 @@ public class console {
 					writer.close();
 				}
 			} catch (Exception e) { console.error(e); }
+		}
+	}
+	
+	// -- Timed Printing
+	public static class timedPrinter {
+		
+		private static ArrayList<TimedPrinter> printers = new ArrayList<TimedPrinter>(); 
+		private static void create(String printerId, int deltaLoops) {
+			printers.add(new TimedPrinter(printerId, deltaLoops));
+		}
+		
+		private static TimedPrinter get(String printerId, int deltaLoops) {
+			printerId = printerId.toLowerCase();
+			for (TimedPrinter printer : printers) {
+				if (printer.id.equals(printerId))
+					return printer;
+			}
+			create(printerId, deltaLoops);
+			return get(printerId, deltaLoops);
+		}
+		
+		/** 
+		 * Returns if you should print that loop
+		 * @param printerId A string identifier for the printer. If it doesnt exist it will make it.
+		 * @param deltaLoops 
+		 */
+		public static boolean shouldPrint(String printerId, int deltaLoops) {
+			return get(printerId, deltaLoops).get();
+		}
+		
+		private static class TimedPrinter {
+			String id;
+			int deltaLoops;
+			int i = 1;
+			public TimedPrinter(String id, int deltaLoops) {
+				this.id = id;
+				this.deltaLoops = deltaLoops;
+			}
+			
+			public boolean get() {
+				i++;
+				if (i > deltaLoops) {
+					i = 1;
+					return true;
+				}
+				return false;
+			}
 		}
 	}
 }

@@ -1,14 +1,15 @@
-/*BreakerBots Robotics Team 2019*/
+/* BreakerBots Robotics Team (FRC 5104) 2020 */
 package frc.team5104.subsystems.drive;
 
 import frc.team5104.main.Constants;
 
 public class DriveObjects {
-	/** A simple class for sending/saving drivetrain movement signals. */
+	/** A simple class for sending/saving drive-train movement signals. */
 	public static class DriveSignal {
 		// Robot Drive Signal Variables
 		public double leftSpeed;
 		public double rightSpeed;
+		public double feedForward;
 		public boolean isHighGear;
 		public DriveUnit unit;
 		
@@ -25,9 +26,14 @@ public class DriveObjects {
 		}
 		
 		public DriveSignal(double leftSpeed, double rightSpeed, boolean isHighGear, DriveUnit unit) {
+			this(leftSpeed, rightSpeed, isHighGear, unit, 0);
+		}
+		
+		public DriveSignal(double leftSpeed, double rightSpeed, boolean isHighGear, DriveUnit unit, double feedForward) {
 			this.leftSpeed = leftSpeed;
 			this.rightSpeed = rightSpeed;
 			this.unit = unit;
+			this.feedForward = feedForward;
 			this.isHighGear = isHighGear;
 		}
 		
