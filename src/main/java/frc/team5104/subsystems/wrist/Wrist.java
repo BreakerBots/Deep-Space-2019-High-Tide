@@ -38,32 +38,7 @@ public class Wrist extends Subsystem {
 	static Buffer limitSwitchZeroBuffer = new Buffer(5, false);
 	static Buffer averageMotorOutput = new Buffer(300, 0.0);
 	protected void update() {
-		//Sync Wrist State (Force Manaul if IWE is Manual. If switched from manual -> auto then bring it into calibrating)
-		if (IWE.getControl() == IWEControl.MANUAL) wristState = WristState.MANUAL;
-		else if (wristState == WristState.MANUAL) wristState = WristState.CALIBRATING;
-		
-		//Sync Wrist Position
-		if (IWE.getState() == IWEState.IDLE || !ElevatorInterface.isRoughlyAtTargetHeight()) 
-			wristPosition = WristPosition.BACK;
-		else if (IWE.getGamePiece() == IWEGamePiece.HATCH) {
-			//Hatch
-			if (IWE.getState() == IWEState.INTAKE)
-				wristPosition = WristPosition.HATCH_INTAKE;
-			else wristPosition = WristPosition.HATCH_EJECT;
-		}
-		else {
-			//Cargo
-			if (IWE.getState() == IWEState.INTAKE) {
-				if (IWE.cargoIntakeGround)
-					wristPosition = WristPosition.CARGO_INTAKE_GROUND;
-				else wristPosition = WristPosition.CARGO_INTAKE_WALL;
-			}
-			else {
-				if (IWE.getHeight() == IWEHeight.SHIP)
-					wristPosition = WristPosition.CARGO_EJECT_SHIP;
-				else wristPosition = WristPosition.CARGO_EJECT_ROCKET;
-			}
-		}
+		syncStates();
 		
 		//Time Tracking for State and Position
 		if (lastWristState != wristState)
@@ -116,5 +91,35 @@ public class Wrist extends Subsystem {
 		lastWristState = wristState;
 		lastWristPosition = wristPosition;
 		averageMotorOutput.update(WristInterface.getMotorPercentOutput());
+	}
+	
+	//Sync States with IWE
+	void syncStates() {
+		//Sync Wrist State (Force Manaul if IWE is Manual. If switched from manual -> auto then bring it into calibrating)
+		if (IWE.getControl() == IWEControl.MANUAL) wristState = WristState.MANUAL;
+		else if (wristState == WristState.MANUAL) wristState = WristState.CALIBRATING;
+		
+		//Sync Wrist Position
+		if (IWE.getState() == IWEState.IDLE || !ElevatorInterface.isRoughlyAtTargetHeight()) 
+			wristPosition = WristPosition.BACK;
+		else if (IWE.getGamePiece() == IWEGamePiece.HATCH) {
+			//Hatch
+			if (IWE.getState() == IWEState.INTAKE)
+				wristPosition = WristPosition.HATCH_INTAKE;
+			else wristPosition = WristPosition.HATCH_EJECT;
+		}
+		else {
+			//Cargo
+			if (IWE.getState() == IWEState.INTAKE) {
+				if (IWE.cargoIntakeGround)
+					wristPosition = WristPosition.CARGO_INTAKE_GROUND;
+				else wristPosition = WristPosition.CARGO_INTAKE_WALL;
+			}
+			else {
+				if (IWE.getHeight() == IWEHeight.SHIP)
+					wristPosition = WristPosition.CARGO_EJECT_SHIP;
+				else wristPosition = WristPosition.CARGO_EJECT_ROCKET;
+			}
+		}
 	}
 }
