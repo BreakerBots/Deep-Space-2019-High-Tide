@@ -27,7 +27,8 @@ public class Drive extends Subsystem {
 						currentDriveSignal.leftSpeed, 
 						currentDriveSignal.rightSpeed, 
 						ControlMode.PercentOutput,
-						currentDriveSignal.feedForward
+						currentDriveSignal.leftFeedForward,
+						currentDriveSignal.rightFeedForward
 					);
 				break;
 			}
@@ -36,7 +37,8 @@ public class Drive extends Subsystem {
 						Units.feetPerSecondToTalonVel(currentDriveSignal.leftSpeed), 
 						Units.feetPerSecondToTalonVel(currentDriveSignal.rightSpeed), 
 						ControlMode.Velocity,
-						currentDriveSignal.feedForward
+						currentDriveSignal.leftFeedForward,
+						currentDriveSignal.rightFeedForward
 					);
 				break;
 			}
@@ -45,7 +47,8 @@ public class Drive extends Subsystem {
 						currentDriveSignal.leftSpeed / getLeftGearboxVoltage(),
 						currentDriveSignal.rightSpeed / getRightGearboxVoltage(),
 						ControlMode.PercentOutput,
-						currentDriveSignal.feedForward
+						currentDriveSignal.leftFeedForward,
+						currentDriveSignal.rightFeedForward
 					);
 				break;
 			}
@@ -57,9 +60,9 @@ public class Drive extends Subsystem {
 	}
 	
 	//Internal Functions
-	static void setMotors(double leftSpeed, double rightSpeed, ControlMode controlMode, double feedForward) {
-		talonL1.set(controlMode, leftSpeed, DemandType.ArbitraryFeedForward, feedForward);
-		talonR1.set(controlMode, rightSpeed, DemandType.ArbitraryFeedForward, feedForward);
+	static void setMotors(double leftSpeed, double rightSpeed, ControlMode controlMode, double leftFeedForward, double rightFeedForward) {
+		talonL1.set(controlMode, leftSpeed, DemandType.ArbitraryFeedForward, leftFeedForward);
+		talonR1.set(controlMode, rightSpeed, DemandType.ArbitraryFeedForward, rightFeedForward);
 	}
 	static void stopMotors() {
 		talonL1.set(ControlMode.Disabled, 0);

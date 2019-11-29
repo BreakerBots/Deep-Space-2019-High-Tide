@@ -1,6 +1,7 @@
 /* BreakerBots Robotics Team (FRC 5104) 2020 */
 package frc.team5104.auto.actions;
 
+import edu.wpi.first.wpilibj.Timer;
 import frc.team5104.auto.BreakerTrajectoryFollower;
 import frc.team5104.auto.BreakerTrajectoryGenerator;
 import frc.team5104.auto.util.AutoPathAction;
@@ -17,7 +18,8 @@ import frc.team5104.util.console.c;
 public class DriveTrajectoryAction extends AutoPathAction {
 	private BreakerTrajectoryFollower follower;
 	private TrajectoryWaypoint[] waypoints;
-		
+	private double lastTime;
+
     public DriveTrajectoryAction(TrajectoryWaypoint[] points) {
     	this.waypoints = points;
     }
@@ -32,12 +34,14 @@ public class DriveTrajectoryAction extends AutoPathAction {
 		
 		//Wait 100ms for Device Catchup
 		try { Thread.sleep(100); }  catch (Exception e) { console.error(e); e.printStackTrace(); }
+		lastTime = Timer.getFPGATimestamp();
     }
 
     public boolean update() {
-    	DriveSignal nextSignal = follower.getNextDriveSignal(Odometry.getPosition());
-		//nextSignal = DriveHelper.applyDriveStraight(nextSignal);
+    	DriveSignal nextSignal = follower.getNextDriveSignal(Odometry.getPosition(), (Timer.getFPGATimestamp() - lastTime) * 1000);
     	Drive.set(nextSignal);
+    	
+    	lastTime = Timer.getFPGATimestamp();
     	
 		return follower.isFinished();
     }
