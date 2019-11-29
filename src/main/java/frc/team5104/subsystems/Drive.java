@@ -17,10 +17,6 @@ public class Drive extends Subsystem {
 	private static TalonSRX talonL1, talonL2, talonR1, talonR2;
 	private static PigeonIMU gyro;
 	
-	//External Functions
-	public static void set(DriveSignal signal) { currentDriveSignal = signal; }
-	public static void stop() { currentDriveSignal = new DriveSignal(); }
-
 	//Loop
 	private static DriveSignal currentDriveSignal = new DriveSignal();
 	protected void update() {
@@ -73,6 +69,8 @@ public class Drive extends Subsystem {
 	static boolean getShift() { return true;/*shifter.get() == Value.kForward;*/ }
 	
 	//External Functions
+	public static void set(DriveSignal signal) { currentDriveSignal = signal; }
+	public static void stop() { currentDriveSignal = new DriveSignal(); }
 	public static double getLeftGearboxVoltage() { return talonL1.getBusVoltage(); }
 	public static double getRightGearboxVoltage() { return talonR1.getBusVoltage(); }
 	public static double getLeftGearboxOutputVoltage() { return talonL1.getMotorOutputVoltage(); }

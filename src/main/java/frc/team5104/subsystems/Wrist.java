@@ -16,7 +16,6 @@ public class Wrist extends Subsystem {
 
 	private static TalonSRX wristTalon;
 	public static double targetWristAngle = 0;
-	public static boolean isLimp = false;
 	public static double desiredWristManaul = 0;
 	
 	//Loop
@@ -24,7 +23,11 @@ public class Wrist extends Subsystem {
 	protected void update() {
 		//Auto
 		if (Superstructure.getSystemState() == SystemState.AUTONOMOUS)
-			setMotionMagic(targetWristAngle, isLimp);
+			setMotionMagic(
+					targetWristAngle, 
+					System.currentTimeMillis() > (Superstructure.systemStateStart > Superstructure.modeStart ? 
+					Superstructure.systemStateStart : Superstructure.modeStart) + Constants.WRIST_LIMP_MODE_TIME_START
+				);
 		
 		//Calibrating
 		else if (Superstructure.getSystemState() == SystemState.CALIBRATING && !backLimitSwitchHit())
@@ -33,6 +36,9 @@ public class Wrist extends Subsystem {
 		//Manual
 		else if (Superstructure.getSystemState() == SystemState.MANUAL)
 			setPercentOutput(desiredWristManaul);
+		
+		//Stop
+		else stop();
 		
 		//Zero Encoder In Runtime
 		limitSwitchZeroBuffer.update(backLimitSwitchHit());

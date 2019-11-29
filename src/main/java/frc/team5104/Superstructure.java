@@ -23,8 +23,8 @@ public class Superstructure {
 	private static Height targetHeight;
 	private static SystemState systemState;
 	public static boolean cargoIntakeGround = true;
-	private static long modeStart = System.currentTimeMillis();
-	private static long systemStateStart = System.currentTimeMillis();
+	public static long modeStart = System.currentTimeMillis();
+	public static long systemStateStart = System.currentTimeMillis();
 	
 	//External Functions
 	public static Mode getMode() { return targetMode; }
