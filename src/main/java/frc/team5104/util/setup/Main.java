@@ -1,4 +1,4 @@
-package frc.team5104.main.setup;
+package frc.team5104.util.setup;
 
 /*----------------------------------------------------------------------------*/
 /* Copyright (c) 2018 FIRST. All Rights Reserved.                             */

@@ -5,12 +5,12 @@ import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
-import frc.team5104.main.Constants;
-import frc.team5104.main.Ports;
-import frc.team5104.main.Superstructure;
-import frc.team5104.main.Superstructure.GamePiece;
-import frc.team5104.main.Superstructure.Mode;
-import frc.team5104.main.Superstructure.SystemState;
+import frc.team5104.Constants;
+import frc.team5104.Ports;
+import frc.team5104.Superstructure;
+import frc.team5104.Superstructure.GamePiece;
+import frc.team5104.Superstructure.Mode;
+import frc.team5104.Superstructure.SystemState;
 import frc.team5104.util.AnalogToDigital;
 import frc.team5104.util.MovingAverage;
 import frc.team5104.util.managers.Subsystem;

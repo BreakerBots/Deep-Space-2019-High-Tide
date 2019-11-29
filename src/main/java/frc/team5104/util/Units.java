@@ -1,7 +1,7 @@
 /* BreakerBots Robotics Team (FRC 5104) 2020 */
 package frc.team5104.util;
 
-import frc.team5104.main.Constants;
+import frc.team5104.Constants;
 
 /** Some basic unit conversions */
 public class Units {

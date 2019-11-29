@@ -1,11 +1,11 @@
 /* BreakerBots Robotics Team (FRC 5104) 2020 */
 package frc.team5104.teleop;
 
-import frc.team5104.main.Controls;
-import frc.team5104.main.Superstructure;
-import frc.team5104.main.Superstructure.GamePiece;
-import frc.team5104.main.Superstructure.Height;
-import frc.team5104.main.Superstructure.Mode;
+import frc.team5104.Controls;
+import frc.team5104.Superstructure;
+import frc.team5104.Superstructure.GamePiece;
+import frc.team5104.Superstructure.Height;
+import frc.team5104.Superstructure.Mode;
 import frc.team5104.subsystems.Drive;
 import frc.team5104.util.DriveHelper;
 import frc.team5104.util.managers.TeleopController;

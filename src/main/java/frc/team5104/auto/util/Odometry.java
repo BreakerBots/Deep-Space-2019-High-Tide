@@ -1,7 +1,7 @@
 /* BreakerBots Robotics Team (FRC 5104) 2020 */
 package frc.team5104.auto.util;
 
-import frc.team5104.main.Constants;
+import frc.team5104.Constants;
 import frc.team5104.subsystems.Drive;
 import frc.team5104.util.BreakerMath;
 import frc.team5104.util.CrashLogger;

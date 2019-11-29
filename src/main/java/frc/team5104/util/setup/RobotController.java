@@ -1,5 +1,5 @@
 /*BreakerBots Robotics Team 2019*/
-package frc.team5104.main.setup;
+package frc.team5104.util.setup;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.RobotBase;
@@ -8,14 +8,14 @@ import edu.wpi.first.hal.FRCNetComm.tInstances;
 import edu.wpi.first.hal.FRCNetComm.tResourceType;
 import edu.wpi.first.hal.HAL;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
-import frc.team5104.main.Robot;
-import frc.team5104.main.Constants;
-import frc.team5104.main.setup.RobotState.RobotMode;
+import frc.team5104.Constants;
+import frc.team5104.Robot;
 import frc.team5104.util.CrashLogger;
 import frc.team5104.util.CrashLogger.Crash;
 import frc.team5104.util.console;
 import frc.team5104.util.console.c;
 import frc.team5104.util.console.t;
+import frc.team5104.util.setup.RobotState.RobotMode;
 
 public class RobotController extends RobotBase {
 	//Modes

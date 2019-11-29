@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
-import frc.team5104.main.Constants;
+import frc.team5104.Constants;
 
 /**
  * <h1>Console</h1>

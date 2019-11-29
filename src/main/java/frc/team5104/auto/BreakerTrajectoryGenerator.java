@@ -7,10 +7,10 @@ import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
+import frc.team5104.Constants;
 import frc.team5104.auto.util.Trajectory;
 import frc.team5104.auto.util.TrajectoryGenerator;
 import frc.team5104.auto.util.TrajectoryWaypoint;
-import frc.team5104.main.Constants;
 import frc.team5104.util.console;
 import frc.team5104.util.console.c;
 

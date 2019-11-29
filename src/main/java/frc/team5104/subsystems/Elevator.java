@@ -5,10 +5,10 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
-import frc.team5104.main.Constants;
-import frc.team5104.main.Ports;
-import frc.team5104.main.Superstructure;
-import frc.team5104.main.Superstructure.SystemState;
+import frc.team5104.Constants;
+import frc.team5104.Ports;
+import frc.team5104.Superstructure;
+import frc.team5104.Superstructure.SystemState;
 import frc.team5104.util.MovingAverage;
 import frc.team5104.util.managers.Subsystem;
 

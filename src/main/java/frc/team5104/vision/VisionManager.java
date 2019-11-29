@@ -1,9 +1,9 @@
 package frc.team5104.vision;
 
-import frc.team5104.main.Superstructure;
-import frc.team5104.main.Superstructure.GamePiece;
-import frc.team5104.main.Superstructure.Height;
-import frc.team5104.main.Superstructure.Mode;
+import frc.team5104.Superstructure;
+import frc.team5104.Superstructure.GamePiece;
+import frc.team5104.Superstructure.Height;
+import frc.team5104.Superstructure.Mode;
 import frc.team5104.util.BreakerMath;
 import frc.team5104.util.DriveSignal;
 import frc.team5104.util.DriveSignal.DriveUnit;

@@ -1,5 +1,5 @@
 /*BreakerBots Robotics Team 2019*/
-package frc.team5104.main;
+package frc.team5104;
 
 import frc.team5104.util.BezierCurve;
 import frc.team5104.util.Deadband;

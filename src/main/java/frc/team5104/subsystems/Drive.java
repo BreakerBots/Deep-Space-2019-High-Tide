@@ -6,7 +6,7 @@ import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.sensors.PigeonIMU;
 
-import frc.team5104.main.Constants;
+import frc.team5104.Constants;
 import frc.team5104.util.DriveSignal;
 import frc.team5104.util.Units;
 import frc.team5104.util.managers.Subsystem;

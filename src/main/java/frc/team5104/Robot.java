@@ -1,9 +1,8 @@
 /*BreakerBots Robotics Team 2019*/
-package frc.team5104.main;
+package frc.team5104;
 
+import frc.team5104.Superstructure.SystemState;
 import frc.team5104.auto.util.Odometry;
-import frc.team5104.main.Superstructure.SystemState;
-import frc.team5104.main.setup.RobotController;
 import frc.team5104.subsystems.Drive;
 import frc.team5104.subsystems.Elevator;
 import frc.team5104.subsystems.Intake;
@@ -16,6 +15,7 @@ import frc.team5104.util.WebappTuner;
 import frc.team5104.util.XboxController;
 import frc.team5104.util.managers.SubsystemManager;
 import frc.team5104.util.managers.TeleopControllerManager;
+import frc.team5104.util.setup.RobotController;
 import frc.team5104.vision.Limelight;
 import frc.team5104.vision.VisionManager;
 import frc.team5104.util.Webapp;
