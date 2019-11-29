@@ -1,13 +1,13 @@
 /* BreakerBots Robotics Team (FRC 5104) 2020 */
 package frc.team5104.auto;
 
+import frc.team5104.auto.util.RobotPosition;
 import frc.team5104.auto.util.Trajectory;
 import frc.team5104.auto.util.TrajectorySegment;
-import frc.team5104.subsystems.drive.DriveConstants;
-import frc.team5104.subsystems.drive.DriveConstants.DriveSignal;
-import frc.team5104.subsystems.drive.DriveConstants.DriveUnit;
-import frc.team5104.subsystems.drive.DriveConstants.RobotPosition;
+import frc.team5104.main.Constants;
 import frc.team5104.util.BreakerMath;
+import frc.team5104.util.DriveSignal;
+import frc.team5104.util.DriveSignal.DriveUnit;
 import frc.team5104.util.Units;
 
 /**
@@ -59,15 +59,15 @@ public class BreakerTrajectoryFollower {
 		w = BreakerMath.clamp(w, Math.PI * -2, Math.PI * 2);
 
 		//Convert Angular and Linear Velocities to into wheel speeds 
-		left  = ((+DriveConstants.DRIVE_WHEEL_BASE_WIDTH * w) / 2 + v);
-		right = ((-DriveConstants.DRIVE_WHEEL_BASE_WIDTH * w) / 2 + v);
+		left  = ((+Constants.DRIVE_WHEEL_BASE_WIDTH * w) / 2 + v);
+		right = ((-Constants.DRIVE_WHEEL_BASE_WIDTH * w) / 2 + v);
 
 		//Go to the next index
 		trajectoryIndex++;
 	   
 		return new DriveSignal (
 				left, right, true, DriveUnit.feetPerSecond,
-				((DriveConstants.DRIVE_KS + (DriveConstants.DRIVE_KV * current.velocity) + (DriveConstants.DRIVE_KA * current.acceleration))) / 12.0
+				((Constants.DRIVE_KS + (Constants.DRIVE_KV * current.velocity) + (Constants.DRIVE_KA * current.acceleration))) / 12.0
 			);
 	}
 

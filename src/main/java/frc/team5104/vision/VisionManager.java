@@ -3,10 +3,10 @@ package frc.team5104.vision;
 import frc.team5104.main.Superstructure;
 import frc.team5104.main.Superstructure.GamePiece;
 import frc.team5104.main.Superstructure.Height;
-import frc.team5104.main.Superstructure.SystemState;
-import frc.team5104.subsystems.drive.DriveConstants.DriveSignal;
-import frc.team5104.subsystems.drive.DriveConstants.DriveUnit;
+import frc.team5104.main.Superstructure.Mode;
 import frc.team5104.util.BreakerMath;
+import frc.team5104.util.DriveSignal;
+import frc.team5104.util.DriveSignal.DriveUnit;
 import frc.team5104.util.WebappTuner.tunerInput;
 import frc.team5104.util.console;
 import frc.team5104.util.console.c;
@@ -103,12 +103,12 @@ public class VisionManager {
 			//Forward
 			case FORWARD: {
 				double targetY = VISION_FORWARD_TARGET_Y_NORMAL;
-				if (Superstructure.getState() != SystemState.INTAKE && 
+				if (Superstructure.getMode() != Mode.INTAKE && 
 					(Superstructure.getHeight() == Height.L2 || Superstructure.getHeight() == Height.L3) &&
 					Superstructure.getGamePiece() == GamePiece.HATCH) {
 					targetY = VISION_FORWARD_TARGET_Y_EARLY;
 				}
-				if (Superstructure.getState() != SystemState.INTAKE && 
+				if (Superstructure.getMode() != Mode.INTAKE && 
 					Superstructure.getHeight() != Height.SHIP &&
 					Superstructure.getGamePiece() == GamePiece.CARGO) {
 					targetY = VISION_FORWARD_TARGET_Y_VERY_EARLY;

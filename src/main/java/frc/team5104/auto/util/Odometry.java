@@ -2,9 +2,7 @@
 package frc.team5104.auto.util;
 
 import frc.team5104.main.Constants;
-import frc.team5104.subsystems.drive.DriveInterface;
-import frc.team5104.subsystems.drive.DriveConstants.DriveUnits;
-import frc.team5104.subsystems.drive.DriveConstants.RobotPosition;
+import frc.team5104.subsystems.Drive;
 import frc.team5104.util.BreakerMath;
 import frc.team5104.util.CrashLogger;
 import frc.team5104.util.CrashLogger.Crash;
@@ -24,13 +22,13 @@ public class Odometry {
 	public volatile static RobotPosition position = new RobotPosition(0, 0, 0);
 	
 	private static void init() {
-		lastPos = currentPos = (DriveInterface.getEncoders().leftPositionRaw + DriveInterface.getEncoders().rightPositionRaw) / 2.0;
+		lastPos = currentPos = (Drive.getLeftEncoderPositionRaw() + Drive.getRightEncoderPositionRaw()) / 2.0;
 		_thread = new Notifier(() -> {
 			try {
-				currentPos = (DriveInterface.getEncoders().leftPositionRaw + DriveInterface.getEncoders().rightPositionRaw) / 2.0;
-				dPos = DriveUnits.ticksToFeet(currentPos - lastPos);
+				currentPos = (Drive.getLeftEncoderPositionRaw() + Drive.getRightEncoderPositionRaw()) / 2.0;
+				dPos = Units.ticksToFeet(currentPos - lastPos);
 				lastPos = currentPos;
-				theta = Units.degreesToRadians(BreakerMath.boundDegrees180(DriveInterface.getGyro()));
+				theta = Units.degreesToRadians(BreakerMath.boundDegrees180(Drive.getGyro()));
 	            position.addX(Math.cos(theta) * dPos);
 	            position.addY(Math.sin(theta) * dPos);
 	            position.setTheta(theta);
@@ -57,8 +55,8 @@ public class Odometry {
 	public static void reset() {
 		console.log("Resetting Odometry");
 		stop();
-		DriveInterface.resetEncoders();
-		DriveInterface.resetGyro();
+		Drive.resetEncoders();
+		Drive.resetGyro();
 		lastPos = 0; 
 		currentPos = 0; 
 		dPos = 0; 

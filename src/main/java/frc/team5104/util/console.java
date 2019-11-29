@@ -30,7 +30,7 @@ public class console {
 		INTAKE,
 		WRIST,
 		ELEVATOR,
-		IWE
+		SUPERSTRUCTURE
 		//slap ur subsystems here
 	};
 	/** Types of Logging */

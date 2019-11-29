@@ -6,8 +6,8 @@ import frc.team5104.auto.BreakerTrajectoryGenerator;
 import frc.team5104.auto.util.AutoPathAction;
 import frc.team5104.auto.util.Odometry;
 import frc.team5104.auto.util.TrajectoryWaypoint;
-import frc.team5104.subsystems.drive.Drive;
-import frc.team5104.subsystems.drive.DriveConstants.DriveSignal;
+import frc.team5104.subsystems.Drive;
+import frc.team5104.util.DriveSignal;
 import frc.team5104.util.console;
 import frc.team5104.util.console.c;
 

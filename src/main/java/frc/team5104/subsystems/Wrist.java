@@ -1,20 +1,47 @@
-package frc.team5104.subsystems.wrist;
+package frc.team5104.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+
+import frc.team5104.main.Constants;
 import frc.team5104.main.Ports;
-import frc.team5104.subsystems.wrist.WristConstants.WristPosition;
+import frc.team5104.main.Superstructure;
+import frc.team5104.main.Superstructure.SystemState;
+import frc.team5104.util.MovingAverage;
+import frc.team5104.util.managers.Subsystem;
 
-public class WristInterface {
+public class Wrist extends Subsystem {
+	protected String getName() { return "Wrist"; }
 
-	//Devices
 	private static TalonSRX wristTalon;
-	static double lastTargetAngle = 0;
+	public static double targetWristAngle = 0;
+	public static boolean isLimp = false;
+	public static double desiredWristManaul = 0;
 	
+	//Loop
+	static MovingAverage limitSwitchZeroBuffer = new MovingAverage(5, false);
+	protected void update() {
+		//Auto
+		if (Superstructure.getSystemState() == SystemState.AUTONOMOUS)
+			setMotionMagic(targetWristAngle, isLimp);
+		
+		//Calibrating
+		else if (Superstructure.getSystemState() == SystemState.CALIBRATING && !backLimitSwitchHit())
+			setPercentOutput(-Constants.WRIST_CALIBRATE_SPEED);
+		
+		//Manual
+		else if (Superstructure.getSystemState() == SystemState.MANUAL)
+			setPercentOutput(desiredWristManaul);
+		
+		//Zero Encoder In Runtime
+		limitSwitchZeroBuffer.update(backLimitSwitchHit());
+		if (limitSwitchZeroBuffer.getBooleanOutput())
+			resetEncoder();
+	}
+
 	//Internal Functions
 	static void setMotionMagic(double angle, boolean limpMode) {
-		lastTargetAngle = angle;
 		setLimpMode(limpMode);
 		wristTalon.set(
 			ControlMode.MotionMagic, angle / 360.0 * 4096.0, 
@@ -22,10 +49,7 @@ public class WristInterface {
 		);
 	}
 	static double getFTerm() {
-		double f = (-getEncoderAngle() / 900.0) + 0.1;
-		if (Wrist.wristPosition == WristPosition.BACK)
-			f -= 0.1;
-		return f;
+		return (-getEncoderAngle() / 900.0) + 0.1;
 	}
 	static void setPercentOutput(double percent) {
 		setLimpMode(false);
@@ -37,14 +61,12 @@ public class WristInterface {
 	}
 	static void setLimpMode(boolean limp) {
 		if (limp) {
-			wristTalon.configPeakOutputForward(getFTerm() + WristConstants.WRIST_LIMP_MODE_MAX_SPEED);
-			wristTalon.configPeakOutputReverse(getFTerm() - WristConstants.WRIST_LIMP_MODE_MAX_SPEED);
+			wristTalon.configPeakOutputForward(getFTerm() + Constants.WRIST_LIMP_MODE_MAX_SPEED);
+			wristTalon.configPeakOutputReverse(getFTerm() - Constants.WRIST_LIMP_MODE_MAX_SPEED);
 		}
 		else {
 			wristTalon.configPeakOutputForward(1);
-			if (Wrist.wristPosition == WristPosition.BACK && getEncoderAngle() < 45)
-				wristTalon.configPeakOutputReverse(-0.25);
-			else wristTalon.configPeakOutputReverse(-1);
+			wristTalon.configPeakOutputReverse(-1);
 		}
 	}
 	
@@ -72,18 +94,18 @@ public class WristInterface {
 	}
 	
 	//Config
-	static void init() {
+	protected void init() {
 		wristTalon = new TalonSRX(Ports.WRIST_TALON);
 		wristTalon.configFactoryDefault();
-		wristTalon.configContinuousCurrentLimit(WristConstants.WRIST_CURRENT_LIMIT, 10);
+		wristTalon.configContinuousCurrentLimit(Constants.WRIST_CURRENT_LIMIT, 10);
 		wristTalon.enableCurrentLimit(true);
-		wristTalon.setNeutralMode(WristConstants.WRIST_NEUTRAL_MODE);
-		wristTalon.config_kP(0, WristConstants.WRIST_MOTION_KP);
-		wristTalon.config_kI(0, WristConstants.WRIST_MOTION_KI);
-		wristTalon.config_kD(0, WristConstants.WRIST_MOTION_KD);
+		wristTalon.setNeutralMode(Constants.WRIST_NEUTRAL_MODE);
+		wristTalon.config_kP(0, Constants.WRIST_MOTION_KP);
+		wristTalon.config_kI(0, Constants.WRIST_MOTION_KI);
+		wristTalon.config_kD(0, Constants.WRIST_MOTION_KD);
 		wristTalon.config_kF(0, 0);
-		wristTalon.configMotionAcceleration(WristConstants.WRIST_MOTION_ACCEL);
-		wristTalon.configMotionCruiseVelocity(WristConstants.WRIST_MOTION_CRUISE_VELOCITY);
+		wristTalon.configMotionAcceleration(Constants.WRIST_MOTION_ACCEL);
+		wristTalon.configMotionCruiseVelocity(Constants.WRIST_MOTION_CRUISE_VELOCITY);
 		wristTalon.configNominalOutputForward(0);
 		wristTalon.configNominalOutputReverse(0);
 		wristTalon.configPeakOutputForward(1);
@@ -91,4 +113,6 @@ public class WristInterface {
 		wristTalon.selectProfileSlot(0, 0);
 		wristTalon.setSensorPhase(true);
 	}
+	protected void enabled() { stop(); }
+	protected void disabled() { stop(); }
 }

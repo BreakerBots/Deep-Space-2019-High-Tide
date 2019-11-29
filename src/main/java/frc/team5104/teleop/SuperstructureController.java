@@ -2,10 +2,12 @@ package frc.team5104.teleop;
 
 import frc.team5104.main.Controls;
 import frc.team5104.main.Superstructure;
-import frc.team5104.main.Superstructure.ControlMode;
+import frc.team5104.main.Superstructure.SystemState;
+import frc.team5104.subsystems.Elevator;
+import frc.team5104.subsystems.Wrist;
 import frc.team5104.main.Superstructure.GamePiece;
 import frc.team5104.main.Superstructure.Height;
-import frc.team5104.main.Superstructure.SystemState;
+import frc.team5104.main.Superstructure.Mode;
 import frc.team5104.util.console;
 import frc.team5104.util.console.c;
 import frc.team5104.util.managers.TeleopController;
@@ -16,39 +18,39 @@ public class SuperstructureController extends TeleopController {
 	protected void update() {
 		//Idle
 		if (Controls.IDLE.get()) {
-			console.log(c.IWE, "idling");
-			Superstructure.setState(SystemState.IDLE);
+			console.log(c.SUPERSTRUCTURE, "idling");
+			Superstructure.setMode(Mode.IDLE);
 		}
 		
 		//Intake & Intake w/ Vision
 		if (Controls.INTAKE.get()) {
 			if (Superstructure.getGamePiece() == GamePiece.CARGO) {
-				Superstructure.cargoIntakeGround = Superstructure.getState() == SystemState.INTAKE ? !Superstructure.cargoIntakeGround : true;
-				console.log(c.IWE, "intaking cargo " + (Superstructure.cargoIntakeGround ? "ground" : "wall"));
+				Superstructure.cargoIntakeGround = Superstructure.getMode() == Mode.INTAKE ? !Superstructure.cargoIntakeGround : true;
+				console.log(c.SUPERSTRUCTURE, "intaking cargo " + (Superstructure.cargoIntakeGround ? "ground" : "wall"));
 			}
-			else console.log(c.IWE, "intaking hatch");
-			Superstructure.setState(SystemState.INTAKE);
+			else console.log(c.SUPERSTRUCTURE, "intaking hatch");
+			Superstructure.setMode(Mode.INTAKE);
 		}
 		
 		//Eject
 		if (Controls.PLACE_EJECT.get()) {
-			if (Superstructure.getState() == SystemState.IDLE) {
+			if (Superstructure.getMode() == Mode.IDLE) {
 				if (Superstructure.getHeight() == Height.L2 || Superstructure.getHeight() == Height.L3) {
-					console.log(c.IWE, "preparing to place " + Superstructure.getGamePiece().name().toLowerCase() + " at " + Superstructure.getHeight().name().toLowerCase());
-					Superstructure.setState(SystemState.PLACE_READY);
+					console.log(c.SUPERSTRUCTURE, "preparing to place " + Superstructure.getGamePiece().name().toLowerCase() + " at " + Superstructure.getHeight().name().toLowerCase());
+					Superstructure.setMode(Mode.PLACE_READY);
 				}
 				else {
-					console.log(c.IWE, "placing " + Superstructure.getGamePiece().name().toLowerCase() + " at " + Superstructure.getHeight().name().toLowerCase());
-					Superstructure.setState(SystemState.PLACE);
+					console.log(c.SUPERSTRUCTURE, "placing " + Superstructure.getGamePiece().name().toLowerCase() + " at " + Superstructure.getHeight().name().toLowerCase());
+					Superstructure.setMode(Mode.PLACE);
 				}
 			}
-			else if (Superstructure.getState() == SystemState.PLACE_READY) {
-				console.log(c.IWE, "placing " + Superstructure.getGamePiece().name().toLowerCase() + " at " + Superstructure.getHeight().name().toLowerCase());
-				Superstructure.setState(SystemState.PLACE);
+			else if (Superstructure.getMode() == Mode.PLACE_READY) {
+				console.log(c.SUPERSTRUCTURE, "placing " + Superstructure.getGamePiece().name().toLowerCase() + " at " + Superstructure.getHeight().name().toLowerCase());
+				Superstructure.setMode(Mode.PLACE);
 			}
-			else if (Superstructure.getState() == SystemState.PLACE) {
-				console.log(c.IWE, "ejecting " + Superstructure.getGamePiece().name().toLowerCase() + " at " + Superstructure.getHeight().name().toLowerCase());
-				Superstructure.setState(SystemState.EJECT);
+			else if (Superstructure.getMode() == Mode.PLACE) {
+				console.log(c.SUPERSTRUCTURE, "ejecting " + Superstructure.getGamePiece().name().toLowerCase() + " at " + Superstructure.getHeight().name().toLowerCase());
+				Superstructure.setMode(Mode.EJECT);
 				Controls.EJECT_RUMBLE.start();
 			}
 		}
@@ -56,7 +58,7 @@ public class SuperstructureController extends TeleopController {
 		//Game Piece
 		if (Controls.SWITCH_GAME_PIECE.get()) {
 			Superstructure.setGamePiece(Superstructure.getGamePiece() == GamePiece.HATCH ? GamePiece.CARGO : GamePiece.HATCH);
-			console.log(c.IWE, "switcing game piece to " + Superstructure.getGamePiece().toString().toLowerCase());
+			console.log(c.SUPERSTRUCTURE, "switcing game piece to " + Superstructure.getGamePiece().toString().toLowerCase());
 			if (Superstructure.getGamePiece() == GamePiece.HATCH)
 				Controls.SWITCH_HATCH_RUMBLE.start();
 			else
@@ -69,32 +71,32 @@ public class SuperstructureController extends TeleopController {
 		
 		//Height
 		if (Controls.HEIGHT_L1.get() || Controls.HEIGHT_L1_OP.get()) {
-			console.log(c.IWE, "setting target height to L1");
+			console.log(c.SUPERSTRUCTURE, "setting target height to L1");
 			Superstructure.setHeight(Height.L1);
 			Controls.SWITCH_HEIGHT_RUMBLE.start();
 		}
 		if (Controls.HEIGHT_L2.get() || Controls.HEIGHT_L2_OP.get()) {
-			console.log(c.IWE, "setting target height to L2");
+			console.log(c.SUPERSTRUCTURE, "setting target height to L2");
 			Superstructure.setHeight(Height.L2);
 			Controls.SWITCH_HEIGHT_RUMBLE.start();
 		}
 		if (Controls.HEIGHT_L3.get() || Controls.HEIGHT_L3_OP.get()) {
-			console.log(c.IWE, "setting target height to L3");
+			console.log(c.SUPERSTRUCTURE, "setting target height to L3");
 			Superstructure.setHeight(Height.L3);
 			Controls.SWITCH_HEIGHT_RUMBLE.start();
 		}
 		if (Controls.HEIGHT_SHIP.get() || Controls.HEIGHT_SHIP_OP.get()) {
-			console.log(c.IWE, "setting target height to ship");
+			console.log(c.SUPERSTRUCTURE, "setting target height to ship");
 			Superstructure.setHeight(Height.SHIP);
 			Controls.SWITCH_HEIGHT_RUMBLE.start();
 		}
 		
 		//Control Mode
 		if (Controls.TOGGLE_MANUAL.get()) {
-			Superstructure.setControlMode(Superstructure.getControlMode() == ControlMode.AUTONOMOUS ? ControlMode.MANUAL : ControlMode.AUTONOMOUS);
-			console.log(c.IWE, "setting control mode to " + Superstructure.getControlMode().toString().toLowerCase());
+			Superstructure.setSystemState(Superstructure.getSystemState() == SystemState.MANUAL ? SystemState.AUTONOMOUS : SystemState.MANUAL);
+			console.log(c.SUPERSTRUCTURE, "setting control mode to " + Superstructure.getSystemState().toString().toLowerCase());
 		}
-		Superstructure.desiredWristManaul = Controls.WRIST_MANUAL.get();
-		Superstructure.desiredElevatorManaul = Controls.ELEVATOR_MANUAL.get();
+		Wrist.desiredWristManaul = Controls.WRIST_MANUAL.get();
+		Elevator.desiredElevatorManaul = Controls.ELEVATOR_MANUAL.get();
 	}
 }

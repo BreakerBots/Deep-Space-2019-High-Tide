@@ -2,11 +2,12 @@
 package frc.team5104.main;
 
 import frc.team5104.auto.util.Odometry;
+import frc.team5104.main.Superstructure.SystemState;
 import frc.team5104.main.setup.RobotController;
-import frc.team5104.subsystems.drive.Drive;
-import frc.team5104.subsystems.elevator.Elevator;
-import frc.team5104.subsystems.intake.Intake;
-import frc.team5104.subsystems.wrist.Wrist;
+import frc.team5104.subsystems.Drive;
+import frc.team5104.subsystems.Elevator;
+import frc.team5104.subsystems.Intake;
+import frc.team5104.subsystems.Wrist;
 import frc.team5104.teleop.CompressorController;
 import frc.team5104.teleop.DriveController;
 import frc.team5104.teleop.SuperstructureController;
@@ -60,7 +61,10 @@ public class Robot extends RobotController.BreakerRobot {
 	}
 	
 	//Test
-	public void testLoop() { BreakerCompressor.run(); }
+	public void testLoop() {
+		Superstructure.setSystemState(SystemState.DISABLED);
+		BreakerCompressor.run(); 
+	}
 	
 	//Main
 	public void mainLoop() { XboxController.update(); }

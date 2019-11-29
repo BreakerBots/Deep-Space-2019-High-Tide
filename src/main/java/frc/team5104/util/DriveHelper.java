@@ -1,8 +1,7 @@
 /* BreakerBots Robotics Team (FRC 5104) 2020 */
-package frc.team5104.subsystems.drive;
+package frc.team5104.util;
 
-import frc.team5104.subsystems.drive.DriveConstants.DriveSignal;
-import frc.team5104.subsystems.drive.DriveConstants.DriveUnit;
+import frc.team5104.util.DriveSignal.DriveUnit;
 
 /** A class for better handling of the robot's drive train (PLAZZZ MAKE BETTEER) */
 public class DriveHelper {
