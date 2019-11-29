@@ -96,7 +96,7 @@ public class VisionManager {
 				double errorX = VISION_INITIAL_TARGET_X - x;
 				double turn = VISION_INITIAL_TURN_P * errorX;
 				double forward = VISION_INITIAL_FORWARD_KV;
-				returnSignal = new DriveSignal(forward - turn, forward + turn, true, DriveUnit.voltage);
+				returnSignal = new DriveSignal(forward - turn, forward + turn, true, DriveUnit.VOLTAGE);
 				break;
 			}
 				
@@ -121,7 +121,7 @@ public class VisionManager {
 				double turn = VISION_FORWARD_TURN_P * errorX;
 				double errorY = targetY - y;
 				double forward = VISION_FORWARD_FORWARD_P * Math.pow(-errorY-VISION_FORWARD_FORWARD_SUB, VISION_FORWARD_FORWARD_PE);
-				returnSignal = new DriveSignal(forward - turn, forward + turn, true, DriveUnit.voltage);
+				returnSignal = new DriveSignal(forward - turn, forward + turn, true, DriveUnit.VOLTAGE);
 				break;
 			}
 				
@@ -132,7 +132,7 @@ public class VisionManager {
 				
 				double errorX = VISION_FINAL_TARGET_X - x;
 				double turn = VISION_FINAL_TURN_P * errorX;
-				returnSignal = new DriveSignal(-turn, turn, true, DriveUnit.voltage);
+				returnSignal = new DriveSignal(-turn, turn, true, DriveUnit.VOLTAGE);
 				break;
 			}
 			default: break;

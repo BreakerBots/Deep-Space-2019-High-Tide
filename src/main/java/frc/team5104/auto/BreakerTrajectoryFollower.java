@@ -16,8 +16,8 @@ import frc.team5104.util.Units;
  */
 public class BreakerTrajectoryFollower {
 
-	private static final double beta = AutoConstants.AUTO_CORRECTION_FACTOR;
-	private static final double zeta = AutoConstants.AUTO_DAMPENING_FACTOR;
+	private static final double beta = Constants.AUTO_CORRECTION_FACTOR;
+	private static final double zeta = Constants.AUTO_DAMPENING_FACTOR;
 	
 	private int trajectoryIndex;
 	
@@ -42,7 +42,7 @@ public class BreakerTrajectoryFollower {
 		double right = 0;
 		
 		if (isFinished())
-			return new DriveSignal(left, right, DriveUnit.feetPerSecond);
+			return new DriveSignal(left, right, DriveUnit.FEET_PER_SECOND);
 		
 		//Get Current Segment from index
 		TrajectorySegment current = trajectory.get(trajectoryIndex);
@@ -55,7 +55,7 @@ public class BreakerTrajectoryFollower {
 		double w = calcAngleVel(current.x, current.y, current.theta, current.velocity, w_d);
 
 		//Clamp Angular and Linear Velocities
-		v = BreakerMath.clamp(v, -AutoConstants.AUTO_MAX_VELOCITY, AutoConstants.AUTO_MAX_VELOCITY);
+		v = BreakerMath.clamp(v, -Constants.AUTO_MAX_VELOCITY, Constants.AUTO_MAX_VELOCITY);
 		w = BreakerMath.clamp(w, Math.PI * -2, Math.PI * 2);
 
 		//Convert Angular and Linear Velocities to into wheel speeds 
@@ -66,7 +66,7 @@ public class BreakerTrajectoryFollower {
 		trajectoryIndex++;
 	   
 		return new DriveSignal (
-				left, right, true, DriveUnit.feetPerSecond,
+				left, right, true, DriveUnit.FEET_PER_SECOND,
 				((Constants.DRIVE_KS + (Constants.DRIVE_KV * current.velocity) + (Constants.DRIVE_KA * current.acceleration))) / 12.0
 			);
 	}

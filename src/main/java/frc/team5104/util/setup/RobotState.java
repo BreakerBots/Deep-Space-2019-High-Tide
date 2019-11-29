@@ -9,7 +9,6 @@ public class RobotState {
 	protected RobotMode currentMode = RobotMode.Disabled;
 	protected RobotMode lastMode = RobotMode.Disabled;
 	protected double deltaTime = 0;
-	protected boolean gotDriverStationResponse = false;
 	protected boolean isSandstorm = false;
 	
 	//Access
@@ -26,5 +25,4 @@ public class RobotState {
 	public static RobotMode getMode() { return getInstance().currentMode; }
 	public static void setMode(RobotMode mode) { getInstance().currentMode = mode; }
 	public static double getDeltaTime() { return getInstance().deltaTime; }
-	public static boolean gotDriverStationResponse() { return getInstance().gotDriverStationResponse; }
 }

@@ -31,7 +31,7 @@ public class DriveHelper {
 		DriveSignal signal = new DriveSignal(
 			(forward + turn) * 12,
 			(forward - turn) * 12,
-			inHighGear, DriveUnit.voltage
+			inHighGear, DriveUnit.VOLTAGE
 		);
 		signal = applyDriveStraight(signal);
 		signal = applyMotorMinSpeed(signal, inHighGear);

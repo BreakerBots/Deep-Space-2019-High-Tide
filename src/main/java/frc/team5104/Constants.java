@@ -22,6 +22,11 @@ public class Constants {
 	public static final double DRIVE_KS = 1.48;
 	public static final double DRIVE_KA = 0.773;
 	public static final double DRIVE_KV = 0.431;
+	public static final double AUTO_MAX_VELOCITY = 10; //ft/s
+	public static final double AUTO_MAX_ACCEL = 10;
+	public static final double AUTO_MAX_JERK = 20;
+	public static final double AUTO_CORRECTION_FACTOR = 0.2; //>0
+	public static final double AUTO_DAMPENING_FACTOR  = 0.5; //0-1
 	
 	//Elevator
 	public static final double ELEVATOR_SPOOL_CIRC = 1.25 * Math.PI;

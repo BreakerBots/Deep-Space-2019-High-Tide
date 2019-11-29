@@ -17,7 +17,7 @@ public class Drive extends Subsystem {
 	private static TalonSRX talonL1, talonL2, talonR1, talonR2;
 	private static PigeonIMU gyro;
 	
-	//Actions
+	//External Functions
 	public static void set(DriveSignal signal) { currentDriveSignal = signal; }
 	public static void stop() { currentDriveSignal = new DriveSignal(); }
 
@@ -26,7 +26,7 @@ public class Drive extends Subsystem {
 	protected void update() {
 		shift(currentDriveSignal.isHighGear);
 		switch (currentDriveSignal.unit) {
-			case percentOutput: {
+			case PERCENT_OUTPUT: {
 				setMotors(
 						currentDriveSignal.leftSpeed, 
 						currentDriveSignal.rightSpeed, 
@@ -35,7 +35,7 @@ public class Drive extends Subsystem {
 					);
 				break;
 			}
-			case feetPerSecond: {
+			case FEET_PER_SECOND: {
 				setMotors(
 						Units.feetPerSecondToTalonVel(currentDriveSignal.leftSpeed), 
 						Units.feetPerSecondToTalonVel(currentDriveSignal.rightSpeed), 
@@ -44,7 +44,7 @@ public class Drive extends Subsystem {
 					);
 				break;
 			}
-			case voltage: {
+			case VOLTAGE: {
 				setMotors(
 						currentDriveSignal.leftSpeed / getLeftGearboxVoltage(),
 						currentDriveSignal.rightSpeed / getRightGearboxVoltage(),
@@ -53,7 +53,7 @@ public class Drive extends Subsystem {
 					);
 				break;
 			}
-			case stop:
+			case STOP:
 				stopMotors();
 				break;
 		}

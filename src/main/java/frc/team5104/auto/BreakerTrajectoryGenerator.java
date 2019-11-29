@@ -28,7 +28,7 @@ public class BreakerTrajectoryGenerator {
 	 */
 	public static Trajectory getTrajectory(TrajectoryWaypoint[] points) {
 		//Parse trajectory name
-		String trajectoryName = "" + AutoConstants.AUTO_MAX_VELOCITY + AutoConstants.AUTO_MAX_ACCEL + AutoConstants.AUTO_MAX_JERK + Constants.AUTO_LOOP_SPEED;
+		String trajectoryName = "" + Constants.AUTO_MAX_VELOCITY + Constants.AUTO_MAX_ACCEL + Constants.AUTO_MAX_JERK + Constants.AUTO_LOOP_SPEED;
     	for (TrajectoryWaypoint p : points) {
     		trajectoryName += (Double.toString(p.x) + "/" + Double.toString(p.y) + "/" + Double.toString(p.theta));
     	}
@@ -43,9 +43,9 @@ public class BreakerTrajectoryGenerator {
     		console.log(c.AUTO, "No Similar Cached Trajectory Found => Generating Path");
     		console.sets.create("MPGEN");
     		trajectory = TrajectoryGenerator.generate(points, 
-    				AutoConstants.AUTO_MAX_VELOCITY,
-    				AutoConstants.AUTO_MAX_ACCEL,
-    				AutoConstants.AUTO_MAX_JERK,
+    				Constants.AUTO_MAX_VELOCITY,
+    				Constants.AUTO_MAX_ACCEL,
+    				Constants.AUTO_MAX_JERK,
     				1.0 / Constants.AUTO_LOOP_SPEED
     			);
     		writeFile(trajectoryName, trajectory);

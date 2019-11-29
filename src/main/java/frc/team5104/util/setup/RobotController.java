@@ -1,7 +1,6 @@
 /*BreakerBots Robotics Team 2019*/
 package frc.team5104.util.setup;
 
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.hal.FRCNetComm.tInstances;
@@ -35,7 +34,6 @@ public class RobotController extends RobotBase {
 		
 		HAL.observeUserProgramStarting();
 		
-		console.log(c.MAIN, "Devices Created and Seth Proofed");
 		console.sets.log(c.MAIN, t.INFO, "RobotInit", "Initialization took ");
 		
 		//Main Loop
@@ -85,8 +83,6 @@ public class RobotController extends RobotBase {
 					
 					robot.teleopLoop();
 					HAL.observeUserProgramTeleop();
-					
-					state.gotDriverStationResponse = DriverStation.getInstance().waitForData(0.2);
 				} catch (Exception e) {
 					CrashLogger.logCrash(new Crash("main", e));
 				}
