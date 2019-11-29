@@ -6,7 +6,7 @@ import frc.team5104.auto.util.AutoPathAction;
 import frc.team5104.auto.util.TrajectoryCacher;
 import frc.team5104.auto.util.Odometry;
 import frc.team5104.auto.util.TrajectoryFollower;
-import frc.team5104.auto.util.TrajectoryWaypoint;
+import frc.team5104.auto.util.FieldPosition;
 import frc.team5104.subsystems.Drive;
 import frc.team5104.util.DriveSignal;
 import frc.team5104.util.console;
@@ -17,10 +17,10 @@ import frc.team5104.util.console.c;
  */
 public class DriveTrajectoryAction extends AutoPathAction {
 	private TrajectoryFollower follower;
-	private TrajectoryWaypoint[] waypoints;
+	private FieldPosition[] waypoints;
 	private double lastTime;
 
-    public DriveTrajectoryAction(TrajectoryWaypoint[] points) {
+    public DriveTrajectoryAction(FieldPosition[] points) {
     	this.waypoints = points;
     }
 
