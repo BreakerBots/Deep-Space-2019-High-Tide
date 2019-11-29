@@ -18,11 +18,12 @@ public class Superstructure {
 	public static enum GamePiece { CARGO, HATCH }
 	public static enum Height { L1, L2, L3, SHIP }
 	public static enum SystemState { CALIBRATING, MANUAL, AUTONOMOUS, DISABLED }
+	public static enum IntakeMode { GROUND, WALL }
 	private static Mode targetMode;
 	private static GamePiece targetGamePiece;
 	private static Height targetHeight;
 	private static SystemState systemState;
-	public static boolean cargoIntakeGround = true;
+	private static IntakeMode intakeMode = IntakeMode.WALL;
 	public static long modeStart = System.currentTimeMillis();
 	public static long systemStateStart = System.currentTimeMillis();
 	
@@ -41,6 +42,8 @@ public class Superstructure {
 	public static void setGamePiece(GamePiece targetGamePiece) { Superstructure.targetGamePiece = targetGamePiece; }
 	public static Height getHeight() { return targetHeight; }
 	public static void setHeight(Height targetHeight) { Superstructure.targetHeight = targetHeight; }
+	public static IntakeMode getIntakeMode() { return intakeMode; }
+	public static void setIntakeMode(IntakeMode intakeMode) { Superstructure.intakeMode = intakeMode; }
 
 	//Manage States
 	static void update() {
@@ -75,7 +78,7 @@ public class Superstructure {
 		
 		//Set Elevator Height
 		if (getSystemState() == SystemState.AUTONOMOUS) {
-			if (getGamePiece() == GamePiece.CARGO && getMode() == Mode.INTAKE && !cargoIntakeGround)
+			if (getGamePiece() == GamePiece.CARGO && getMode() == Mode.INTAKE && getIntakeMode() == IntakeMode.WALL)
 				Elevator.targetElevatorHeight = Constants.ELEVATOR_HEIGHT_CARGO_WALL;
 			else if (getMode() == Mode.INTAKE || getMode() == Mode.IDLE)
 				Elevator.targetElevatorHeight = 0;
@@ -110,7 +113,7 @@ public class Superstructure {
 			}
 			else {
 				if (getMode() == Mode.INTAKE) {
-					if (cargoIntakeGround)
+					if (getIntakeMode() == IntakeMode.GROUND)
 						Wrist.targetWristAngle = Constants.WRIST_ANGLE_CARGO_INTAKE_GROUND;
 					else Wrist.targetWristAngle = Constants.WRIST_ANGLE_CARGO_INTAKE_WALL;
 				}

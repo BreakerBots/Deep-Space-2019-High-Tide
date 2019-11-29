@@ -4,6 +4,7 @@ import frc.team5104.Controls;
 import frc.team5104.Superstructure;
 import frc.team5104.Superstructure.GamePiece;
 import frc.team5104.Superstructure.Height;
+import frc.team5104.Superstructure.IntakeMode;
 import frc.team5104.Superstructure.Mode;
 import frc.team5104.Superstructure.SystemState;
 import frc.team5104.subsystems.Elevator;
@@ -25,10 +26,15 @@ public class SuperstructureController extends TeleopController {
 		//Intake & Intake w/ Vision
 		if (Controls.INTAKE.get()) {
 			if (Superstructure.getGamePiece() == GamePiece.CARGO) {
-				Superstructure.cargoIntakeGround = Superstructure.getMode() == Mode.INTAKE ? !Superstructure.cargoIntakeGround : true;
-				console.log(c.SUPERSTRUCTURE, "intaking cargo " + (Superstructure.cargoIntakeGround ? "ground" : "wall"));
+				if (Superstructure.getMode() == Mode.INTAKE && Superstructure.getIntakeMode() == IntakeMode.GROUND)
+					Superstructure.setIntakeMode(IntakeMode.WALL);
+				Superstructure.setIntakeMode(IntakeMode.GROUND);
+				console.log(c.SUPERSTRUCTURE, "intaking cargo " + Superstructure.getIntakeMode().name().toLowerCase());
 			}
-			else console.log(c.SUPERSTRUCTURE, "intaking hatch");
+			else {
+				Superstructure.setIntakeMode(IntakeMode.WALL);
+				console.log(c.SUPERSTRUCTURE, "intaking hatch");
+			}
 			Superstructure.setMode(Mode.INTAKE);
 		}
 		
@@ -61,11 +67,15 @@ public class SuperstructureController extends TeleopController {
 			console.log(c.SUPERSTRUCTURE, "switcing game piece to " + Superstructure.getGamePiece().toString().toLowerCase());
 			if (Superstructure.getGamePiece() == GamePiece.HATCH)
 				Controls.SWITCH_HATCH_RUMBLE.start();
-			else
+			else {
 				Controls.SWITCH_CARGO_RUMBLE.start();
+				Superstructure.setIntakeMode(IntakeMode.GROUND);
+			}
 		}
-		if (Controls.CARGO_OP.get()) 
+		if (Controls.CARGO_OP.get()) {
 			Superstructure.setGamePiece(GamePiece.CARGO);
+			Superstructure.setIntakeMode(IntakeMode.GROUND);
+		}
 		if (Controls.HATCH_OP.get()) 
 			Superstructure.setGamePiece(GamePiece.HATCH);
 		
