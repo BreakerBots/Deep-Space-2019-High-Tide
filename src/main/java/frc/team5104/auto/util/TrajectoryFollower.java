@@ -1,10 +1,7 @@
 /* BreakerBots Robotics Team (FRC 5104) 2020 */
-package frc.team5104.auto;
+package frc.team5104.auto.util;
 
 import frc.team5104.Constants;
-import frc.team5104.auto.util.RobotPosition;
-import frc.team5104.auto.util.Trajectory;
-import frc.team5104.auto.util.TrajectorySegment;
 import frc.team5104.util.BreakerMath;
 import frc.team5104.util.DriveSignal;
 import frc.team5104.util.DriveSignal.DriveUnit;
@@ -14,7 +11,7 @@ import frc.team5104.util.Units;
  * <h1>Breaker Trajectory Follower</h1>
  * Follows a pre-generated trajectory using non-linear feedback control (ramsete follower)
  */
-public class BreakerTrajectoryFollower {
+public class TrajectoryFollower {
 
 	private static final double beta = Constants.AUTO_CORRECTION_FACTOR;
 	private static final double zeta = Constants.AUTO_DAMPENING_FACTOR;
@@ -26,7 +23,7 @@ public class BreakerTrajectoryFollower {
 	private double lastLeftVelocity = 0;
 	private double lastRightVelocity = 0;
 
-	public BreakerTrajectoryFollower(Trajectory trajectory) {
+	public TrajectoryFollower(Trajectory trajectory) {
 		this.trajectory = trajectory;
 		trajectoryIndex = 0;
 	}

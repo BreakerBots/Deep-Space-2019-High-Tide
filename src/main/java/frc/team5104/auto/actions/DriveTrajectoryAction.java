@@ -2,10 +2,10 @@
 package frc.team5104.auto.actions;
 
 import edu.wpi.first.wpilibj.Timer;
-import frc.team5104.auto.BreakerTrajectoryFollower;
-import frc.team5104.auto.BreakerTrajectoryGenerator;
 import frc.team5104.auto.util.AutoPathAction;
+import frc.team5104.auto.util.TrajectoryCacher;
 import frc.team5104.auto.util.Odometry;
+import frc.team5104.auto.util.TrajectoryFollower;
 import frc.team5104.auto.util.TrajectoryWaypoint;
 import frc.team5104.subsystems.Drive;
 import frc.team5104.util.DriveSignal;
@@ -16,7 +16,7 @@ import frc.team5104.util.console.c;
  * Follow a trajectory using the Breaker Trajectory Follower (Ramses Follower)
  */
 public class DriveTrajectoryAction extends AutoPathAction {
-	private BreakerTrajectoryFollower follower;
+	private TrajectoryFollower follower;
 	private TrajectoryWaypoint[] waypoints;
 	private double lastTime;
 
@@ -29,7 +29,7 @@ public class DriveTrajectoryAction extends AutoPathAction {
     	console.log(c.AUTO, "Running Trajectory");
     	
     	//Reset Odometry and Get Path (Reset it twice to make sure it all good)
-    	follower = new BreakerTrajectoryFollower(BreakerTrajectoryGenerator.getTrajectory(waypoints));
+    	follower = new TrajectoryFollower(TrajectoryCacher.getTrajectory(waypoints));
 		Odometry.reset();
 		
 		//Wait 100ms for Device Catchup

@@ -2,8 +2,8 @@ package frc.team5104.auto.util;
 
 /** A simple class for sending/saving robot positions. */
 public class RobotPosition {
-	public double x, y;
-	private double t;
+	public double x, y; //in feet
+	private double t; //in radians
 	public RobotPosition(double x, double y, double theta) {
 		this.x = x;
 		this.y = y;
@@ -17,7 +17,7 @@ public class RobotPosition {
 	}
 	
     public double getTheta() {
-        return t/* % (Math.PI * 2.0)*/;
+        return t;
     }
 	
     public void setTheta(double value) {
