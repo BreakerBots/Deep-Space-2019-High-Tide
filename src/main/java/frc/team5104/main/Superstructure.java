@@ -7,7 +7,11 @@ import frc.team5104.subsystems.Wrist;
 import frc.team5104.util.console;
 import frc.team5104.util.console.c;
 
-/** Superstructure that handles a robot state for the Intake, Wrist, and Elevator */
+/** 
+ * The Superstructure is a massive state machine that handles the Intake, Wrist, and Elevator
+ * The Superstructure only controls the states... its up the subsystems to figure out what to do
+ * based on the state of the Superstructure.
+ */
 public class Superstructure {
 	//States and Variables
 	public static enum Mode { IDLE, INTAKE, PLACE_READY, PLACE, EJECT }
@@ -28,15 +32,15 @@ public class Superstructure {
 		Superstructure.targetMode = targetMode;
 		modeStart = System.currentTimeMillis();
 	}
-	public static GamePiece getGamePiece() { return targetGamePiece; }
-	public static void setGamePiece(GamePiece targetGamePiece) { Superstructure.targetGamePiece = targetGamePiece; }
-	public static Height getHeight() { return targetHeight; }
-	public static void setHeight(Height targetHeight) { Superstructure.targetHeight = targetHeight; }
 	public static SystemState getSystemState() { return systemState; }
 	public static void setSystemState(SystemState systemState) { 
 		Superstructure.systemState = systemState;
 		systemStateStart = System.currentTimeMillis();
 	}
+	public static GamePiece getGamePiece() { return targetGamePiece; }
+	public static void setGamePiece(GamePiece targetGamePiece) { Superstructure.targetGamePiece = targetGamePiece; }
+	public static Height getHeight() { return targetHeight; }
+	public static void setHeight(Height targetHeight) { Superstructure.targetHeight = targetHeight; }
 
 	//Manage States
 	static void update() {
