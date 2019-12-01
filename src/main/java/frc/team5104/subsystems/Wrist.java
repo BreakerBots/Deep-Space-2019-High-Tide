@@ -25,8 +25,10 @@ public class Wrist extends Subsystem {
 		if (Superstructure.getSystemState() == SystemState.AUTONOMOUS)
 			setMotionMagic(
 					targetWristAngle, 
-					System.currentTimeMillis() > (Superstructure.systemStateStart > Superstructure.modeStart ? 
-					Superstructure.systemStateStart : Superstructure.modeStart) + Constants.WRIST_LIMP_MODE_TIME_START
+					System.currentTimeMillis() > 
+					(Superstructure.systemStateStart > Superstructure.modeStart ? 
+					Superstructure.systemStateStart : Superstructure.modeStart) + 
+					Constants.WRIST_LIMP_MODE_TIME_START
 				);
 		
 		//Calibrating
@@ -47,25 +49,25 @@ public class Wrist extends Subsystem {
 	}
 
 	//Internal Functions
-	static void setMotionMagic(double angle, boolean limpMode) {
+	private static void setMotionMagic(double angle, boolean limpMode) {
 		setLimpMode(limpMode);
 		wristTalon.set(
 			ControlMode.MotionMagic, angle / 360.0 * 4096.0, 
 			DemandType.ArbitraryFeedForward, getFTerm()
 		);
 	}
-	static double getFTerm() {
+	private static double getFTerm() {
 		return (-getEncoderAngle() / 900.0) + 0.1;
 	}
-	static void setPercentOutput(double percent) {
+	private static void setPercentOutput(double percent) {
 		setLimpMode(false);
 		wristTalon.set(ControlMode.PercentOutput, percent);
 	}
-	static void stop() {
+	private static void stop() {
 		setLimpMode(false);
 		wristTalon.set(ControlMode.Disabled, 0);
 	}
-	static void setLimpMode(boolean limp) {
+	private static void setLimpMode(boolean limp) {
 		if (limp) {
 			wristTalon.configPeakOutputForward(getFTerm() + Constants.WRIST_LIMP_MODE_MAX_SPEED);
 			wristTalon.configPeakOutputReverse(getFTerm() - Constants.WRIST_LIMP_MODE_MAX_SPEED);

@@ -6,7 +6,6 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.hal.FRCNetComm.tInstances;
 import edu.wpi.first.hal.FRCNetComm.tResourceType;
 import edu.wpi.first.hal.HAL;
-import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import frc.team5104.Constants;
 import frc.team5104.Robot;
 import frc.team5104.util.CrashLogger;
@@ -134,7 +133,6 @@ public class RobotController extends RobotBase {
 					console.logFile.start();
 					robot.mainEnabled();
 				}
-				LiveWindow.setEnabled(state.currentMode == RobotMode.Disabled);
 				lastMode = state.currentMode;
 			}
 		} catch (Exception e) {
@@ -147,9 +145,6 @@ public class RobotController extends RobotBase {
 		} catch (Exception e) {
 			CrashLogger.logCrash(new Crash("main", e));
 		}
-		
-		//Update Live Window
-		LiveWindow.updateValues();
 	}
 	
 	//Child Class

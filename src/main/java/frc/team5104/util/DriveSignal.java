@@ -49,8 +49,16 @@ public class DriveSignal {
 		this.isHighGear = isHighGear;
 	}
 	
+	public boolean hasFeedForward() {
+		return leftFeedForward != 0 || rightFeedForward != 0;
+	}
+	
 	public String toString() {
 		return  "l: " + leftSpeed + ", " +
-				"r: " + rightSpeed;
+				"r: " + rightSpeed + 
+				(hasFeedForward() ? 
+					", lff: " + leftFeedForward + ", " +
+					"rff: " + rightFeedForward
+				: "");
 	}
 }

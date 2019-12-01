@@ -69,18 +69,18 @@ public class Intake extends Subsystem {
 		}
 		
 		//Banner Sensors
-		cargoBuffer.update(!bannerHatch.get());
-		hatchBuffer.update(!bannerCargo.get());
+		cargoBuffer.update(!bannerCargo.get());
+		hatchBuffer.update(!bannerHatch.get());
 	}
 	
 	//Internal Functions
-	static void setWheelSpeed(double percentSpeed) {
+	private static void setWheelSpeed(double percentSpeed) {
 		leftVictor.set(ControlMode.PercentOutput, percentSpeed);
 	}
-	static void stopWheels() {
+	private static void stopWheels() {
 		leftVictor.set(ControlMode.Disabled, 0);
 	}
-	static void setMode(boolean open) {
+	private static void setMode(boolean open) {
 		if (open)
 			solenoid.set(Value.kReverse);
 		else solenoid.set(Value.kForward);

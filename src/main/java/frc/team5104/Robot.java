@@ -2,6 +2,8 @@
 package frc.team5104;
 
 import frc.team5104.Superstructure.SystemState;
+import frc.team5104.auto.AutoManager;
+import frc.team5104.auto.paths.ExamplePath;
 import frc.team5104.auto.util.Odometry;
 import frc.team5104.subsystems.Drive;
 import frc.team5104.subsystems.Elevator;
@@ -10,12 +12,13 @@ import frc.team5104.subsystems.Wrist;
 import frc.team5104.teleop.CompressorController;
 import frc.team5104.teleop.DriveController;
 import frc.team5104.teleop.SuperstructureController;
-import frc.team5104.util.BreakerCompressor;
 import frc.team5104.util.WebappTuner;
 import frc.team5104.util.XboxController;
+import frc.team5104.util.console;
 import frc.team5104.util.managers.SubsystemManager;
 import frc.team5104.util.managers.TeleopControllerManager;
 import frc.team5104.util.setup.RobotController;
+import frc.team5104.util.setup.RobotState;
 import frc.team5104.vision.Limelight;
 import frc.team5104.vision.VisionManager;
 import frc.team5104.util.Webapp;
@@ -39,23 +42,28 @@ public class Robot extends RobotController.BreakerRobot {
 		Webapp.run();
 		Odometry.run();
 		Limelight.init();
-		BreakerCompressor.stop();
+		CompressorController.stop();
+		AutoManager.setTargetPath(new ExamplePath());
 		WebappTuner.init(VisionManager.class);
 	}
 	
 	//Teleop (includes sandstorm)
 	public void teleopStart() {
+		if (RobotState.isSandstorm()) { Odometry.reset(); AutoManager.run(); }
+		else { TeleopControllerManager.enabled(); }
 		TeleopControllerManager.enabled();
 		Superstructure.enabled();
 		SubsystemManager.enabled();
 	}
 	public void teleopStop() {
-		TeleopControllerManager.disabled();
+		if (RobotState.isSandstorm()) { AutoManager.stop(); }
+		else { TeleopControllerManager.disabled(); }
 		Superstructure.enabled();
 		SubsystemManager.disabled();
 	}
 	public void teleopLoop() {
-		TeleopControllerManager.update();
+		if (RobotState.isSandstorm()) { CompressorController.stop(); }
+		else { TeleopControllerManager.update(); }
 		Superstructure.update();
 		SubsystemManager.update();
 	}
@@ -65,9 +73,11 @@ public class Robot extends RobotController.BreakerRobot {
 		Superstructure.setSystemState(SystemState.DISABLED);
 		Drive.stop();
 		SubsystemManager.update();
-		BreakerCompressor.run(); 
+		CompressorController.start(); 
 	}
 	
 	//Main
-	public void mainLoop() { XboxController.update(); }
+	public void mainLoop() { 
+		XboxController.update(); 
+	}
 }

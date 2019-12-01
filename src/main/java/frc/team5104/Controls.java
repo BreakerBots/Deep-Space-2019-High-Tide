@@ -32,7 +32,7 @@ public class Controls {
 	public static final Button HEIGHT_L2 = driver.getButton(Button.DIRECTION_PAD_RIGHT);
 	public static final Button HEIGHT_L3 = driver.getButton(Button.DIRECTION_PAD_UP);
 	public static final Button HEIGHT_SHIP = driver.getButton(Button.DIRECTION_PAD_LEFT);
-	public static final Axis ELEVATOR_MANUAL = driver.getAxis(Axis.RIGHT_JOYSTICK_Y, new Deadband(0.08));
+	public static final Axis ELEVATOR_MANUAL = driver.getAxis(Axis.RIGHT_JOYSTICK_Y, new Deadband(0.08), null, true);
 	public static final Axis WRIST_MANUAL = driver.getAxis(Axis.RIGHT_JOYSTICK_X, new Deadband(0.08));
 	public static final Rumble INTAKE_RUMBLE = driver.getRumble(1, false, 500, 1);
 	public static final Rumble EJECT_RUMBLE = driver.getRumble(1, false, 500);

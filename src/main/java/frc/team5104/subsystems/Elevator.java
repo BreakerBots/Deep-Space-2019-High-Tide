@@ -21,7 +21,7 @@ public class Elevator extends Subsystem {
 	private static MovingAverage limitSwitchZeroBuffer = new MovingAverage(5, false);
 	public static double targetElevatorHeight = 0;
 	public static double desiredElevatorManaul = 0;
-	
+
 	//Loop
 	protected void update() {
 		//Auto
@@ -46,7 +46,7 @@ public class Elevator extends Subsystem {
 	}
 
 	//Subsystem Internal Functions
-	static void setMotionMagic(double height) {
+	private static void setMotionMagic(double height) {
 		lastTargetHeight = height;
 		double ff = 0;
 		if (getEncoderHeight() > 26) 
@@ -57,11 +57,11 @@ public class Elevator extends Subsystem {
 		);
 		updateLimitSwitches();
 	}
-	static void setPercentOutput(double percent) {
+	private static void setPercentOutput(double percent) {
 		talon1.set(ControlMode.PercentOutput, percent);
 		updateLimitSwitches();
 	}
-	static void updateLimitSwitches() {
+	private static void updateLimitSwitches() {
 		if (lowerLimitHit()) {
 			talon1.configPeakOutputReverse(0);
 			talon2.configPeakOutputReverse(0);
@@ -71,7 +71,7 @@ public class Elevator extends Subsystem {
 			talon2.configPeakOutputReverse(-1);
 		}
 	}
-	static void stop() {
+	private static void stop() {
 		talon1.set(ControlMode.Disabled, 0);
 	}
 	

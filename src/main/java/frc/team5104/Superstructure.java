@@ -19,10 +19,10 @@ public class Superstructure {
 	public static enum Height { L1, L2, L3, SHIP }
 	public static enum SystemState { CALIBRATING, MANUAL, AUTONOMOUS, DISABLED }
 	public static enum IntakeMode { GROUND, WALL }
-	private static Mode targetMode;
-	private static GamePiece targetGamePiece;
-	private static Height targetHeight;
-	private static SystemState systemState;
+	private static Mode targetMode = Mode.IDLE;
+	private static GamePiece targetGamePiece = GamePiece.HATCH;
+	private static Height targetHeight = Height.L1;
+	private static SystemState systemState = SystemState.DISABLED;
 	private static IntakeMode intakeMode = IntakeMode.WALL;
 	public static long modeStart = System.currentTimeMillis();
 	public static long systemStateStart = System.currentTimeMillis();
@@ -67,13 +67,15 @@ public class Superstructure {
 		}
 		
 		//Exit Calibration
-		if (Elevator.lowerLimitHit() && Wrist.backLimitSwitchHit()) {
-			console.log(c.SUPERSTRUCTURE, "finished calibration... entering autonomous");
-			setSystemState(SystemState.AUTONOMOUS);
-		}
-		if (System.currentTimeMillis() > systemStateStart + 7000) {
-			console.error(c.SUPERSTRUCTURE, "error in calibration... disabling");
-			setSystemState(SystemState.DISABLED);
+		if (getSystemState() == SystemState.CALIBRATING) {
+			if (Elevator.lowerLimitHit() && Wrist.backLimitSwitchHit()) {
+				console.log(c.SUPERSTRUCTURE, "finished calibration... entering autonomous");
+				setSystemState(SystemState.AUTONOMOUS);
+			}
+			else if (System.currentTimeMillis() > systemStateStart + 7000) {
+				console.error(c.SUPERSTRUCTURE, "error in calibration... disabling");
+				setSystemState(SystemState.DISABLED);
+			}
 		}
 		
 		//Set Elevator Height

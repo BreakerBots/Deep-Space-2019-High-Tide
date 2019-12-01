@@ -60,16 +60,16 @@ public class Drive extends Subsystem {
 	}
 	
 	//Internal Functions
-	static void setMotors(double leftSpeed, double rightSpeed, ControlMode controlMode, double leftFeedForward, double rightFeedForward) {
+	private static void setMotors(double leftSpeed, double rightSpeed, ControlMode controlMode, double leftFeedForward, double rightFeedForward) {
 		talonL1.set(controlMode, leftSpeed, DemandType.ArbitraryFeedForward, leftFeedForward);
 		talonR1.set(controlMode, rightSpeed, DemandType.ArbitraryFeedForward, rightFeedForward);
 	}
-	static void stopMotors() {
+	private static void stopMotors() {
 		talonL1.set(ControlMode.Disabled, 0);
 		talonR1.set(ControlMode.Disabled, 0);
 	}
-	static void shift(boolean toHigh) { /*shifter.set(toHigh ? Value.kForward : Value.kReverse);*/ }
-	static boolean getShift() { return true;/*shifter.get() == Value.kForward;*/ }
+	private static void shift(boolean toHigh) { /*shifter.set(toHigh ? Value.kForward : Value.kReverse);*/ }
+	private static boolean getShift() { return true;/*shifter.get() == Value.kForward;*/ }
 	
 	//External Functions
 	public static void set(DriveSignal signal) { currentDriveSignal = signal; }

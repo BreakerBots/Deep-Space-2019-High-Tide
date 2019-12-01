@@ -14,7 +14,7 @@ import frc.team5104.vision.VisionManager;
 public class DriveController extends TeleopController {
 	protected String getName() { return "Drive-Controller"; }
 
-	boolean visionEnabled = false;
+	boolean visionEnabled = true;
 	protected void update() {
 		//Switch between Manual Control and Vision
 		if (Controls.TOGGLE_VISION.get())
@@ -25,8 +25,11 @@ public class DriveController extends TeleopController {
 			((Superstructure.getMode() == Mode.PLACE || Superstructure.getMode() == Mode.EJECT) && !(Superstructure.getGamePiece() == GamePiece.CARGO && Superstructure.getHeight() == Height.SHIP)) ||
 			Superstructure.getMode() == Mode.PLACE_READY) && visionEnabled)
 			handleVisionDrive();
-		else
+		else {
 			handleManualDrive();
+			if (VisionManager.isFinished())
+				VisionManager.end();
+		}
 	}
 	
 	//Manual Driving
@@ -42,7 +45,5 @@ public class DriveController extends TeleopController {
 		if (!VisionManager.isInVision())
 			VisionManager.start();
 		Drive.set(VisionManager.getNextDriveSignal());
-		if (VisionManager.isFinished())
-			VisionManager.end();
 	}
 }
