@@ -5,7 +5,6 @@ import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import frc.team5104.util.CrashLogger;
 import frc.team5104.util.CrashLogger.Crash;
-import frc.team5104.util.WebappTuner.tunerOutput;
 import frc.team5104.util.console;
 import frc.team5104.util.console.c;
 

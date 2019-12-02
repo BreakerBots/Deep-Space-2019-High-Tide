@@ -7,6 +7,10 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import frc.team5104.Constants;
 import frc.team5104.Ports;
 import frc.team5104.Superstructure;
+import frc.team5104.Superstructure.GamePiece;
+import frc.team5104.Superstructure.Height;
+import frc.team5104.Superstructure.IntakeMode;
+import frc.team5104.Superstructure.Mode;
 import frc.team5104.Superstructure.SystemState;
 import frc.team5104.util.MovingAverage;
 import frc.team5104.util.managers.Subsystem;
@@ -15,7 +19,6 @@ public class Wrist extends Subsystem {
 	protected String getName() { return "Wrist"; }
 
 	private static TalonSRX wristTalon;
-	public static double targetWristAngle = 0;
 	public static double desiredWristManaul = 0;
 	
 	//Loop
@@ -24,7 +27,7 @@ public class Wrist extends Subsystem {
 		//Auto
 		if (Superstructure.getSystemState() == SystemState.AUTONOMOUS)
 			setMotionMagic(
-					targetWristAngle, 
+					getTargetAngle(), 
 					System.currentTimeMillis() > 
 					(Superstructure.systemStateStart > Superstructure.modeStart ? 
 					Superstructure.systemStateStart : Superstructure.modeStart) + 
@@ -76,6 +79,30 @@ public class Wrist extends Subsystem {
 			wristTalon.configPeakOutputForward(1);
 			wristTalon.configPeakOutputReverse(-1);
 		}
+	}
+	private static double getTargetAngle() {
+		if (Superstructure.getSystemState() == SystemState.AUTONOMOUS) {
+			if (Superstructure.getMode() == Mode.IDLE || !Elevator.isRoughlyAtTargetHeight()) 
+				return 0;
+			else if (Superstructure.getGamePiece() == GamePiece.HATCH) {
+				if (Superstructure.getMode() == Mode.INTAKE)
+					return Constants.WRIST_ANGLE_HATCH_INTAKE;
+				else return Constants.WRIST_ANGLE_HATCH_EJECT;
+			}
+			else {
+				if (Superstructure.getMode() == Mode.INTAKE) {
+					if (Superstructure.getIntakeMode() == IntakeMode.GROUND)
+						return Constants.WRIST_ANGLE_CARGO_INTAKE_GROUND;
+					else return Constants.WRIST_ANGLE_CARGO_INTAKE_WALL;
+				}
+				else {
+					if (Superstructure.getHeight() == Height.SHIP)
+						return Constants.WRIST_ANGLE_CARGO_EJECT_SHIP;
+					else return Constants.WRIST_ANGLE_CARGO_EJECT_ROCKET;
+				}
+			}
+		}
+		else return 0;
 	}
 	
 	//External Functions

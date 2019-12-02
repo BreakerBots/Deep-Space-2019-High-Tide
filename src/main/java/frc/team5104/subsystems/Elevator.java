@@ -8,6 +8,10 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import frc.team5104.Constants;
 import frc.team5104.Ports;
 import frc.team5104.Superstructure;
+import frc.team5104.Superstructure.GamePiece;
+import frc.team5104.Superstructure.Height;
+import frc.team5104.Superstructure.IntakeMode;
+import frc.team5104.Superstructure.Mode;
 import frc.team5104.Superstructure.SystemState;
 import frc.team5104.util.MovingAverage;
 import frc.team5104.util.managers.Subsystem;
@@ -19,14 +23,13 @@ public class Elevator extends Subsystem {
 	private static CANifier canifier;
 	private static double lastTargetHeight;
 	private static MovingAverage limitSwitchZeroBuffer = new MovingAverage(5, false);
-	public static double targetElevatorHeight = 0;
 	public static double desiredElevatorManaul = 0;
 
 	//Loop
 	protected void update() {
 		//Auto
 		if (Superstructure.getSystemState() == SystemState.AUTONOMOUS)
-			setMotionMagic(targetElevatorHeight);
+			setMotionMagic(getTargetHeight());
 		
 		//Calibrating
 		else if (Superstructure.getSystemState() == SystemState.CALIBRATING && !lowerLimitHit())
@@ -73,6 +76,29 @@ public class Elevator extends Subsystem {
 	}
 	private static void stop() {
 		talon1.set(ControlMode.Disabled, 0);
+	}
+	private static double getTargetHeight() {
+		if (Superstructure.getSystemState() == SystemState.AUTONOMOUS) {
+			if (Superstructure.getGamePiece() == GamePiece.CARGO && Superstructure.getMode() == Mode.INTAKE && Superstructure.getIntakeMode() == IntakeMode.WALL)
+				return Constants.ELEVATOR_HEIGHT_CARGO_WALL;
+			if (Superstructure.getMode() == Mode.INTAKE || Superstructure.getMode() == Mode.IDLE)
+				return 0;
+			if (Superstructure.getGamePiece() == GamePiece.CARGO) {
+				if (Superstructure.getHeight() == Height.L1)
+					return Constants.ELEVATOR_HEIGHT_CARGO_L1;
+				else if (Superstructure.getHeight() == Height.L2)
+					return Constants.ELEVATOR_HEIGHT_CARGO_L2;
+				else if (Superstructure.getHeight() == Height.L3)
+					return Constants.ELEVATOR_HEIGHT_CARGO_L3;
+				else if (Superstructure.getHeight() == Height.SHIP)
+					return Constants.ELEVATOR_HEIGHT_CARGO_SHIP;
+			}
+			if (Superstructure.getHeight() == Height.L2)
+				return Constants.ELEVATOR_HEIGHT_HATCH_L2;
+			if (Superstructure.getHeight() == Height.L3)
+				return Constants.ELEVATOR_HEIGHT_HATCH_L3;
+		}
+		return 0;
 	}
 	
 	//Subsystem External Functions

@@ -77,56 +77,6 @@ public class Superstructure {
 				setSystemState(SystemState.DISABLED);
 			}
 		}
-		
-		//Set Elevator Height
-		if (getSystemState() == SystemState.AUTONOMOUS) {
-			if (getGamePiece() == GamePiece.CARGO && getMode() == Mode.INTAKE && getIntakeMode() == IntakeMode.WALL)
-				Elevator.targetElevatorHeight = Constants.ELEVATOR_HEIGHT_CARGO_WALL;
-			else if (getMode() == Mode.INTAKE || getMode() == Mode.IDLE)
-				Elevator.targetElevatorHeight = 0;
-			else if (getGamePiece() == GamePiece.CARGO) {
-				if (getHeight() == Height.L1)
-					Elevator.targetElevatorHeight = Constants.ELEVATOR_HEIGHT_CARGO_L1;
-				else if (getHeight() == Height.L2)
-					Elevator.targetElevatorHeight = Constants.ELEVATOR_HEIGHT_CARGO_L2;
-				else if (getHeight() == Height.L3)
-					Elevator.targetElevatorHeight = Constants.ELEVATOR_HEIGHT_CARGO_L3;
-				else if (getHeight() == Height.SHIP)
-					Elevator.targetElevatorHeight = Constants.ELEVATOR_HEIGHT_CARGO_SHIP;
-			}
-			else {
-				if (getHeight() == Height.L2)
-					Elevator.targetElevatorHeight = Constants.ELEVATOR_HEIGHT_HATCH_L2;
-				else if (getHeight() == Height.L3)
-					Elevator.targetElevatorHeight = Constants.ELEVATOR_HEIGHT_HATCH_L3;
-				else Elevator.targetElevatorHeight = 0;
-			}
-		}
-		else Elevator.targetElevatorHeight = 0;
-		
-		//Set Wrist Height
-		if (getSystemState() == SystemState.AUTONOMOUS) {
-			if (getMode() == Mode.IDLE || !Elevator.isRoughlyAtTargetHeight()) 
-				Wrist.targetWristAngle = 0;
-			else if (getGamePiece() == GamePiece.HATCH) {
-				if (getMode() == Mode.INTAKE)
-					Wrist.targetWristAngle = Constants.WRIST_ANGLE_HATCH_INTAKE;
-				else Wrist.targetWristAngle = Constants.WRIST_ANGLE_HATCH_EJECT;
-			}
-			else {
-				if (getMode() == Mode.INTAKE) {
-					if (getIntakeMode() == IntakeMode.GROUND)
-						Wrist.targetWristAngle = Constants.WRIST_ANGLE_CARGO_INTAKE_GROUND;
-					else Wrist.targetWristAngle = Constants.WRIST_ANGLE_CARGO_INTAKE_WALL;
-				}
-				else {
-					if (getHeight() == Height.SHIP)
-						Wrist.targetWristAngle = Constants.WRIST_ANGLE_CARGO_EJECT_SHIP;
-					else Wrist.targetWristAngle = Constants.WRIST_ANGLE_CARGO_EJECT_ROCKET;
-				}
-			}
-		}
-		else Wrist.targetWristAngle = 0;
 	}
 	static void enabled() { setToDefaultStates(); }
 	static void disabled() { setToDefaultStates(); }

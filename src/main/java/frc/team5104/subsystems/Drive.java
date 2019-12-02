@@ -20,7 +20,6 @@ public class Drive extends Subsystem {
 	//Loop
 	private static DriveSignal currentDriveSignal = new DriveSignal();
 	protected void update() {
-		shift(currentDriveSignal.isHighGear);
 		switch (currentDriveSignal.unit) {
 			case PERCENT_OUTPUT: {
 				setMotors(
@@ -68,8 +67,6 @@ public class Drive extends Subsystem {
 		talonL1.set(ControlMode.Disabled, 0);
 		talonR1.set(ControlMode.Disabled, 0);
 	}
-	private static void shift(boolean toHigh) { /*shifter.set(toHigh ? Value.kForward : Value.kReverse);*/ }
-	private static boolean getShift() { return true;/*shifter.get() == Value.kForward;*/ }
 	
 	//External Functions
 	public static void set(DriveSignal signal) { currentDriveSignal = signal; }
