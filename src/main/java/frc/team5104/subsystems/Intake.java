@@ -16,7 +16,7 @@ import frc.team5104.util.MovingAverage;
 import frc.team5104.util.managers.Subsystem;
 
 public class Intake extends Subsystem {
-	protected String getName() { return "Intake"; }
+	public String getName() { return "Intake"; }
 
 	private static VictorSPX leftVictor, rightVictor;
 	private static DoubleSolenoid solenoid;
@@ -33,7 +33,7 @@ public class Intake extends Subsystem {
 	}
 	
 	//Loop
-	protected void update() {
+	public void update() {
 		//Open/Close Intake
 		setMode((Superstructure.getGamePiece() == GamePiece.CARGO && Superstructure.getMode() == Mode.INTAKE));
 		
@@ -87,7 +87,7 @@ public class Intake extends Subsystem {
 	}
 	
 	//Config
-	protected void init() {
+	public void init() {
 		leftVictor = new VictorSPX(Ports.INTAKE_TALON_LEFT);
 		rightVictor = new VictorSPX(Ports.INTAKE_TALON_RIGHT);
 		solenoid = new DoubleSolenoid(Ports.INTAKE_PISTON_FORWARD, Ports.INTAKE_PISTON_REVERSE);
@@ -101,6 +101,6 @@ public class Intake extends Subsystem {
 		rightVictor.setNeutralMode(Constants.INTAKE_NEUTRAL_MODE);
 		rightVictor.set(ControlMode.Follower, leftVictor.getDeviceID());
 	}
-	protected void enabled() { stopWheels(); }
-	protected void disabled() { stopWheels(); }
+	public void enabled() { stopWheels(); }
+	public void disabled() { stopWheels(); }
 }

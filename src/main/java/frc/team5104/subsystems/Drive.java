@@ -12,14 +12,14 @@ import frc.team5104.util.Units;
 import frc.team5104.util.managers.Subsystem;
 
 public class Drive extends Subsystem {
-	protected String getName() { return "Drive"; }
+	public String getName() { return "Drive"; }
 
 	private static TalonSRX talonL1, talonL2, talonR1, talonR2;
 	private static PigeonIMU gyro;
 	
 	//Loop
 	private static DriveSignal currentDriveSignal = new DriveSignal();
-	protected void update() {
+	public void update() {
 		switch (currentDriveSignal.unit) {
 			case PERCENT_OUTPUT: {
 				setMotors(
@@ -93,7 +93,7 @@ public class Drive extends Subsystem {
 	}
 	
 	//Config
-	protected void init() {
+	public void init() {
 		talonL1 = new TalonSRX(11);
 		talonL2 = new TalonSRX(12);
 		talonR1 = new TalonSRX(13);
@@ -122,10 +122,10 @@ public class Drive extends Subsystem {
 		resetGyro();
 		resetEncoders();
 	}
-	protected void enabled() {
+	public void enabled() {
 		currentDriveSignal = new DriveSignal();
 	}
-	protected void disabled() {
+	public void disabled() {
 		currentDriveSignal = new DriveSignal();
 	}
 }

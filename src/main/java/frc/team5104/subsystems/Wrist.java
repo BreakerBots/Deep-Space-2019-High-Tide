@@ -16,14 +16,14 @@ import frc.team5104.util.MovingAverage;
 import frc.team5104.util.managers.Subsystem;
 
 public class Wrist extends Subsystem {
-	protected String getName() { return "Wrist"; }
+	public String getName() { return "Wrist"; }
 
 	private static TalonSRX wristTalon;
 	public static double desiredWristManaul = 0;
 	
 	//Loop
 	static MovingAverage limitSwitchZeroBuffer = new MovingAverage(5, false);
-	protected void update() {
+	public void update() {
 		//Auto
 		if (Superstructure.getSystemState() == SystemState.AUTONOMOUS)
 			setMotionMagic(
@@ -129,7 +129,7 @@ public class Wrist extends Subsystem {
 	}
 	
 	//Config
-	protected void init() {
+	public void init() {
 		wristTalon = new TalonSRX(Ports.WRIST_TALON);
 		wristTalon.configFactoryDefault();
 		wristTalon.configContinuousCurrentLimit(Constants.WRIST_CURRENT_LIMIT, 10);
@@ -148,6 +148,6 @@ public class Wrist extends Subsystem {
 		wristTalon.selectProfileSlot(0, 0);
 		wristTalon.setSensorPhase(true);
 	}
-	protected void enabled() { stop(); }
-	protected void disabled() { stop(); }
+	public void enabled() { stop(); }
+	public void disabled() { stop(); }
 }

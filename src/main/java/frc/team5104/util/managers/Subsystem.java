@@ -6,13 +6,13 @@ package frc.team5104.util.managers;
  */
 public abstract class Subsystem {
 	/** Return the name of this subsystem (for prints) */
-	protected abstract String getName();
+	public abstract String getName();
 	/** Called when robots boots up; initialize devices here */
-	protected abstract void init();
+	public abstract void init();
 	/** Called whenever the robot becomes enabled */
-	protected abstract void enabled();
+	public abstract void enabled();
 	/** Called periodically from the robot loop */
-	protected abstract void update();
+	public abstract void update();
 	/** Called whenever the robot becomes disabled; stop all devices here */
-	protected abstract void disabled();
+	public abstract void disabled();
 }

@@ -17,7 +17,7 @@ import frc.team5104.util.MovingAverage;
 import frc.team5104.util.managers.Subsystem;
 
 public class Elevator extends Subsystem {
-	protected String getName() { return "Elevator"; }
+	public String getName() { return "Elevator"; }
 
 	private static TalonSRX talon1, talon2;
 	private static CANifier canifier;
@@ -26,7 +26,7 @@ public class Elevator extends Subsystem {
 	public static double desiredElevatorManaul = 0;
 
 	//Loop
-	protected void update() {
+	public void update() {
 		//Auto
 		if (Superstructure.getSystemState() == SystemState.AUTONOMOUS)
 			setMotionMagic(getTargetHeight());
@@ -128,7 +128,7 @@ public class Elevator extends Subsystem {
 	}
 	
 	//Config
-	protected void init() {
+	public void init() {
 		talon1 = new TalonSRX(Ports.ELEVATOR_TALON_1);
 		talon2 = new TalonSRX(Ports.ELEVATOR_TALON_2);
 		canifier = new CANifier(Ports.ELEVATOR_CANIFIER);
@@ -153,6 +153,6 @@ public class Elevator extends Subsystem {
 		talon2.set(ControlMode.Follower, talon1.getDeviceID());
 		talon2.configClosedloopRamp(0.1);
 	}
-	protected void enabled() { stop(); }
-	protected void disabled() { stop(); }
+	public void enabled() { stop(); }
+	public void disabled() { stop(); }
 }
