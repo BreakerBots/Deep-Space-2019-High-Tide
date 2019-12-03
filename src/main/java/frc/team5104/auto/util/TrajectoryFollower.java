@@ -6,6 +6,7 @@ import frc.team5104.util.BreakerMath;
 import frc.team5104.util.DriveSignal;
 import frc.team5104.util.DriveSignal.DriveUnit;
 import frc.team5104.util.Units;
+import frc.team5104.util.console;
 
 /**
  * <h1>Breaker Trajectory Follower</h1>
@@ -24,6 +25,7 @@ public class TrajectoryFollower {
 	private double lastRightVelocity = 0;
 
 	public TrajectoryFollower(Trajectory trajectory) {
+		console.log(trajectory);
 		this.trajectory = trajectory;
 		trajectoryIndex = 0;
 	}

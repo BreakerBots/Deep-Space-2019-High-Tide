@@ -14,6 +14,7 @@ import frc.team5104.teleop.DriveController;
 import frc.team5104.teleop.SuperstructureController;
 import frc.team5104.util.WebappTuner;
 import frc.team5104.util.XboxController;
+import frc.team5104.util.console;
 import frc.team5104.util.managers.SubsystemManager;
 import frc.team5104.util.managers.TeleopControllerManager;
 import frc.team5104.util.setup.RobotController;
@@ -48,6 +49,7 @@ public class Robot extends RobotController.BreakerRobot {
 	
 	//Teleop (includes sandstorm)
 	public void teleopStart() {
+		console.logFile.start();
 		if (RobotState.isSandstorm()) { Odometry.reset(); AutoManager.run(); }
 		else { TeleopControllerManager.enabled(); }
 		TeleopControllerManager.enabled();
@@ -59,6 +61,7 @@ public class Robot extends RobotController.BreakerRobot {
 		else { TeleopControllerManager.disabled(); }
 		Superstructure.enabled();
 		SubsystemManager.disabled();
+		console.logFile.end();
 	}
 	public void teleopLoop() {
 		if (RobotState.isSandstorm()) { CompressorController.stop(); }

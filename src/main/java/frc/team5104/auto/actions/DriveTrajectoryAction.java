@@ -39,11 +39,13 @@ public class DriveTrajectoryAction extends AutoPathAction {
 
     public boolean update() {
     	DriveSignal nextSignal = follower.getNextDriveSignal(Odometry.getPosition(), (Timer.getFPGATimestamp() - lastTime) * 1000);
-    	Drive.set(nextSignal);
+//    	Drive.set(nextSignal);
+    	
+    	Drive.stop();
     	
     	lastTime = Timer.getFPGATimestamp();
     	
-		return follower.isFinished();
+		return true;//follower.isFinished();
     }
 
     public void end() {

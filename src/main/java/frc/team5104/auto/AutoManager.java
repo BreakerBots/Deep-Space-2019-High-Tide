@@ -26,7 +26,7 @@ public class AutoManager {
 			}
 			else {
 				//stop
-				_thread.stop();
+				stop();
 			}
 		} catch (Exception e) { CrashLogger.logCrash(new Crash("auto", e)); }});
 	}

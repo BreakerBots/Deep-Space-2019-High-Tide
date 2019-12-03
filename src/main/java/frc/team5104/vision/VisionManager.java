@@ -15,9 +15,9 @@ import frc.team5104.vision.Limelight.CamMode;
 public class VisionManager {
 
 	@tunerInput
-	private static double VISION_TURN_P = 1;
+	private static double VISION_TURN_P = .5;
 	@tunerInput
-	private static double VISION_TURN_D = 100;
+	private static double VISION_TURN_D = 60;
 	@tunerInput
 	private static double VISION_FWD_P = 1;
 	@tunerInput
@@ -28,7 +28,7 @@ public class VisionManager {
 	private static double VISION_TARGET_Y = 2;
 	private static PDFController turnController = new PDFController(VISION_TURN_P, VISION_TURN_D, 0, -6, 6);
 	private static PDFController fwdController = new PDFController(VISION_FWD_P, VISION_FWD_D, 0, -6, 6);
-	private static MovingAverage filterX = new MovingAverage(5, 0);
+	private static MovingAverage filterX = new MovingAverage(10, 0);
 	private static MovingAverage filterY = new MovingAverage(5, 0);
 	private static enum VisionState { VISION, FINISHED }
 	private static VisionState visionState = VisionState.FINISHED;
