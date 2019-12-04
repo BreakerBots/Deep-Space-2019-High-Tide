@@ -5,10 +5,9 @@ import edu.wpi.first.wpilibj.Timer;
 import frc.team5104.auto.util.AutoPathAction;
 import frc.team5104.auto.util.TrajectoryCacher;
 import frc.team5104.auto.util.Odometry;
+import frc.team5104.auto.util.Position;
 import frc.team5104.auto.util.TrajectoryFollower;
-import frc.team5104.auto.util.FieldPosition;
 import frc.team5104.subsystems.Drive;
-import frc.team5104.util.DriveSignal;
 import frc.team5104.util.console;
 import frc.team5104.util.console.c;
 
@@ -16,11 +15,13 @@ import frc.team5104.util.console.c;
  * Follow a trajectory using the Breaker Trajectory Follower (Ramses Follower)
  */
 public class DriveTrajectoryAction extends AutoPathAction {
+	@SuppressWarnings("unused")
 	private TrajectoryFollower follower;
-	private FieldPosition[] waypoints;
+	private Position[] waypoints;
+	@SuppressWarnings("unused")
 	private double lastTime;
 
-    public DriveTrajectoryAction(FieldPosition[] points) {
+    public DriveTrajectoryAction(Position[] points) {
     	this.waypoints = points;
     }
 
@@ -38,14 +39,12 @@ public class DriveTrajectoryAction extends AutoPathAction {
     }
 
     public boolean update() {
-    	DriveSignal nextSignal = follower.getNextDriveSignal(Odometry.getPosition(), (Timer.getFPGATimestamp() - lastTime) * 1000);
+//    	DriveSignal nextSignal = follower.getNextDriveSignal(Odometry.getPosition(), (Timer.getFPGATimestamp() - lastTime) * 1000);
 //    	Drive.set(nextSignal);
-    	
+//    	lastTime = Timer.getFPGATimestamp();
+//		return follower.isFinished();
     	Drive.stop();
-    	
-    	lastTime = Timer.getFPGATimestamp();
-    	
-		return true;//follower.isFinished();
+    	return true;
     }
 
     public void end() {

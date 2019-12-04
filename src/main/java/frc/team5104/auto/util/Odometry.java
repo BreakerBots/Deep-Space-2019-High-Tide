@@ -19,7 +19,7 @@ public class Odometry {
 	private static Notifier _thread = null;
 		
 	private volatile static double lastPos, currentPos, dPos, theta;
-	public volatile static RobotPosition position = new RobotPosition(0, 0, 0);
+	public volatile static Position position = new Position(0, 0, 0);
 	
 	private static void init() {
 		lastPos = currentPos = (Drive.getLeftEncoderPositionRaw() + Drive.getRightEncoderPositionRaw()) / 2.0;
@@ -31,7 +31,7 @@ public class Odometry {
 				theta = Units.degreesToRadians(BreakerMath.boundDegrees180(Drive.getGyro()));
 	            position.addX(Math.cos(theta) * dPos);
 	            position.addY(Math.sin(theta) * dPos);
-	            position.setTheta(theta);
+	            position.theta = theta;
 			} catch (Exception e) { CrashLogger.logCrash(new Crash("odometry", e)); }
         });
 	}
@@ -48,7 +48,7 @@ public class Odometry {
 			_thread.stop();
 	}
 	
-	public static RobotPosition getPosition() {
+	public static Position getPosition() {
 		return position;
 	}
 	
@@ -61,7 +61,7 @@ public class Odometry {
 		currentPos = 0; 
 		dPos = 0; 
 		theta = 0;
-		position = new RobotPosition(0, 0, 0);
+		position = new Position(0, 0, 0);
 		lastPos = 0;
 		init();
 		run();

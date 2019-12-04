@@ -20,7 +20,7 @@ public class TrajectoryFollower {
 	private int trajectoryIndex;
 	
 	private Trajectory trajectory;
-	private RobotPosition robotPosition;
+	private Position robotPosition;
 	private double lastLeftVelocity = 0;
 	private double lastRightVelocity = 0;
 
@@ -35,7 +35,7 @@ public class TrajectoryFollower {
 	 * @param robotPosition The Robot's position on the field (get from Odometry.java)
 	 * @return The Motor Speeds to follow the trajectory
 	 */
-	public DriveSignal getNextDriveSignal(RobotPosition currentRobotPosition, double deltaTime) {
+	public DriveSignal getNextDriveSignal(Position currentRobotPosition, double deltaTime) {
 		//Implements equation 5.12 from https://www.dis.uniroma1.it/~labrob/pub/papers/Ramsete01.pdf
 		this.robotPosition = currentRobotPosition;
 		
@@ -73,10 +73,6 @@ public class TrajectoryFollower {
 			);
 	}
 
-	/** Get the starting robot position in a trajectory (should be 0, 0, 0) */
-	public RobotPosition getInitRobotPosition() {
-		return new RobotPosition(trajectory.get(0).x, trajectory.get(0).y, trajectory.get(0).theta);
-	}
 	public boolean isFinished() {
 		return trajectoryIndex == trajectory.length();
 	}
@@ -98,18 +94,18 @@ public class TrajectoryFollower {
 
 	private double calcVel(double x_d, double y_d, double theta_d, double v_d, double w_d) {
 		double k = calcK(v_d, w_d);
-		double thetaError = theta_d - robotPosition.getTheta();
+		double thetaError = theta_d - robotPosition.theta;
 		thetaError = Units.degreesToRadians(BreakerMath.boundDegrees180(Units.radiansToDegress(thetaError)));
 	   
 		return 
 				v_d * Math.cos(thetaError) 
-				+ k * (Math.cos(robotPosition.getTheta()) * (x_d - robotPosition.x) 
-				+ Math.sin(robotPosition.getTheta()) * (y_d - robotPosition.y));
+				+ k * (Math.cos(robotPosition.theta) * (x_d - robotPosition.y) 
+				+ Math.sin(robotPosition.theta) * (y_d - robotPosition.x));
 	}
 	
 	private double calcAngleVel(double x_d, double y_d, double theta_d, double v_d, double w_d) {
 		double k = calcK(v_d, w_d);
-		double thetaError = theta_d - robotPosition.getTheta();
+		double thetaError = theta_d - robotPosition.theta;
 		thetaError = Math.toDegrees(BreakerMath.boundDegrees180(Math.toRadians(thetaError)));
 		double sinThetaErrOverThetaErr;
 		
@@ -118,7 +114,9 @@ public class TrajectoryFollower {
 		else
 			sinThetaErrOverThetaErr = Math.sin(thetaError) / (thetaError);
 		
-		return w_d + beta * v_d * (sinThetaErrOverThetaErr) * (Math.cos(robotPosition.getTheta()) * (y_d - robotPosition.y) - Math.sin(robotPosition.getTheta()) * (x_d - robotPosition.x)) + k * (thetaError); //from eq. 5.12
+		return w_d + beta * v_d * (sinThetaErrOverThetaErr) * (Math.cos(robotPosition.theta) * 
+				(y_d - robotPosition.x) - Math.sin(robotPosition.theta) * 
+				(x_d - robotPosition.y)) + k * (thetaError); //from eq. 5.12
 	}
 	
 	private double calcK(double v_d, double w_d) {

@@ -23,10 +23,10 @@ public class TrajectoryCacher {
 	 * @param points Waypoints to generate the trajectory from
 	 * @return A Trajectory to follow those waypoints
 	 */
-	public static Trajectory getTrajectory(FieldPosition[] points) {
+	public static Trajectory getTrajectory(Position[] points) {
 		//Parse trajectory name
 		String trajectoryName = "" + Constants.AUTO_MAX_VELOCITY + Constants.AUTO_MAX_ACCEL + Constants.AUTO_MAX_JERK + Constants.AUTO_LOOP_SPEED;
-    	for (FieldPosition p : points) {
+    	for (Position p : points) {
     		trajectoryName += (Double.toString(p.x) + "/" + Double.toString(p.y) + "/" + Double.toString(p.theta));
     	}
     	trajectoryName = "_" + trajectoryName.hashCode();
