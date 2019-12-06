@@ -17,8 +17,6 @@ import frc.team5104.util.MovingAverage;
 import frc.team5104.util.managers.Subsystem;
 
 public class Elevator extends Subsystem {
-	public String getName() { return "Elevator"; }
-
 	private static TalonSRX talon1, talon2;
 	private static CANifier canifier;
 	private static double lastTargetHeight;

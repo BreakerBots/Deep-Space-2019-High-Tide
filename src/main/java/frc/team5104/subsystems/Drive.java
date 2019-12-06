@@ -12,8 +12,6 @@ import frc.team5104.util.Units;
 import frc.team5104.util.managers.Subsystem;
 
 public class Drive extends Subsystem {
-	public String getName() { return "Drive"; }
-
 	private static TalonSRX talonL1, talonL2, talonR1, talonR2;
 	private static PigeonIMU gyro;
 	
@@ -122,6 +120,8 @@ public class Drive extends Subsystem {
 		resetGyro();
 		resetEncoders();
 	}
+	
+	//Enabled/Disabled
 	public void enabled() {
 		currentDriveSignal = new DriveSignal();
 	}

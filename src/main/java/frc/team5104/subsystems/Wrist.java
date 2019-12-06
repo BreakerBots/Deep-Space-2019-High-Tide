@@ -16,8 +16,6 @@ import frc.team5104.util.MovingAverage;
 import frc.team5104.util.managers.Subsystem;
 
 public class Wrist extends Subsystem {
-	public String getName() { return "Wrist"; }
-
 	private static TalonSRX wristTalon;
 	public static double desiredWristManaul = 0;
 	

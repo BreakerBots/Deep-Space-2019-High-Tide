@@ -16,8 +16,6 @@ import frc.team5104.util.MovingAverage;
 import frc.team5104.util.managers.Subsystem;
 
 public class Intake extends Subsystem {
-	public String getName() { return "Intake"; }
-
 	private static VictorSPX leftVictor, rightVictor;
 	private static DoubleSolenoid solenoid;
 	private static AnalogToDigital bannerHatch, bannerCargo;
