@@ -26,10 +26,7 @@ public class Wrist extends Subsystem {
 		if (Superstructure.getSystemState() == SystemState.AUTONOMOUS)
 			setMotionMagic(
 					getTargetAngle(), 
-					System.currentTimeMillis() > 
-					(Superstructure.systemStateStart > Superstructure.modeStart ? 
-					Superstructure.systemStateStart : Superstructure.modeStart) + 
-					Constants.WRIST_LIMP_MODE_TIME_START
+					atTargetAngle()
 				);
 		
 		//Calibrating
@@ -78,7 +75,30 @@ public class Wrist extends Subsystem {
 			wristTalon.configPeakOutputReverse(-1);
 		}
 	}
-	private static double getTargetAngle() {
+	
+	//External Functions
+	public static double getEncoderAngle() {
+		return getRawEncoderAngle() / 4096.0 * 360.0;
+	}
+	public static double getRawEncoderAngle() {
+		return wristTalon.getSelectedSensorPosition();
+	}
+	public static double getRawEncoderVelocity() {
+		return wristTalon.getSelectedSensorVelocity();
+	}
+	public static void resetEncoder() {
+		wristTalon.setSelectedSensorPosition(0);
+	}
+	public static boolean encoderDisconnected() {
+		return wristTalon.getSensorCollection().getPulseWidthRiseToRiseUs() == 0;
+	}
+	public static boolean backLimitSwitchHit() {
+		return wristTalon.getSensorCollection().isRevLimitSwitchClosed();
+	}
+	public static double getMotorPercentOutput() {
+		return wristTalon.getMotorOutputPercent();
+	}
+	public static double getTargetAngle() {
 		if (Superstructure.getSystemState() == SystemState.AUTONOMOUS) {
 			if (Superstructure.getMode() == Mode.IDLE || !Elevator.isRoughlyAtTargetHeight()) 
 				return 0;
@@ -102,28 +122,8 @@ public class Wrist extends Subsystem {
 		}
 		else return 0;
 	}
-	
-	//External Functions
-	public static double getEncoderAngle() {
-		return getRawEncoderAngle() / 4096.0 * 360.0;
-	}
-	public static double getRawEncoderAngle() {
-		return wristTalon.getSelectedSensorPosition();
-	}
-	public static double getRawEncoderVelocity() {
-		return wristTalon.getSelectedSensorVelocity();
-	}
-	public static void resetEncoder() {
-		wristTalon.setSelectedSensorPosition(0);
-	}
-	public static boolean encoderDisconnected() {
-		return wristTalon.getSensorCollection().getPulseWidthRiseToRiseUs() == 0;
-	}
-	public static boolean backLimitSwitchHit() {
-		return wristTalon.getSensorCollection().isRevLimitSwitchClosed();
-	}
-	public static double getMotorPercentOutput() {
-		return wristTalon.getMotorOutputPercent();
+	public static boolean atTargetAngle() {
+		return Math.abs(getTargetAngle() - getEncoderAngle()) < Constants.WRIST_ANGLE_TOL;
 	}
 	
 	//Config

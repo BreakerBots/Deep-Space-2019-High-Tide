@@ -49,7 +49,6 @@ public class VisionManager {
 			}
 		}
 		else if (visionState == VisionState.VISION) {
-			
 			turnController.setPDF(VISION_TURN_P, VISION_TURN_D, 0);
 			fwdController.setPDF(VISION_FWD_P, VISION_FWD_D, 0);
 			
@@ -77,6 +76,7 @@ public class VisionManager {
 	public static void end() {
 		Limelight.setLEDMode(LEDMode.OFF);
 		Limelight.setcamMode(CamMode.DRIVE);
+		visionState = VisionState.FINISHED;
 	}
 	public static void start() {
 		Limelight.setLEDMode(LEDMode.ON);

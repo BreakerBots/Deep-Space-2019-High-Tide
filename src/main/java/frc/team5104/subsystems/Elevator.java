@@ -14,20 +14,28 @@ import frc.team5104.Superstructure.IntakeMode;
 import frc.team5104.Superstructure.Mode;
 import frc.team5104.Superstructure.SystemState;
 import frc.team5104.util.MovingAverage;
+import frc.team5104.util.WebappTuner.tunerOutput;
 import frc.team5104.util.managers.Subsystem;
 
 public class Elevator extends Subsystem {
 	private static TalonSRX talon1, talon2;
 	private static CANifier canifier;
+	@tunerOutput
 	private static double lastTargetHeight;
-	private static MovingAverage limitSwitchZeroBuffer = new MovingAverage(5, false);
+	private static MovingAverage limitSwitchZeroBuffer = new MovingAverage(10, false);
 	public static double desiredElevatorManaul = 0;
 
 	//Loop
 	public void update() {
 		//Auto
-		if (Superstructure.getSystemState() == SystemState.AUTONOMOUS)
+		if (Superstructure.getSystemState() == SystemState.AUTONOMOUS) {
 			setMotionMagic(getTargetHeight());
+			
+			if (getTargetHeight() == 0 && getEncoderHeight() < 6 && 
+				!lowerLimitHit() && getMotorPercentOutput() < Constants.ELEVATOR_ADJ_PERCENT_START) {
+				talon1.setSelectedSensorPosition(10000);
+			}
+		}
 		
 		//Calibrating
 		else if (Superstructure.getSystemState() == SystemState.CALIBRATING && !lowerLimitHit())
@@ -49,9 +57,14 @@ public class Elevator extends Subsystem {
 	//Subsystem Internal Functions
 	private static void setMotionMagic(double height) {
 		lastTargetHeight = height;
-		double ff = 0;
+		double ff = 0.05;
 		if (getEncoderHeight() > 26) 
 			ff += 0.08;
+		if (height == 0) {
+			ff += 0.05;
+			talon1.config_kD(0, Constants.ELEVATOR_MOTION_DOWN_KD);
+		}
+		else talon1.config_kD(0, Constants.ELEVATOR_MOTION_UP_KD);
 		talon1.set(
 			ControlMode.MotionMagic, height / Constants.ELEVATOR_SPOOL_CIRC * 4096.0,
 			DemandType.ArbitraryFeedForward, ff
@@ -103,6 +116,7 @@ public class Elevator extends Subsystem {
 	public static void resetEncoder() {
 		talon1.setSelectedSensorPosition(0);
 	}
+	@tunerOutput
 	public static double getEncoderHeight() {
 		return getRawEncoderPosition() / 4096.0 * Constants.ELEVATOR_SPOOL_CIRC;
 	}
@@ -136,20 +150,18 @@ public class Elevator extends Subsystem {
 		talon1.enableCurrentLimit(true);
 		talon1.setNeutralMode(Constants.ELEVATOR_NEUTRAL_MODE);
 		talon1.config_kP(0, Constants.ELEVATOR_MOTION_KP);
-		talon1.config_kI(0, Constants.ELEVATOR_MOTION_KI);
-		talon1.config_kD(0, Constants.ELEVATOR_MOTION_KD);
-		talon1.config_kF(0, 0);
+		talon1.config_kD(0, Constants.ELEVATOR_MOTION_UP_KD);
 		talon1.configMotionAcceleration(Constants.ELEVATOR_MOTION_ACCEL);
 		talon1.configMotionCruiseVelocity(Constants.ELEVATOR_MOTION_CRUISE_VELOCITY);
 		talon1.setSensorPhase(true);
-		talon1.configClosedloopRamp(0.1);
+		talon1.configClosedloopRamp(0.4);
 		
 		talon2.configFactoryDefault();
 		talon2.configContinuousCurrentLimit(Constants.ELEVATOR_CURRENT_LIMIT, 10);
 		talon2.enableCurrentLimit(true);
 		talon2.setNeutralMode(Constants.ELEVATOR_NEUTRAL_MODE);
 		talon2.set(ControlMode.Follower, talon1.getDeviceID());
-		talon2.configClosedloopRamp(0.1);
+		talon2.configClosedloopRamp(0.4);
 	}
 	public void enabled() { stop(); }
 	public void disabled() { stop(); }

@@ -2,34 +2,29 @@
 package frc.team5104.teleop;
 
 import frc.team5104.Controls;
-import frc.team5104.Superstructure;
-import frc.team5104.Superstructure.GamePiece;
-import frc.team5104.Superstructure.Height;
-import frc.team5104.Superstructure.Mode;
 import frc.team5104.subsystems.Drive;
 import frc.team5104.util.DriveHelper;
 import frc.team5104.util.managers.TeleopController;
-import frc.team5104.vision.VisionManager;
 
 public class DriveController extends TeleopController {
 	protected String getName() { return "Drive-Controller"; }
 
-	boolean visionEnabled = true;
+	boolean visionEnabled = false;
 	protected void update() {
 		//Switch between Manual Control and Vision
 		if (Controls.TOGGLE_VISION.get())
 			visionEnabled = !visionEnabled;
 		
 		//Update Manual Drive or Vision
-		if ((Superstructure.getMode() == Mode.INTAKE ||
-			((Superstructure.getMode() == Mode.PLACE || Superstructure.getMode() == Mode.EJECT) && !(Superstructure.getGamePiece() == GamePiece.CARGO && Superstructure.getHeight() == Height.SHIP)) ||
-			Superstructure.getMode() == Mode.PLACE_READY) && visionEnabled)
-			handleVisionDrive();
-		else {
+//		if ((Superstructure.getMode() == Mode.INTAKE ||
+//			((Superstructure.getMode() == Mode.PLACE || Superstructure.getMode() == Mode.EJECT) && !(Superstructure.getGamePiece() == GamePiece.CARGO && Superstructure.getHeight() == Height.SHIP)) ||
+//			Superstructure.getMode() == Mode.PLACE_READY) && visionEnabled)
+//			handleVisionDrive();
+//		else {
 			handleManualDrive();
-			if (VisionManager.isFinished())
-				VisionManager.end();
-		}
+//			if (VisionManager.isFinished())
+//				VisionManager.end();
+//		}
 	}
 	
 	//Manual Driving
@@ -41,9 +36,9 @@ public class DriveController extends TeleopController {
 	}
 	
 	//Vision Driving
-	private void handleVisionDrive() {
-		if (!VisionManager.isInVision())
-			VisionManager.start();
-		Drive.set(VisionManager.getNextDriveSignal());
-	}
+//	private void handleVisionDrive() {
+//		if (!VisionManager.isInVision())
+//			VisionManager.start();
+//		Drive.set(VisionManager.getNextDriveSignal());
+//	}
 }

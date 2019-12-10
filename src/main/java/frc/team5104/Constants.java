@@ -33,11 +33,12 @@ public class Constants {
 	public static final double ELEVATOR_CALIBRATE_SPEED = 0.25;
 	public static final int ELEVATOR_CURRENT_LIMIT = 20;
 	public static final NeutralMode ELEVATOR_NEUTRAL_MODE = NeutralMode.Brake;
-	public static final double ELEVATOR_MOTION_KP = 0.5;
-	public static final double ELEVATOR_MOTION_KI = 0;
-	public static final double ELEVATOR_MOTION_KD = 6;
-	public static final int ELEVATOR_MOTION_ACCEL = 20000;
+	public static final double ELEVATOR_MOTION_KP = 1;
+	public static final double ELEVATOR_MOTION_UP_KD = 150;
+	public static final double ELEVATOR_MOTION_DOWN_KD = 225;
+	public static final int ELEVATOR_MOTION_ACCEL = 25000;
 	public static final int ELEVATOR_MOTION_CRUISE_VELOCITY = 20000;
+	public static final double ELEVATOR_ADJ_PERCENT_START = 0.4;
 	public static final double ELEVATOR_HEIGHT_TOL = 6;
 	public static final double ELEVATOR_HEIGHT_TOL_ROUGH = 12;
 	public static final double ELEVATOR_HEIGHT_CARGO_SHIP = 28;
@@ -58,8 +59,7 @@ public class Constants {
 	public static final int WRIST_MOTION_ACCEL = 1000;
 	public static final int WRIST_MOTION_CRUISE_VELOCITY = 2000;
 	public static final double WRIST_LIMP_MODE_MAX_SPEED = 0.1;
-	public static final int WRIST_LIMP_MODE_TIME_START = 1500;
-	public static final double WRIST_ANGLE_TOL = 10;
+	public static final double WRIST_ANGLE_TOL = 5;
 	public static final double WRIST_ANGLE_HATCH_INTAKE = 72;
 	public static final double WRIST_ANGLE_HATCH_EJECT = 75; 
 	public static final double WRIST_ANGLE_CARGO_EJECT_ROCKET = 40; 

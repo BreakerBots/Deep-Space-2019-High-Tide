@@ -20,7 +20,6 @@ import frc.team5104.util.managers.TeleopControllerManager;
 import frc.team5104.util.setup.RobotController;
 import frc.team5104.util.setup.RobotState;
 import frc.team5104.vision.Limelight;
-import frc.team5104.vision.VisionManager;
 import frc.team5104.util.Webapp;
 
 public class Robot extends RobotController.BreakerRobot {
@@ -44,7 +43,7 @@ public class Robot extends RobotController.BreakerRobot {
 		Limelight.init();
 		CompressorController.stop();
 		AutoManager.setTargetPath(new ExamplePath());
-		WebappTuner.init(VisionManager.class);
+		WebappTuner.init(Constants.class, Elevator.class);
 	}
 	
 	//Teleop (includes sandstorm)
