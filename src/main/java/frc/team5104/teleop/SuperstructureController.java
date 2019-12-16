@@ -28,7 +28,7 @@ public class SuperstructureController extends TeleopController {
 			if (Superstructure.getGamePiece() == GamePiece.CARGO) {
 				if (Superstructure.getMode() == Mode.INTAKE && Superstructure.getIntakeMode() == IntakeMode.GROUND)
 					Superstructure.setIntakeMode(IntakeMode.WALL);
-				Superstructure.setIntakeMode(IntakeMode.GROUND);
+				else Superstructure.setIntakeMode(IntakeMode.GROUND);
 				console.log(c.SUPERSTRUCTURE, "intaking cargo " + Superstructure.getIntakeMode().name().toLowerCase());
 			}
 			else {
