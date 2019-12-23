@@ -1,8 +1,6 @@
 /* BreakerBots Robotics Team (FRC 5104) 2020 */
-package frc.team5104.util.managers;
+package frc.team5104.util;
 
-import frc.team5104.util.CrashLogger;
-import frc.team5104.util.console;
 import frc.team5104.util.CrashLogger.Crash;
 import frc.team5104.util.console.c;
 import frc.team5104.util.console.t;
@@ -32,20 +30,20 @@ public class TeleopControllerManager {
 		}
 	}
 
-	/** Call once the robot becomes enabled */
-	public static void enabled() {
+	/** Call once the robot becomes enabled or disabled */
+	public static void reset() {
 		for (TeleopController teleopController : targetTeleopControllers) {
 			try {
-				teleopController.enabled();
+				teleopController.reset();
 			} catch (Exception e) { CrashLogger.logCrash(new Crash("main", e)); }
 		}
 	}
 
-	public static void disabled() {
-		for (TeleopController teleopController : targetTeleopControllers) {
-			try {
-				teleopController.disabled();
-			} catch (Exception e) { CrashLogger.logCrash(new Crash("main", e)); }
-		}
+	/** A twix rapper for all the requirements in a teleop controller */ 
+	public static abstract class TeleopController {
+		/** Called periodically from the robot loop */
+		protected abstract void update();
+		/** Called once the robot becomes enabled or disabled */
+		protected void reset() { }
 	}
 }

@@ -3,11 +3,9 @@ package frc.team5104.teleop;
 
 import edu.wpi.first.wpilibj.Compressor;
 import frc.team5104.Controls;
-import frc.team5104.util.managers.TeleopController;
+import frc.team5104.util.TeleopControllerManager.TeleopController;
 
 public class CompressorController extends TeleopController {
-	protected String getName() { return "Compressor Controller"; }
-
 	private static Compressor compressor = new Compressor();
 	
 	protected void update() {
@@ -18,7 +16,7 @@ public class CompressorController extends TeleopController {
 		}
 	}
 	
-	protected void enabled() {
+	protected void reset() {
 		stop();
 	}
 	

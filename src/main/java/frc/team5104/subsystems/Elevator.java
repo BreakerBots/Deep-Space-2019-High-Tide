@@ -14,19 +14,17 @@ import frc.team5104.Superstructure.IntakeMode;
 import frc.team5104.Superstructure.Mode;
 import frc.team5104.Superstructure.SystemState;
 import frc.team5104.util.MovingAverage;
-import frc.team5104.util.WebappTuner.tunerOutput;
-import frc.team5104.util.managers.Subsystem;
+import frc.team5104.util.subsystem.Subsystem;
 
-public class Elevator extends Subsystem {
-	private static TalonSRX talon1, talon2;
-	private static CANifier canifier;
-	@tunerOutput
-	private static double lastTargetHeight;
-	private static MovingAverage limitSwitchZeroBuffer = new MovingAverage(10, false);
-	public static double desiredElevatorManaul = 0;
+public class Elevator extends Subsystem.ElevatorSubsystem {
+	private TalonSRX talon1, talon2;
+	private CANifier canifier;
+	private double lastTargetHeight;
+	private MovingAverage limitSwitchZeroBuffer = new MovingAverage(10, false);
+	public double desiredElevatorManaul = 0;
 
 	//Loop
-	public void update() {
+	protected void update() {
 		//Auto
 		if (Superstructure.getSystemState() == SystemState.AUTONOMOUS) {
 			setMotionMagic(getTargetHeight());
@@ -55,7 +53,7 @@ public class Elevator extends Subsystem {
 	}
 
 	//Subsystem Internal Functions
-	private static void setMotionMagic(double height) {
+	protected void setMotionMagic(double height) {
 		lastTargetHeight = height;
 		double ff = 0.05;
 		if (getEncoderHeight() > 26) 
@@ -71,11 +69,11 @@ public class Elevator extends Subsystem {
 		);
 		updateLimitSwitches();
 	}
-	private static void setPercentOutput(double percent) {
+	protected void setPercentOutput(double percent) {
 		talon1.set(ControlMode.PercentOutput, percent);
 		updateLimitSwitches();
 	}
-	private static void updateLimitSwitches() {
+	protected void updateLimitSwitches() {
 		if (lowerLimitHit()) {
 			talon1.configPeakOutputReverse(0);
 			talon2.configPeakOutputReverse(0);
@@ -85,10 +83,10 @@ public class Elevator extends Subsystem {
 			talon2.configPeakOutputReverse(-1);
 		}
 	}
-	private static void stop() {
+	protected void stop() {
 		talon1.set(ControlMode.Disabled, 0);
 	}
-	private static double getTargetHeight() {
+	protected double getTargetHeight() {
 		if (Superstructure.getSystemState() == SystemState.AUTONOMOUS) {
 			if (Superstructure.getGamePiece() == GamePiece.CARGO && Superstructure.getMode() == Mode.INTAKE && Superstructure.getIntakeMode() == IntakeMode.WALL)
 				return Constants.ELEVATOR_HEIGHT_CARGO_WALL;
@@ -113,34 +111,33 @@ public class Elevator extends Subsystem {
 	}
 	
 	//Subsystem External Functions
-	public static void resetEncoder() {
+	public void resetEncoder() {
 		talon1.setSelectedSensorPosition(0);
 	}
-	@tunerOutput
-	public static double getEncoderHeight() {
+	public double getEncoderHeight() {
 		return getRawEncoderPosition() / 4096.0 * Constants.ELEVATOR_SPOOL_CIRC;
 	}
-	public static double getRawEncoderVelocity() {
+	public double getRawEncoderVelocity() {
 		return talon1.getSelectedSensorVelocity();
 	}
-	public static double getRawEncoderPosition() {
+	public double getRawEncoderPosition() {
 		return talon1.getSelectedSensorPosition();
 	}
-	public static boolean encoderDisconnected() {
+	public boolean encoderDisconnected() {
 		return talon1.getSensorCollection().getPulseWidthRiseToRiseUs() == 0;
 	}
-	public static double getMotorPercentOutput() {
+	public double getMotorPercentOutput() {
 		return talon1.getMotorOutputPercent();
 	}
-	public static boolean lowerLimitHit() {
+	public boolean lowerLimitHit() {
 		return !canifier.getGeneralInput(CANifier.GeneralPin.LIMR);
 	}
-	public static boolean isRoughlyAtTargetHeight() { 
+	public boolean isRoughlyAtTargetHeight() { 
 		return Math.abs(getEncoderHeight() - lastTargetHeight) < Constants.ELEVATOR_HEIGHT_TOL_ROUGH; 
 	}
 	
 	//Config
-	public void init() {
+	protected void init() {
 		talon1 = new TalonSRX(Ports.ELEVATOR_TALON_1);
 		talon2 = new TalonSRX(Ports.ELEVATOR_TALON_2);
 		canifier = new CANifier(Ports.ELEVATOR_CANIFIER);
@@ -163,6 +160,4 @@ public class Elevator extends Subsystem {
 		talon2.set(ControlMode.Follower, talon1.getDeviceID());
 		talon2.configClosedloopRamp(0.4);
 	}
-	public void enabled() { stop(); }
-	public void disabled() { stop(); }
 }

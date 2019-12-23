@@ -6,6 +6,7 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import frc.team5104.Constants;
 import frc.team5104.Ports;
+import frc.team5104.Subsystems;
 import frc.team5104.Superstructure;
 import frc.team5104.Superstructure.GamePiece;
 import frc.team5104.Superstructure.Height;
@@ -13,15 +14,15 @@ import frc.team5104.Superstructure.IntakeMode;
 import frc.team5104.Superstructure.Mode;
 import frc.team5104.Superstructure.SystemState;
 import frc.team5104.util.MovingAverage;
-import frc.team5104.util.managers.Subsystem;
+import frc.team5104.util.subsystem.Subsystem;
 
-public class Wrist extends Subsystem {
-	private static TalonSRX wristTalon;
-	public static double desiredWristManaul = 0;
+public class Wrist extends Subsystem.WristSubsystem {
+	private TalonSRX wristTalon;
+	public double desiredWristManaul = 0;
+	private MovingAverage limitSwitchZeroBuffer = new MovingAverage(5, false);
 	
 	//Loop
-	static MovingAverage limitSwitchZeroBuffer = new MovingAverage(5, false);
-	public void update() {
+	protected void update() {
 		//Auto
 		if (Superstructure.getSystemState() == SystemState.AUTONOMOUS)
 			setMotionMagic(
@@ -30,7 +31,7 @@ public class Wrist extends Subsystem {
 				);
 		
 		//Calibrating
-		else if (Superstructure.getSystemState() == SystemState.CALIBRATING && !backLimitSwitchHit())
+		else if (Superstructure.getSystemState() == SystemState.CALIBRATING && !backLimitHit())
 			setPercentOutput(-Constants.WRIST_CALIBRATE_SPEED);
 		
 		//Manual
@@ -41,31 +42,31 @@ public class Wrist extends Subsystem {
 		else stop();
 		
 		//Zero Encoder In Runtime
-		limitSwitchZeroBuffer.update(backLimitSwitchHit());
+		limitSwitchZeroBuffer.update(backLimitHit());
 		if (limitSwitchZeroBuffer.getBooleanOutput())
 			resetEncoder();
 	}
 
 	//Internal Functions
-	private static void setMotionMagic(double angle, boolean limpMode) {
+	protected void setMotionMagic(double angle, boolean limpMode) {
 		setLimpMode(limpMode);
 		wristTalon.set(
 			ControlMode.MotionMagic, angle / 360.0 * 4096.0, 
 			DemandType.ArbitraryFeedForward, getFTerm()
 		);
 	}
-	private static double getFTerm() {
+	protected double getFTerm() {
 		return (-getEncoderAngle() / 900.0) + 0.1;
 	}
-	private static void setPercentOutput(double percent) {
+	protected void setPercentOutput(double percent) {
 		setLimpMode(false);
 		wristTalon.set(ControlMode.PercentOutput, percent);
 	}
-	private static void stop() {
+	protected void stop() {
 		setLimpMode(false);
 		wristTalon.set(ControlMode.Disabled, 0);
 	}
-	private static void setLimpMode(boolean limp) {
+	protected void setLimpMode(boolean limp) {
 		if (limp) {
 			wristTalon.configPeakOutputForward(getFTerm() + Constants.WRIST_LIMP_MODE_MAX_SPEED);
 			wristTalon.configPeakOutputReverse(getFTerm() - Constants.WRIST_LIMP_MODE_MAX_SPEED);
@@ -77,30 +78,30 @@ public class Wrist extends Subsystem {
 	}
 	
 	//External Functions
-	public static double getEncoderAngle() {
+	public double getEncoderAngle() {
 		return getRawEncoderAngle() / 4096.0 * 360.0;
 	}
-	public static double getRawEncoderAngle() {
+	public double getRawEncoderAngle() {
 		return wristTalon.getSelectedSensorPosition();
 	}
-	public static double getRawEncoderVelocity() {
+	public double getRawEncoderVelocity() {
 		return wristTalon.getSelectedSensorVelocity();
 	}
-	public static void resetEncoder() {
+	public void resetEncoder() {
 		wristTalon.setSelectedSensorPosition(0);
 	}
-	public static boolean encoderDisconnected() {
+	public boolean encoderDisconnected() {
 		return wristTalon.getSensorCollection().getPulseWidthRiseToRiseUs() == 0;
 	}
-	public static boolean backLimitSwitchHit() {
+	public boolean backLimitHit() {
 		return wristTalon.getSensorCollection().isRevLimitSwitchClosed();
 	}
-	public static double getMotorPercentOutput() {
+	public double getMotorPercentOutput() {
 		return wristTalon.getMotorOutputPercent();
 	}
-	public static double getTargetAngle() {
+	public double getTargetAngle() {
 		if (Superstructure.getSystemState() == SystemState.AUTONOMOUS) {
-			if (Superstructure.getMode() == Mode.IDLE || !Elevator.isRoughlyAtTargetHeight()) 
+			if (Superstructure.getMode() == Mode.IDLE || !Subsystems.elevator.isRoughlyAtTargetHeight()) 
 				return 0;
 			else if (Superstructure.getGamePiece() == GamePiece.HATCH) {
 				if (Superstructure.getMode() == Mode.INTAKE)
@@ -122,12 +123,12 @@ public class Wrist extends Subsystem {
 		}
 		else return 0;
 	}
-	public static boolean atTargetAngle() {
+	public boolean atTargetAngle() {
 		return Math.abs(getTargetAngle() - getEncoderAngle()) < Constants.WRIST_ANGLE_TOL;
 	}
 	
 	//Config
-	public void init() {
+	protected void init() {
 		wristTalon = new TalonSRX(Ports.WRIST_TALON);
 		wristTalon.configFactoryDefault();
 		wristTalon.configContinuousCurrentLimit(Constants.WRIST_CURRENT_LIMIT, 10);
@@ -146,6 +147,9 @@ public class Wrist extends Subsystem {
 		wristTalon.selectProfileSlot(0, 0);
 		wristTalon.setSensorPhase(true);
 	}
-	public void enabled() { stop(); }
-	public void disabled() { stop(); }
+	
+	//Calibrate
+	protected boolean isCalibrated() {
+		return backLimitHit();
+	}
 }

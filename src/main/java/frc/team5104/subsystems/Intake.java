@@ -10,35 +10,24 @@ import frc.team5104.Ports;
 import frc.team5104.Superstructure;
 import frc.team5104.Superstructure.GamePiece;
 import frc.team5104.Superstructure.Mode;
-import frc.team5104.Superstructure.SystemState;
 import frc.team5104.util.AnalogToDigital;
 import frc.team5104.util.MovingAverage;
-import frc.team5104.util.managers.Subsystem;
+import frc.team5104.util.subsystem.Subsystem;
 
-public class Intake extends Subsystem {
-	private static VictorSPX leftVictor, rightVictor;
-	private static DoubleSolenoid solenoid;
-	private static AnalogToDigital bannerHatch, bannerCargo;
-	
-	//Actions
-	private static MovingAverage cargoBuffer = new MovingAverage(10, 0);
-	private static MovingAverage hatchBuffer = new MovingAverage(10, 0);
-	public static boolean hasHatch() {
-		return hatchBuffer.getBooleanOutput();
-	}
-	public static boolean hasCargo() {
-		return cargoBuffer.getBooleanOutput();
-	}
+public class Intake extends Subsystem.IntakeSubsystem {
+	private VictorSPX leftVictor, rightVictor;
+	private DoubleSolenoid solenoid;
+	private AnalogToDigital bannerHatch, bannerCargo;
+	private MovingAverage cargoBuffer = new MovingAverage(10, 0);
+	private MovingAverage hatchBuffer = new MovingAverage(10, 0);
 	
 	//Loop
-	public void update() {
+	protected void update() {
 		//Open/Close Intake
 		setMode((Superstructure.getGamePiece() == GamePiece.CARGO && Superstructure.getMode() == Mode.INTAKE));
 		
 		//Set Wheel Speed
-		if (Superstructure.getSystemState() == SystemState.DISABLED)
-			setWheelSpeed(0);
-		else if (Superstructure.getMode() == Mode.IDLE || Superstructure.getMode() == Mode.PLACE) {
+		if (Superstructure.getMode() == Mode.IDLE || Superstructure.getMode() == Mode.PLACE) {
 			if (Superstructure.getGamePiece() == GamePiece.HATCH ? hasHatch() : hasCargo()) {
 				//Hold
 				setWheelSpeed(Superstructure.getGamePiece() == GamePiece.HATCH ? 
@@ -72,20 +61,28 @@ public class Intake extends Subsystem {
 	}
 	
 	//Internal Functions
-	private static void setWheelSpeed(double percentSpeed) {
+	protected void setWheelSpeed(double percentSpeed) {
 		leftVictor.set(ControlMode.PercentOutput, percentSpeed);
 	}
-	private static void stopWheels() {
+	protected void stop() {
 		leftVictor.set(ControlMode.Disabled, 0);
 	}
-	private static void setMode(boolean open) {
+	protected void setMode(boolean open) {
 		if (open)
 			solenoid.set(Value.kReverse);
 		else solenoid.set(Value.kForward);
 	}
 	
+	//External Functions
+	public boolean hasHatch() {
+		return hatchBuffer.getBooleanOutput();
+	}
+	public boolean hasCargo() {
+		return cargoBuffer.getBooleanOutput();
+	}
+	
 	//Config
-	public void init() {
+	protected void init() {
 		leftVictor = new VictorSPX(Ports.INTAKE_TALON_LEFT);
 		rightVictor = new VictorSPX(Ports.INTAKE_TALON_RIGHT);
 		solenoid = new DoubleSolenoid(Ports.INTAKE_PISTON_FORWARD, Ports.INTAKE_PISTON_REVERSE);
@@ -99,6 +96,4 @@ public class Intake extends Subsystem {
 		rightVictor.setNeutralMode(Constants.INTAKE_NEUTRAL_MODE);
 		rightVictor.set(ControlMode.Follower, leftVictor.getDeviceID());
 	}
-	public void enabled() { stopWheels(); }
-	public void disabled() { stopWheels(); }
 }

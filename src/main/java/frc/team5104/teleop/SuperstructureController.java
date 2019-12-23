@@ -1,21 +1,18 @@
 package frc.team5104.teleop;
 
 import frc.team5104.Controls;
+import frc.team5104.Subsystems;
 import frc.team5104.Superstructure;
 import frc.team5104.Superstructure.GamePiece;
 import frc.team5104.Superstructure.Height;
 import frc.team5104.Superstructure.IntakeMode;
 import frc.team5104.Superstructure.Mode;
 import frc.team5104.Superstructure.SystemState;
-import frc.team5104.subsystems.Elevator;
-import frc.team5104.subsystems.Wrist;
 import frc.team5104.util.console;
+import frc.team5104.util.TeleopControllerManager.TeleopController;
 import frc.team5104.util.console.c;
-import frc.team5104.util.managers.TeleopController;
 
 public class SuperstructureController extends TeleopController {
-	protected String getName() { return "Superstructure-Controller"; }
-
 	protected void update() {
 		//Idle
 		if (Controls.IDLE.get()) {
@@ -106,7 +103,7 @@ public class SuperstructureController extends TeleopController {
 			Superstructure.setSystemState(Superstructure.getSystemState() == SystemState.MANUAL ? SystemState.AUTONOMOUS : SystemState.MANUAL);
 			console.log(c.SUPERSTRUCTURE, "setting control mode to " + Superstructure.getSystemState().toString().toLowerCase());
 		}
-		Wrist.desiredWristManaul = Controls.WRIST_MANUAL.get();
-		Elevator.desiredElevatorManaul = Controls.ELEVATOR_MANUAL.get();
+		Subsystems.wrist.desiredWristManaul = Controls.WRIST_MANUAL.get();
+		Subsystems.elevator.desiredElevatorManaul = Controls.ELEVATOR_MANUAL.get();
 	}
 }

@@ -9,15 +9,15 @@ import com.ctre.phoenix.sensors.PigeonIMU;
 import frc.team5104.Constants;
 import frc.team5104.util.DriveSignal;
 import frc.team5104.util.Units;
-import frc.team5104.util.managers.Subsystem;
+import frc.team5104.util.subsystem.Subsystem;
 
-public class Drive extends Subsystem {
-	private static TalonSRX talonL1, talonL2, talonR1, talonR2;
-	private static PigeonIMU gyro;
+public class Drive extends Subsystem.DriveSubsystem {
+	private TalonSRX talonL1, talonL2, talonR1, talonR2;
+	private PigeonIMU gyro;
+	private DriveSignal currentDriveSignal = new DriveSignal();
 	
 	//Loop
-	private static DriveSignal currentDriveSignal = new DriveSignal();
-	public void update() {
+	protected void update() {
 		switch (currentDriveSignal.unit) {
 			case PERCENT_OUTPUT: {
 				setMotors(
@@ -57,41 +57,46 @@ public class Drive extends Subsystem {
 	}
 	
 	//Internal Functions
-	private static void setMotors(double leftSpeed, double rightSpeed, ControlMode controlMode, double leftFeedForward, double rightFeedForward) {
+	protected void setMotors(double leftSpeed, double rightSpeed, ControlMode controlMode, double leftFeedForward, double rightFeedForward) {
 		talonL1.set(controlMode, leftSpeed, DemandType.ArbitraryFeedForward, leftFeedForward);
 		talonR1.set(controlMode, rightSpeed, DemandType.ArbitraryFeedForward, rightFeedForward);
 	}
-	private static void stopMotors() {
+	protected void stopMotors() {
 		talonL1.set(ControlMode.Disabled, 0);
 		talonR1.set(ControlMode.Disabled, 0);
 	}
 	
 	//External Functions
-	public static void set(DriveSignal signal) { currentDriveSignal = signal; }
-	public static void stop() { currentDriveSignal = new DriveSignal(); }
-	public static double getLeftGearboxVoltage() { return talonL1.getBusVoltage(); }
-	public static double getRightGearboxVoltage() { return talonR1.getBusVoltage(); }
-	public static double getLeftGearboxOutputVoltage() { return talonL1.getMotorOutputVoltage(); }
-	public static double getRightGearboxOutputVoltage() { return talonR1.getMotorOutputVoltage(); }
-	public static void resetGyro() { gyro.addYaw(getGyro()); }
-	public static double getGyro() {
+	public void set(DriveSignal signal) {
+		currentDriveSignal = signal;
+	}
+	public void stop() {
+		currentDriveSignal = new DriveSignal();
+		stopMotors();
+	}
+	public double getLeftGearboxVoltage() { return talonL1.getBusVoltage(); }
+	public double getRightGearboxVoltage() { return talonR1.getBusVoltage(); }
+	public double getLeftGearboxOutputVoltage() { return talonL1.getMotorOutputVoltage(); }
+	public double getRightGearboxOutputVoltage() { return talonR1.getMotorOutputVoltage(); }
+	public void resetGyro() { gyro.addYaw(getGyro()); }
+	public double getGyro() {
 		double[] ypr = new double[3];
 		gyro.getYawPitchRoll(ypr); 
 		return -ypr[0];
 	}
-	public static void resetEncoders() {
+	public void resetEncoders() {
 		talonL1.setSelectedSensorPosition(0);
 		talonR1.setSelectedSensorPosition(0);
 	}
-	public static int getLeftEncoderPositionRaw() {
+	public int getLeftEncoderPositionRaw() {
 		return talonL1.getSelectedSensorPosition();
 	}
-	public static int getRightEncoderPositionRaw() {
+	public int getRightEncoderPositionRaw() {
 		return talonR1.getSelectedSensorPosition();
 	}
 	
 	//Config
-	public void init() {
+	protected void init() {
 		talonL1 = new TalonSRX(11);
 		talonL2 = new TalonSRX(12);
 		talonR1 = new TalonSRX(13);
@@ -119,13 +124,5 @@ public class Drive extends Subsystem {
 		stopMotors();
 		resetGyro();
 		resetEncoders();
-	}
-	
-	//Enabled/Disabled
-	public void enabled() {
-		currentDriveSignal = new DriveSignal();
-	}
-	public void disabled() {
-		currentDriveSignal = new DriveSignal();
 	}
 }

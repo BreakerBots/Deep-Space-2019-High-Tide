@@ -1,5 +1,5 @@
 /* BreakerBots Robotics Team (FRC 5104) 2020 */
-package frc.team5104.util.managers;
+package frc.team5104.util.subsystem;
 
 import frc.team5104.util.CrashLogger;
 import frc.team5104.util.CrashLogger.Crash;
@@ -27,20 +27,21 @@ public class SubsystemManager {
 		console.log(c.MAIN, t.INFO, message.substring(0, message.length()-2));
 	}
 	
-	/** Call when the robot becomes enabled */
-	public static void enabled() {
+	/** Call to stop all subsystem */
+	public static void stopAll() {
 		for (Subsystem subsystem : targetSubsystems) {
 			try {
-				subsystem.enabled();
+				subsystem.stop();
 			} catch (Exception e) { CrashLogger.logCrash(new Crash("main", e)); }
 		}
 	}
 	
-	/** Call when the robot becomes disabled */
-	public static void disabled() {
+	/** Call when the robot becomes enabled */
+	public static void reset() {
 		for (Subsystem subsystem : targetSubsystems) {
 			try {
-				subsystem.disabled();
+				subsystem.reset();
+				subsystem.stop();
 			} catch (Exception e) { CrashLogger.logCrash(new Crash("main", e)); }
 		}
 	}
@@ -52,5 +53,16 @@ public class SubsystemManager {
 				subsystem.update();
 			} catch (Exception e) { CrashLogger.logCrash(new Crash("main", e)); }
 		}
+	}
+	
+	/** Returns if all the subsystems are calibrated */
+	public static boolean isCalibrated() {
+		for (Subsystem subsystem : targetSubsystems) {
+			try {
+				if (!subsystem.isCalibrated())
+					return false;
+			} catch (Exception e) { CrashLogger.logCrash(new Crash("main", e)); }
+		}
+		return true;
 	}
 }

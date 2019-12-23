@@ -1,11 +1,9 @@
 /*BreakerBots Robotics Team 2019*/
 package frc.team5104;
 
-import frc.team5104.subsystems.Elevator;
-import frc.team5104.subsystems.Intake;
-import frc.team5104.subsystems.Wrist;
 import frc.team5104.util.console;
 import frc.team5104.util.console.c;
+import frc.team5104.util.subsystem.SubsystemManager;
 
 /** 
  * The Superstructure is a massive state machine that handles the Intake, Wrist, and Elevator
@@ -17,12 +15,12 @@ public class Superstructure {
 	public static enum Mode { IDLE, INTAKE, PLACE_READY, PLACE, EJECT }
 	public static enum GamePiece { CARGO, HATCH }
 	public static enum Height { L1, L2, L3, SHIP }
-	public static enum SystemState { CALIBRATING, MANUAL, AUTONOMOUS, DISABLED }
+	public static enum SystemState { CALIBRATING, MANUAL, AUTONOMOUS }
 	public static enum IntakeMode { GROUND, WALL }
 	private static Mode targetMode = Mode.IDLE;
 	private static GamePiece targetGamePiece = GamePiece.HATCH;
 	private static Height targetHeight = Height.L1;
-	private static SystemState systemState = SystemState.DISABLED;
+	private static SystemState systemState = SystemState.CALIBRATING;
 	private static IntakeMode intakeMode = IntakeMode.WALL;
 	public static long modeStart = System.currentTimeMillis();
 	public static long systemStateStart = System.currentTimeMillis();
@@ -48,9 +46,9 @@ public class Superstructure {
 	//Manage States
 	static void update() {
 		//Automatically Enter Manual
-		if (getSystemState() == SystemState.AUTONOMOUS && (Wrist.encoderDisconnected() || Elevator.encoderDisconnected())) {
-			console.error(c.SUPERSTRUCTURE, "encoder error... disabling");
-			setSystemState(SystemState.DISABLED);
+		if (getSystemState() == SystemState.AUTONOMOUS && (Subsystems.wrist.encoderDisconnected() || Subsystems.elevator.encoderDisconnected())) {
+			console.error(c.SUPERSTRUCTURE, "encoder error... entering manual");
+			setSystemState(SystemState.MANUAL);
 		}
 		
 		//Exit Eject (if in eject and has been ejecting for long enough)
@@ -60,7 +58,7 @@ public class Superstructure {
 		}
 		
 		//Exit Intake (if in intake and has desired game piece)
-		if (getMode() == Mode.INTAKE && (getGamePiece() == GamePiece.HATCH ? Intake.hasHatch() : Intake.hasCargo())) {
+		if (getMode() == Mode.INTAKE && (getGamePiece() == GamePiece.HATCH ? Subsystems.intake.hasHatch() : Subsystems.intake.hasCargo())) {
 			console.log(c.SUPERSTRUCTURE, "finished intake... idling");
 			setMode(Mode.IDLE);
 			Controls.INTAKE_RUMBLE.start();
@@ -68,19 +66,17 @@ public class Superstructure {
 		
 		//Exit Calibration
 		if (getSystemState() == SystemState.CALIBRATING) {
-			if (Elevator.lowerLimitHit() && Wrist.backLimitSwitchHit()) {
+			if (SubsystemManager.isCalibrated()) {
 				console.log(c.SUPERSTRUCTURE, "finished calibration... entering autonomous");
 				setSystemState(SystemState.AUTONOMOUS);
 			}
 			else if (System.currentTimeMillis() > systemStateStart + 7000) {
-				console.error(c.SUPERSTRUCTURE, "error in calibration... disabling");
-				setSystemState(SystemState.DISABLED);
+				console.error(c.SUPERSTRUCTURE, "error in calibration... entering manual");
+				setSystemState(SystemState.MANUAL);
 			}
 		}
 	}
-	static void enabled() { setToDefaultStates(); }
-	static void disabled() { setToDefaultStates(); }
-	private static void setToDefaultStates() {
+	static void reset() {
 		targetMode = Mode.IDLE;
 		systemState = SystemState.CALIBRATING;
 	}
