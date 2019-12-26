@@ -16,7 +16,7 @@ import frc.team5104.Superstructure.SystemState;
 import frc.team5104.util.MovingAverage;
 import frc.team5104.util.subsystem.Subsystem;
 
-public class Wrist extends Subsystem.WristSubsystem {
+public class Wrist extends Subsystem.RotarySubsystem {
 	private TalonSRX wristTalon;
 	public double desiredWristManaul = 0;
 	private MovingAverage limitSwitchZeroBuffer = new MovingAverage(5, false);

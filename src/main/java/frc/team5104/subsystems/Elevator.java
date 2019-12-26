@@ -16,7 +16,7 @@ import frc.team5104.Superstructure.SystemState;
 import frc.team5104.util.MovingAverage;
 import frc.team5104.util.subsystem.Subsystem;
 
-public class Elevator extends Subsystem.ElevatorSubsystem {
+public class Elevator extends Subsystem.LinearSubsystem {
 	private TalonSRX talon1, talon2;
 	private CANifier canifier;
 	private double lastTargetHeight;

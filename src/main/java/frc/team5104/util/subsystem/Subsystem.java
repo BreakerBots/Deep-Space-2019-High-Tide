@@ -25,12 +25,12 @@ public abstract class Subsystem {
 	}
 	
 	/**  */
-	public static abstract class ElevatorSubsystem extends Subsystem {
+	public static abstract class LinearSubsystem extends Subsystem {
 		
 	}
 	
 	/**  */
-	public static abstract class WristSubsystem extends Subsystem {
+	public static abstract class RotarySubsystem extends Subsystem {
 		
 	}
 	
